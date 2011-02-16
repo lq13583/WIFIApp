@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"               
+              android:orientation="vertical" >
+	<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			     android:layout_width="fill_parent"
+			     android:layout_height="fill_parent"
+			     android:stretchColumns="1">
+		<TableRow>
+			<TextView android:text="labor_code:"
+			          android:padding="3dip" />
+			<EditText android:layout_height="wrap_content" 
+					  android:gravity="left" 
+					  android:layout_width="wrap_content" 
+					  android:id="@+id/labor_code" 
+					  android:padding="2dip" 
+					  android:text="laborcode">
+			</EditText>
+		</TableRow>
+	</TableLayout>
+	
+	<TextView android:id="@+id/text"
+	          android:layout_width="wrap_content"
+	          android:layout_height="wrap_content"
+	          android:text="Hello, I am a TextView" />
+	<Button android:id="@+id/button"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="Hello, I am a Button" />
+</LinearLayout>
