@@ -9,23 +9,85 @@
 			     android:stretchColumns="1">
 		<TableRow>
 			<TextView android:text="labor_code:"
-			          android:padding="3dip" />
-			<EditText android:layout_height="wrap_content" 
+		          	  android:padding="3dip" />
+			<EditText android:layout_height="fill_parent" 
 					  android:gravity="left" 
-					  android:layout_width="wrap_content" 
+		 		  	  android:layout_width="fill_parent" 
 					  android:id="@+id/labor_code" 
-					  android:padding="2dip" 
+					  android:padding="3dip" 
 					  android:text="laborcode">
 			</EditText>
 		</TableRow>
-	</TableLayout>
+		<TableRow>
+			<TextView android:text="labor_name:"
+			          android:padding="3dip" />
+			<EditText android:layout_height="fill_parent" 
+					  android:gravity="left" 
+					  android:layout_width="fill_parent" 
+					  android:id="@+id/labor_name" 
+					  android:padding="3dip" 
+					  android:text="laborname">
+			</EditText>
+		</TableRow>
+		<TableRow>
+			<TextView android:text="font_size:"
+			          android:padding="3dip" />
+			<EditText android:layout_height="fill_parent" 
+					  android:gravity="left" 
+					  android:layout_width="fill_parent" 
+					  android:id="@+id/font_size" 
+					  android:padding="3dip" 
+					  android:text="Font Size">
+			</EditText>
+		</TableRow>
+		<TableRow>
+			<TextView android:text="desc_font_size:"
+			          android:padding="3dip" />
+			<EditText android:layout_height="fill_parent" 
+					  android:gravity="left" 
+					  android:layout_width="fill_parent" 
+					  android:id="@+id/desc_font_size" 
+					  android:padding="3dip" 
+					  android:text="Description Font Size">
+			</EditText>
+		</TableRow>
+		<TableRow>
+			<CheckBox android:text="is_super" 
+				 	  android:id="@+id/is_super" 
+				 	  android:layout_width="fill_parent" 
+				 	  android:layout_height="fill_parent">
+			</CheckBox>
+			<CheckBox android:text="update_key" 
+				 	  android:id="@+id/update_key" 
+				 	  android:layout_width="fill_parent" 
+				 	  android:layout_height="fill_parent">
+			</CheckBox>
+		</TableRow>
+		<TableRow>
+			<TextView android:text="jdbc_url:"
+			          android:padding="3dip" />
+			<EditText android:layout_height="fill_parent" 
+					  android:layout_width="fill_parent"
+					  android:gravity="left" 
+					  android:id="@+id/jdbc_url" 
+					  android:padding="3dip" 
+					  android:scrollHorizontally="true"
+					  android:maxLength="100"
+					  android:text="jdbc_url">
+			</EditText>
+		</TableRow>
+		
+		<TableRow>
+			<TextView android:id="@+id/text"
+	          		  android:layout_width="fill_parent"
+	          		  android:layout_height="fill_parent"
+	          		  android:text="Hello, I am a TextView" />
+			<Button android:id="@+id/button"
+		    	    android:layout_width="fill_parent"
+			        android:layout_height="fill_parent"
+		        	android:text="Hello, I am a Button" />
+		
+</TableRow>
 	
-	<TextView android:id="@+id/text"
-	          android:layout_width="wrap_content"
-	          android:layout_height="wrap_content"
-	          android:text="Hello, I am a TextView" />
-	<Button android:id="@+id/button"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:text="Hello, I am a Button" />
+</TableLayout>
 </LinearLayout>

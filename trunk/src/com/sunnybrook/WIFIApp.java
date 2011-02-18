@@ -13,22 +13,26 @@ import android.widget.TabHost;
 //import android.widget.Button;
 
 public class WIFIApp extends TabActivity{
-	private sysconfig myconfig;
+//	private sysconfig myconfig;
 
-	private localDB localdb;
+//	private localDB localdb;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        localdb = new localDB(this);
-        myconfig = new sysconfig(localdb);
+//        localdb = new localDB(this);
+//        myconfig = new sysconfig(localdb);
+  
         Resources res = getResources();	// Resource object to get Drawables
+        
         TabHost tabHost = getTabHost();  // The activity TabHost
         TabHost.TabSpec spec;  // Resusable TabSpec for each tab
+
         Intent intent;  // Reusable Intent for each tab
         
         intent = new Intent().setClass(this, SettingsActivity.class);
+        
         spec = tabHost.newTabSpec("settings").setIndicator("Settings",
         				res.getDrawable(R.drawable.ic_tab_settings))
         			.setContent(intent);
@@ -38,7 +42,8 @@ public class WIFIApp extends TabActivity{
         				res.getDrawable(R.drawable.ic_tab_ownorders))
         			.setContent(intent);
         tabHost.addTab(spec);
-        tabHost.setCurrentTab(1);        
+        tabHost.setCurrentTab(0);        
+
 //        find_and_modify_button();
         
     }
