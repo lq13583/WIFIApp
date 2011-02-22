@@ -10,6 +10,8 @@ public class sysconfig {
 	private boolean update_key;
 	private int font_size;
 	private int desc_font_size;
+	private int update_int;
+	private int update_int_max;
 	private String jdbc_url;
 
 	public sysconfig(localDB localdb){
@@ -17,6 +19,8 @@ public class sysconfig {
     	labor_name = localdb.getSysConfig("labor_name");
     	is_super = localdb.getSysConfig("is_super").equals("yes");
     	update_key = localdb.getSysConfig("update_key").equals("yes");
+    	update_int = Integer.parseInt(localdb.getSysConfig("update_int"));
+    	update_int_max = Integer.parseInt(localdb.getSysConfig("update_int_max"));
     	font_size = Integer.parseInt(localdb.getSysConfig("font_size"));
     	desc_font_size = Integer.parseInt(localdb.getSysConfig("desc_font_size"));
         jdbc_url = localdb.getSysConfig("jdbc_url");
@@ -42,10 +46,10 @@ public class sysconfig {
 	public List<String> getCraft_list() {
 		return craft_list;
 	}
-	public void setIs_super(boolean is_super) {
+	public void set_super(boolean is_super) {
 		this.is_super = is_super;
 	}
-	public boolean isIs_super() {
+	public boolean is_super() {
 		return is_super;
 	}
 	public void setUpdate_key(boolean update_key) {
@@ -71,6 +75,22 @@ public class sysconfig {
 	}
 	public String getJdbc_url() {
 		return jdbc_url;
+	}
+
+	public void setUpdate_int(int update_int) {
+		this.update_int = update_int;
+	}
+
+	public int getUpdate_int() {
+		return update_int;
+	}
+
+	public void setUpdate_int_max(int max_update_int) {
+		this.update_int_max = max_update_int;
+	}
+
+	public int getUpdate_int_max() {
+		return update_int_max;
 	}
 
 }

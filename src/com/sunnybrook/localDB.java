@@ -23,6 +23,15 @@ public class localDB{
 		value = mystatement.simpleQueryForString();		
 		return value;
 	}
+
+	public void saveSysConfig(String name,String value){
+		String sql = "update sysconfig set conf_value = ? where conf_name= ? ;";
+		SQLiteStatement mystatement =db.compileStatement(sql);
+		mystatement.bindString(1,value);
+		mystatement.bindString(2,name);
+		mystatement.execute();
+//		return value;
+	}
 	
 	public void finalize(){
 		if(db.isOpen()) db.close();
