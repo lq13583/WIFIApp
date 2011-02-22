@@ -30,6 +30,40 @@
 			</EditText>
 		</TableRow>
 		<TableRow>
+			<CheckBox android:text="is_super" 
+				 	  android:id="@+id/is_super" 
+				 	  android:layout_width="fill_parent" 
+				 	  android:layout_height="fill_parent">
+			</CheckBox>
+			<CheckBox android:text="update_key" 
+				 	  android:id="@+id/update_key" 
+				 	  android:layout_width="fill_parent" 
+				 	  android:layout_height="fill_parent">
+			</CheckBox>
+		</TableRow>
+		<TableRow>
+			<TextView android:text="update_int:"
+			          android:padding="3dip" />
+			<EditText android:layout_height="fill_parent" 
+					  android:gravity="left" 
+					  android:layout_width="fill_parent" 
+					  android:id="@+id/update_int" 
+					  android:padding="3dip" 
+					  android:text="Font Size">
+			</EditText>
+		</TableRow>
+		<TableRow>
+			<TextView android:text="update_int_max:"
+			          android:padding="3dip" />
+			<EditText android:layout_height="fill_parent" 
+					  android:gravity="left" 
+					  android:layout_width="fill_parent" 
+					  android:id="@+id/update_int_max" 
+					  android:padding="3dip" 
+					  android:text="Description Font Size">
+			</EditText>
+		</TableRow>
+		<TableRow>
 			<TextView android:text="font_size:"
 			          android:padding="3dip" />
 			<EditText android:layout_height="fill_parent" 
@@ -52,26 +86,16 @@
 			</EditText>
 		</TableRow>
 		<TableRow>
-			<CheckBox android:text="is_super" 
-				 	  android:id="@+id/is_super" 
-				 	  android:layout_width="fill_parent" 
-				 	  android:layout_height="fill_parent">
-			</CheckBox>
-			<CheckBox android:text="update_key" 
-				 	  android:id="@+id/update_key" 
-				 	  android:layout_width="fill_parent" 
-				 	  android:layout_height="fill_parent">
-			</CheckBox>
-		</TableRow>
-		<TableRow>
 			<TextView android:text="jdbc_url:"
 			          android:padding="3dip" />
-			<EditText android:layout_height="fill_parent" 
+			<EditText android:layout_height="wrap_content"
 					  android:layout_width="fill_parent"
 					  android:gravity="left" 
 					  android:id="@+id/jdbc_url" 
 					  android:padding="3dip" 
 					  android:scrollHorizontally="true"
+					  android:scrollbars="horizontal"
+					  android:scrollbarSize="5dip"
 					  android:maxLength="100"
 					  android:text="jdbc_url">
 			</EditText>
