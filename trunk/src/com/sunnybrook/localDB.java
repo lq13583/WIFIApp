@@ -16,21 +16,35 @@ public class localDB{
 	}
 	
 	public String getSysConfig(String name){
-		String value="";
+		String value = null;
 		String sql = "select conf_value from sysconfig where conf_name= ? ;";
-		SQLiteStatement mystatement =db.compileStatement(sql);
-		mystatement.bindString(1,name);
-		value = mystatement.simpleQueryForString();		
+		try {
+			SQLiteStatement mystatement =db.compileStatement(sql);
+			mystatement.bindString(1,name);
+			value = mystatement.simpleQueryForString();
+		}
+		catch (SQLiteDoneException ex){
+			value = null;
+		}
 		return value;
 	}
 
 	public void saveSysConfig(String name,String value){
-		String sql = "update sysconfig set conf_value = ? where conf_name= ? ;";
-		SQLiteStatement mystatement =db.compileStatement(sql);
-		mystatement.bindString(1,value);
-		mystatement.bindString(2,name);
-		mystatement.execute();
-//		return value;
+		String sql;
+		SQLiteStatement mStatement;
+		if (getSysConfig(name) == null){
+			sql = "Insert Into sysconfig values(?,?);";
+			mStatement = db.compileStatement(sql);
+			mStatement.bindString(1,name);
+			mStatement.bindString(2,value);
+		}
+		else {
+			sql = "update sysconfig set conf_value = ? where conf_name= ? ;";
+			mStatement = db.compileStatement(sql);
+			mStatement.bindString(1,value);
+			mStatement.bindString(2,name);
+		}
+		mStatement.execute();
 	}
 	
 	public void finalize(){
@@ -92,15 +106,18 @@ public class localDB{
 				+ "enterdate DATETIME NOT NULL,startdate DATETIME NOT NULL,regularhrs FLOAT NOT NULL DEFAULT 0,location VARCHAR(15));";
 			db.execSQL(sql);
 			
-/* Create Table sysconfig*/		
+/* Create Table sysconfig */		
 			sql = "CREATE TABLE sysconfig (conf_name VARCHAR(50) NOT NULL PRIMARY KEY,conf_value VARCHAR(100) NOT NULL);";
 			db.execSQL(sql);
 			Iterator<String> iterator = configMap.keySet().iterator();
+			sql = "Insert Into sysconfig values(?,?);";
+			SQLiteStatement mystatement =db.compileStatement(sql);
 			while(iterator.hasNext()){
 				String conf_name = iterator.next();
 				String conf_value = configMap.get(conf_name);
-				sql="Insert Into sysconfig values(\"" + conf_name + "\",\"" + conf_value + "\");";
-				db.execSQL(sql);
+				mystatement.bindString(1,conf_name);
+				mystatement.bindString(2,conf_value);
+				mystatement.execute();
 			}
 		}
 

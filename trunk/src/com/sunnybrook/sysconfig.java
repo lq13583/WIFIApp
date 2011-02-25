@@ -26,6 +26,28 @@ public class sysconfig {
         jdbc_url = localdb.getSysConfig("jdbc_url");
 	}
 	
+	public void saveAllToDB(localDB localdb){
+		localdb.saveSysConfig("labor_code", labor_code);
+		localdb.saveSysConfig("labor_name", labor_name);
+		localdb.saveSysConfig("is_super", is_super?"yes":"no");
+		localdb.saveSysConfig("update_key",update_key?"yes":"no");
+		localdb.saveSysConfig("update_int",Integer.toString(update_int) );
+		localdb.saveSysConfig("update_int_max",Integer.toString(update_int_max));
+		localdb.saveSysConfig("font_size", Integer.toString(font_size));
+		localdb.saveSysConfig("desc_font_size", Integer.toString(desc_font_size));
+		localdb.saveSysConfig("jdbc_url", jdbc_url);
+	}
+	
+	public void saveFontToDB(localDB localdb){
+		localdb.saveSysConfig("font_size", Integer.toString(font_size));
+		localdb.saveSysConfig("desc_font_size", Integer.toString(desc_font_size));
+	}
+	
+	public void saveUpdateIntToDB(localDB localdb){
+		localdb.saveSysConfig("update_int",Integer.toString(update_int) );
+		localdb.saveSysConfig("update_int_max",Integer.toString(update_int_max));
+	}
+	
 	public void setLabor_code(String labor_code) {
 		this.labor_code = labor_code;
 	}
