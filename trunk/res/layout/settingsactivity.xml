@@ -30,6 +30,17 @@
 			</EditText>
 		</TableRow>
 		<TableRow>
+			<TextView android:text="crafts:"
+			          android:padding="3dip" />
+			<EditText android:layout_height="fill_parent" 
+					  android:gravity="left" 
+					  android:layout_width="fill_parent" 
+					  android:id="@+id/crafts" 
+					  android:padding="3dip" 
+					  android:text="Craft List">
+			</EditText>
+		</TableRow>
+		<TableRow>
 			<CheckBox android:text="is_super" 
 				 	  android:id="@+id/is_super" 
 				 	  android:layout_width="fill_parent" 
@@ -89,23 +100,57 @@
 			<TextView android:text="jdbc_url:" 
 			 		  android:padding="3dip">
 			</TextView>
+		</TableRow>
+		<TableRow>
 			<EditText android:id="@+id/jdbc_url" 
 					  android:layout_height="wrap_content" 
-					  android:scrollbarSize="5dip" 
+					  android:scrollbarSize="3dip" 
 					  android:layout_width="fill_parent" 
 					  android:text="jdbc_url" 
 					  android:padding="3dip" 
 					  android:maxLength="100" 
 					  android:scrollHorizontally="true" 
 					  android:scrollbars="horizontal" 
-					  android:gravity="left">
+					  android:gravity="left"
+					  android:layout_span="2">
 			</EditText>
 		</TableRow>
 		<TableRow>
-			<Button android:id="@+id/btnSave"
-	  	    		android:layout_width="fill_parent"
-	        		android:layout_height="fill_parent"
-	       			android:text="Save" />
+			<TextView android:text="SSID:"
+			          android:padding="3dip" />
+			<EditText android:layout_height="fill_parent" 
+					  android:gravity="left" 
+					  android:layout_width="fill_parent" 
+					  android:id="@+id/ssid" 
+					  android:padding="3dip" 
+					  android:text="ssid">
+			</EditText>
+		</TableRow>
+		<TableRow>
+			<TextView android:text="network_key:"
+			          android:padding="3dip" />
+			<EditText android:layout_height="fill_parent" 
+					  android:gravity="left" 
+					  android:layout_width="fill_parent" 
+					  android:id="@+id/net_key" 
+					  android:padding="3dip" 
+					  android:text="network key">
+			</EditText>
+		</TableRow>
+		<TableRow>
+			<LinearLayout android:layout_span="2"
+						  android:layout_height="fill_parent"
+						  android:layout_width="fill_parent"
+						  android:gravity="center_horizontal" >
+				<Button android:id="@+id/btnReset"
+	  	    			android:layout_width="wrap_content"
+	        			android:layout_height="fill_parent"
+	       				android:text="Reset" />
+				<Button android:id="@+id/btnSave"
+	  	    			android:layout_width="wrap_content"
+	        			android:layout_height="fill_parent"
+	       				android:text="Save" />
+	       	</LinearLayout>
 		</TableRow>
 	</TableLayout>
 </LinearLayout>

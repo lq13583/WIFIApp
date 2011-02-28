@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
-public class SettingsActivity extends Activity{
+public class SettingsActivity extends Activity implements OnClickListener{
 	private sysconfig mSysconfig;
 	private localDB mLocalDB;
     public void onCreate(Bundle savedInstanceState) {
@@ -18,10 +18,11 @@ public class SettingsActivity extends Activity{
     	setContentView(R.layout.settingsactivity);
     	mLocalDB = new localDB(this);
     	mSysconfig = new sysconfig(mLocalDB);
-    	showSettings(mSysconfig);
+    	initValues();
+    	setEvents();
     }
 
-    private void showSettings(sysconfig mSysconfig) {
+    private void initValues() {
     	
     	EditText mEditText = (EditText) findViewById(R.id.labor_code);
     	mEditText.setText(mSysconfig.getLabor_code());
@@ -29,6 +30,12 @@ public class SettingsActivity extends Activity{
     	mEditText.setText(mSysconfig.getLabor_name());
     	mEditText = (EditText) findViewById(R.id.jdbc_url);
     	mEditText.setText(mSysconfig.getJdbc_url());
+    	mEditText = (EditText) findViewById(R.id.ssid);
+    	mEditText.setText(mSysconfig.getSsid());
+    	mEditText = (EditText) findViewById(R.id.net_key);
+    	mEditText.setText(mSysconfig.getNetwork_key());
+    	mEditText = (EditText) findViewById(R.id.crafts);
+    	mEditText.setText(mSysconfig.getCrafts());
 
     	mEditText = (EditText) findViewById(R.id.update_int);
     	mEditText.setText(Integer.toString(mSysconfig.getUpdate_int()));
@@ -43,36 +50,70 @@ public class SettingsActivity extends Activity{
     	mCheckBox.setChecked(mSysconfig.is_super());
     	mCheckBox = (CheckBox) findViewById(R.id.update_key);
     	mCheckBox.setChecked(mSysconfig.isUpdate_key());
-    	
-    	Button btn = (Button) findViewById(R.id.btnSave);
-    	btn.setOnClickListener(btn_save_onclick_listener);
     }    
     
-    private OnClickListener btn_save_onclick_listener = new OnClickListener() {
-    	public void onClick(View v) {
-    		saveSettings();
-    		showMessage("OK");
-       	}
+    private void setEvents() {
+    	Button btn = (Button) findViewById(R.id.btnSave);
+    	btn.setOnClickListener(this);
+    	btn = (Button) findViewById(R.id.btnReset);
+    	btn.setOnClickListener(this);
+    }
+    
+   	public void onClick(View v) {
+   		switch (v.getId()) {
+   			case R.id.btnSave:
+   		   		saveSettings();
+   		   		showMessage("Save Ok!");
+   		   		break;
+   			case R.id.btnReset:
+   				initValues();
+   				showMessage("Reset Ok!");
+   				break;
+   		}
     };
     
     private void saveSettings() {
     	EditText mEditText = (EditText) findViewById(R.id.labor_code);
     	mSysconfig.setLabor_code(mEditText.getText().toString());
-    	showMessage(mSysconfig.getLabor_code());
+    	mEditText = (EditText) findViewById(R.id.labor_name);
+    	mSysconfig.setLabor_name(mEditText.getText().toString());
+    	mEditText = (EditText) findViewById(R.id.jdbc_url);
+    	mSysconfig.setJdbc_url(mEditText.getText().toString());
+    	mEditText = (EditText) findViewById(R.id.ssid);
+    	mSysconfig.setSsid(mEditText.getText().toString());
+    	mEditText = (EditText) findViewById(R.id.net_key);
+    	mSysconfig.setNetwork_key(mEditText.getText().toString());
+    	mEditText = (EditText) findViewById(R.id.crafts);
+    	mSysconfig.setCrafts(mEditText.getText().toString());
+ 
+    	mEditText = (EditText) findViewById(R.id.update_int);
+    	mSysconfig.setUpdate_int(Integer.parseInt(mEditText.getText().toString()));
+    	mEditText = (EditText) findViewById(R.id.update_int_max);
+    	mSysconfig.setUpdate_int_max(Integer.parseInt(mEditText.getText().toString()));
+    	mEditText = (EditText) findViewById(R.id.font_size);
+    	mSysconfig.setFont_size(Integer.parseInt(mEditText.getText().toString()));
+    	mEditText = (EditText) findViewById(R.id.desc_font_size);
+    	mSysconfig.setDesc_font_size(Integer.parseInt(mEditText.getText().toString()));
 
-//		mSysconfig.saveAllToDB(mLocalDB);
-    }
-    private void showMessage(String txtMsg) {
-   		new AlertDialog.Builder(this) 
-		.setTitle(R.string.app_name)
-		.setMessage(txtMsg)
-		.setNeutralButton("Close", new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dlg, int sumthin) {
-				// do nothing – it will close on its own
-			}
-		})
-		.show();
+    	CheckBox mCheckBox = (CheckBox) findViewById(R.id.is_super);
+    	mSysconfig.set_super(mCheckBox.isChecked());
+    	mCheckBox = (CheckBox) findViewById(R.id.update_key);
+    	mSysconfig.setUpdate_key(mCheckBox.isChecked());
+
+		mSysconfig.saveAllToDB(mLocalDB);
     }
     
-
+    private void showMessage(String txtMsg) {
+    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    	
+   		builder.setTitle(R.string.app_name)
+   			   .setCancelable(false)
+   			   .setMessage(txtMsg)
+   			   .setPositiveButton("Close", new DialogInterface.OnClickListener() {
+   				   public void onClick(DialogInterface dlg, int sumthin) {
+   					   dlg.cancel();
+   				   }
+   			   })
+			   .show();
+    }
 }
