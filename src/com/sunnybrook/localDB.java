@@ -70,6 +70,8 @@ public class localDB{
 				put("jdbc_url","jdbc:jtds:sqlserver://172.16.145.35:1433/maximo;user=sa;password=maximo;");
 */
 				put("jdbc_url","jdbc:jtds:sqlserver://142.76.72.125:1433/maximo;user=sa;password=maximo;");
+				put("ssid","SW_Access");
+				put("network_key","df4cfcd9a06d46ce3f4d6ccb8e");
 			}
 		};
 

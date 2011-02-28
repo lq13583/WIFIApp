@@ -1,6 +1,9 @@
 package com.sunnybrook;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.StringTokenizer;
 
 public class sysconfig {
 	private String labor_code;
@@ -13,6 +16,8 @@ public class sysconfig {
 	private int update_int;
 	private int update_int_max;
 	private String jdbc_url;
+	private String ssid;
+	private String network_key;
 
 	public sysconfig(localDB localdb){
     	labor_code = localdb.getSysConfig("labor_code");
@@ -24,6 +29,10 @@ public class sysconfig {
     	font_size = Integer.parseInt(localdb.getSysConfig("font_size"));
     	desc_font_size = Integer.parseInt(localdb.getSysConfig("desc_font_size"));
         jdbc_url = localdb.getSysConfig("jdbc_url");
+        ssid = localdb.getSysConfig("ssid");
+        network_key = localdb.getSysConfig("network_key");
+        craft_list = new ArrayList<String>();
+		setCrafts(localdb.getSysConfig("crafts"));
 	}
 	
 	public void saveAllToDB(localDB localdb){
@@ -36,6 +45,27 @@ public class sysconfig {
 		localdb.saveSysConfig("font_size", Integer.toString(font_size));
 		localdb.saveSysConfig("desc_font_size", Integer.toString(desc_font_size));
 		localdb.saveSysConfig("jdbc_url", jdbc_url);
+		localdb.saveSysConfig("ssid", ssid);
+		localdb.saveSysConfig("network_key", network_key);
+		localdb.saveSysConfig("crafts", getCrafts());
+	}
+	
+	public String getCrafts() {
+		String mCrafts = "";
+		Iterator<String> itr = craft_list.iterator();
+		while (itr.hasNext()) {
+			mCrafts += itr.next() + ";";
+		}
+		return mCrafts;
+	}
+	
+	public void setCrafts(String mCrafts) {
+		StringTokenizer st = new StringTokenizer(mCrafts,";");
+		craft_list.removeAll(craft_list);
+		while(st.hasMoreTokens()){
+			String craft = st.nextToken();
+			craft_list.add(craft);
+		}
 	}
 	
 	public void saveFontToDB(localDB localdb){
@@ -61,10 +91,6 @@ public class sysconfig {
 		return labor_name;
 	}
 
-	public void setCraft_list(List<String> craft_list) {
-		this.craft_list = craft_list;
-	}
-	
 	public List<String> getCraft_list() {
 		return craft_list;
 	}
@@ -113,6 +139,22 @@ public class sysconfig {
 
 	public int getUpdate_int_max() {
 		return update_int_max;
+	}
+
+	public void setSsid(String ssid) {
+		this.ssid = ssid;
+	}
+
+	public String getSsid() {
+		return ssid;
+	}
+
+	public void setNetwork_key(String networkkey) {
+		this.network_key = networkkey;
+	}
+
+	public String getNetwork_key() {
+		return network_key;
 	}
 
 }
