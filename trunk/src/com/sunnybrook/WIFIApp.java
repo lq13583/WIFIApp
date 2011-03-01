@@ -1,28 +1,25 @@
 package com.sunnybrook;
 
-//import android.app.Activity;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import android.app.TabActivity;
 import android.content.Intent;
 import android.content.res.Resources;
-//import android.app.AlertDialog;
-//import android.content.DialogInterface;
 import android.os.Bundle;
 import android.widget.TabHost;
-//import android.view.View;
-//import android.view.View.OnClickListener;
-//import android.widget.Button;
 
 public class WIFIApp extends TabActivity{
-//	private sysconfig myconfig;
-
-//	private localDB localdb;
+	public static sysconfig myConfig;
+	public static localDB localdb;
+	public static Timer myTimer;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-//        localdb = new localDB(this);
-//        myconfig = new sysconfig(localdb);
+        localdb = new localDB(this);
+        myConfig = new sysconfig(localdb);
   
         Resources res = getResources();	// Resource object to get Drawables
         
@@ -44,6 +41,8 @@ public class WIFIApp extends TabActivity{
         tabHost.addTab(spec);
         tabHost.setCurrentTab(0);        
 
+        myTimer = new Timer();
+        myTimer.schedule(new SyncDataTask(), 0, myConfig.getUpdate_int());
 //        find_and_modify_button();
         
     }
@@ -61,25 +60,5 @@ public class WIFIApp extends TabActivity{
     	}
     };
 */
-/*    
-    private void SyncData(){
-    	remoteDB myDB = new remoteDB(myconfig.getJdbc_url());
-    	String conn_status = "Not Connected!";
-    	if(myDB.isConnected())
-    		conn_status = "Connected";
-        else
-        	conn_status = "Not Connected!!!";
-		new AlertDialog.Builder(this)
-			.setTitle("MessageDemo")
-			.setMessage(conn_status)
-			.setNeutralButton("Close", new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dlg, int sumthin) {
-				// do nothing – it will close on its own
-				}
-			})
-			.show();
- 
-    }
-*/
-    
+
 }

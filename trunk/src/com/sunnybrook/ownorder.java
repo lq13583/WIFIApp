@@ -3,7 +3,7 @@ package com.sunnybrook;
 import java.util.List;
 
 public class ownorder extends workorder{
-	public List<labtrans> translist;
+	private List<labtrans> translist;
 	private String mycomments;
 	private String readstatus;
 	
@@ -25,6 +25,10 @@ public class ownorder extends workorder{
 	
 	public void setReadStatus(String status) {
 		readstatus = status;
+	}
+
+	public List<labtrans> getTranslist() {
+		return translist;
 	}
 	
 }

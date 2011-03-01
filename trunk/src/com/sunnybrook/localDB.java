@@ -22,6 +22,7 @@ public class localDB{
 			SQLiteStatement mystatement =db.compileStatement(sql);
 			mystatement.bindString(1,name);
 			value = mystatement.simpleQueryForString();
+			mystatement.close();
 		}
 		catch (SQLiteDoneException ex){
 			value = null;
@@ -45,6 +46,7 @@ public class localDB{
 			mStatement.bindString(2,name);
 		}
 		mStatement.execute();
+		mStatement.close();
 	}
 	
 	public void finalize(){
@@ -121,6 +123,7 @@ public class localDB{
 				mystatement.bindString(2,conf_value);
 				mystatement.execute();
 			}
+			mystatement.close();
 		}
 
 		@Override
