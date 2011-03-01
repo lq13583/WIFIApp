@@ -12,12 +12,11 @@ import android.widget.EditText;
 
 public class SettingsActivity extends Activity implements OnClickListener{
 	private sysconfig mSysconfig;
-	private localDB mLocalDB;
+	
     public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
     	setContentView(R.layout.settingsactivity);
-    	mLocalDB = new localDB(this);
-    	mSysconfig = new sysconfig(mLocalDB);
+    	mSysconfig = WIFIApp.myConfig;
     	initValues();
     	setEvents();
     }
@@ -100,7 +99,7 @@ public class SettingsActivity extends Activity implements OnClickListener{
     	mCheckBox = (CheckBox) findViewById(R.id.update_key);
     	mSysconfig.setUpdate_key(mCheckBox.isChecked());
 
-		mSysconfig.saveAllToDB(mLocalDB);
+		mSysconfig.saveAllToDB(WIFIApp.localdb);
     }
     
     private void showMessage(String txtMsg) {
