@@ -16,6 +16,7 @@ public class workorder {
 	private String wo3;
 	private String comments;
 	private String reportedby;
+	private Date reportdate;
 	private String phone;
 	private Date actstart;
 	private Date actfinish;
@@ -31,6 +32,8 @@ public class workorder {
 	private String kcodr2;
 	private String kcod3;
 	private String kcodr3;
+	private String kcod4;
+	private String kcodr4;
 	private String kcor1;
 	private String kcorr1;
 	private String kcor2;
@@ -153,6 +156,14 @@ public class workorder {
 		return reportedby;
 	}
 
+	public void setReportdate(Date reportdate) {
+		this.reportdate = reportdate;
+	}
+
+	public Date getReportdate() {
+		return reportdate;
+	}
+
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
@@ -271,6 +282,22 @@ public class workorder {
 
 	public String getKcodr3() {
 		return kcodr3;
+	}
+
+	public void setKcod4(String kcod4) {
+		this.kcod4 = kcod4;
+	}
+
+	public String getKcod4() {
+		return kcod4;
+	}
+
+	public void setKcodr4(String kcodr4) {
+		this.kcodr4 = kcodr4;
+	}
+
+	public String getKcodr4() {
+		return kcodr4;
 	}
 
 	public void setKcor1(String kcor1) {

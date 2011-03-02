@@ -1,5 +1,6 @@
 package com.sunnybrook;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -45,10 +46,129 @@ public class localDB{
 			mStatement.bindString(1,value);
 			mStatement.bindString(2,name);
 		}
+		
 		mStatement.execute();
 		mStatement.close();
 	}
 	
+	public workorder getWorkOrder(String wonum) {
+		workorder mWorkOrder = null;
+		String mReturn;
+		String sql="select * from workorder where wonum=?";
+		SQLiteStatement mStatement = db.compileStatement(sql);
+		mStatement.bindString(1,wonum);
+		mStatement.execute();
+		
+		return mWorkOrder;
+	}
+	
+	public void saveWorkOrder(workorder mWorkOrder){
+		String sql;
+		SQLiteStatement mStatement;
+		long mReturn = 0;
+		try {
+			sql  = "select count(*) from workorder where wonum = ?"; 
+			mStatement = db.compileStatement(sql);
+			mStatement.bindString(1,mWorkOrder.getOrderId());
+			mReturn = mStatement.simpleQueryForLong();
+			mStatement.close();
+		}
+		catch (SQLiteDoneException ex){
+			mReturn = 0;
+		}
+		if (mReturn == 0) {
+			sql = "insert into workorder(status,statusdate,description,location,locationdesc,changedby,changedate,wopriority,"
+				+ "wo2,wo3,comments,reportedby,reportdate,phone,actstart,actfinish,empcomments,khname,ktitle,kdept,kcamp,"
+				+ "kcost,kcod1,kcodr1,kcod2,kcodr2,kcod3,kcodr3,kcod4,kcodr4,kcor1,kcorr1,kcor2,kcorr2,kcor3,kcorr3,kcor4,"
+				+ "kcorr4,kcom,kq1,kq2,kq3,kq4,wonum) "
+				+ "values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+		}
+		else {
+			sql = "update workorder set status = ?, statusdate = ?, description = ?, location = ?, "
+				+ "locationdesc = ?, changedby = ?, changedate = ?, wopriority = ?,  wo2 = ?, wo3 = ?, "
+				+ "comments = ? , reportedby = ?, reportdate = ?, phone = ?, actstart = ?, actfinish = ?,"
+				+ "empcomments = ?, khname = ?, ktitle = ?, kdept = ?, kcamp = ?, kcost = ?, kcod1 = ?,"
+				+ "kcodr1 = ?, kcod2 = ?, kcodr2 = ?, kcod3 = ?, kcodr3 = ?, kcod4 = ?, kcodr4 = ?,"
+				+ "kcor1 = ?, kcorr1 = ?, kcor2 = ?, kcorr2 = ?, kcor3 = ?, kcorr3 = ?, kcor4 = ?,"
+				+ "kcorr4 = ?, kcom = ?, kq1 = ?, kq2 = ?, kq3 = ?, kq4 = ? "
+				+ "where wonum = ?";
+		}
+		try {
+			mStatement = db.compileStatement(sql);
+			mStatement.bindString(1,mWorkOrder.getOrderId());
+			mStatement.bindString(1,mWorkOrder.getOrderId());
+			mStatement.bindString(1,mWorkOrder.getOrderId());
+			mStatement.bindString(1,mWorkOrder.getOrderId());
+			mStatement.bindString(1,mWorkOrder.getOrderId());
+			mStatement.bindString(1,mWorkOrder.getOrderId());
+			mStatement.bindString(1,mWorkOrder.getOrderId());
+			mStatement.bindString(1,mWorkOrder.getOrderId());
+			mStatement.bindString(1,mWorkOrder.getOrderId());
+			mStatement.bindString(1,mWorkOrder.getOrderId());
+			mStatement.bindString(1,mWorkOrder.getOrderId());
+			mStatement.bindString(1,mWorkOrder.getOrderId());
+			mStatement.bindString(1,mWorkOrder.getOrderId());
+			mStatement.bindString(1,mWorkOrder.getOrderId());
+			mStatement.bindString(1,mWorkOrder.getOrderId());
+			mStatement.bindString(1,mWorkOrder.getOrderId());
+			mStatement.bindString(1,mWorkOrder.getOrderId());
+			mStatement.bindString(1,mWorkOrder.getOrderId());
+			mStatement.bindString(1,mWorkOrder.getOrderId());
+			mStatement.bindString(1,mWorkOrder.getOrderId());
+			mStatement.bindString(1,mWorkOrder.getOrderId());
+			mStatement.bindString(1,mWorkOrder.getOrderId());
+			mStatement.bindString(1,mWorkOrder.getOrderId());
+			mStatement.bindString(1,mWorkOrder.getOrderId());
+			mStatement.bindString(1,mWorkOrder.getOrderId());
+			mStatement.bindString(1,mWorkOrder.getOrderId());
+			mStatement.bindString(1,mWorkOrder.getOrderId());
+			mStatement.bindString(1,mWorkOrder.getOrderId());
+			mStatement.bindString(1,mWorkOrder.getOrderId());
+			mStatement.bindString(1,mWorkOrder.getOrderId());
+			mStatement.bindString(1,mWorkOrder.getOrderId());
+			mStatement.bindString(1,mWorkOrder.getOrderId());
+			mStatement.bindString(1,mWorkOrder.getOrderId());
+			mStatement.bindString(1,mWorkOrder.getOrderId());
+			mStatement.bindString(1,mWorkOrder.getOrderId());
+			mStatement.bindString(1,mWorkOrder.getOrderId());
+			mStatement.bindString(1,mWorkOrder.getOrderId());
+			mStatement.bindString(1,mWorkOrder.getOrderId());
+			mStatement.bindString(1,mWorkOrder.getOrderId());
+			mStatement.bindString(1,mWorkOrder.getOrderId());
+			mStatement.bindString(1,mWorkOrder.getOrderId());
+			mStatement.bindString(1,mWorkOrder.getOrderId());
+			mStatement.bindString(1,mWorkOrder.getOrderId());
+			mStatement.bindString(1,mWorkOrder.getOrderId());
+
+			mStatement.execute();
+			mStatement.close();
+		}
+		catch (SQLiteDoneException ex){
+
+		}
+	}
+
+	public void saveOwnOrder(ownorder mOwnorder){
+		String sql;
+		long mReturn = 0;
+		try {
+			sql  = "select count(*) from workorder where wonum = ?"; 
+			SQLiteStatement mStatement = db.compileStatement(sql);
+			mStatement.bindString(1,mOwnorder.getOrderId());
+			mReturn = mStatement.simpleQueryForLong();
+		}
+		catch (SQLiteDoneException ex){
+			mReturn = 0;
+		}
+		
+		if (mReturn == 0) {
+			sql = "insert into workorder;";
+		}
+		else {
+			sql = "update workorder ";
+		}
+			
+	}
 	public void finalize(){
 		if(db.isOpen()) db.close();
 	}
