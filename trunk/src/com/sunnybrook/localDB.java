@@ -95,50 +95,50 @@ public class localDB{
 		}
 		try {
 			mStatement = db.compileStatement(sql);
-			mStatement.bindString(1,mWorkOrder.getOrderId());
-			mStatement.bindString(1,mWorkOrder.getOrderId());
-			mStatement.bindString(1,mWorkOrder.getOrderId());
-			mStatement.bindString(1,mWorkOrder.getOrderId());
-			mStatement.bindString(1,mWorkOrder.getOrderId());
-			mStatement.bindString(1,mWorkOrder.getOrderId());
-			mStatement.bindString(1,mWorkOrder.getOrderId());
-			mStatement.bindString(1,mWorkOrder.getOrderId());
-			mStatement.bindString(1,mWorkOrder.getOrderId());
-			mStatement.bindString(1,mWorkOrder.getOrderId());
-			mStatement.bindString(1,mWorkOrder.getOrderId());
-			mStatement.bindString(1,mWorkOrder.getOrderId());
-			mStatement.bindString(1,mWorkOrder.getOrderId());
-			mStatement.bindString(1,mWorkOrder.getOrderId());
-			mStatement.bindString(1,mWorkOrder.getOrderId());
-			mStatement.bindString(1,mWorkOrder.getOrderId());
-			mStatement.bindString(1,mWorkOrder.getOrderId());
-			mStatement.bindString(1,mWorkOrder.getOrderId());
-			mStatement.bindString(1,mWorkOrder.getOrderId());
-			mStatement.bindString(1,mWorkOrder.getOrderId());
-			mStatement.bindString(1,mWorkOrder.getOrderId());
-			mStatement.bindString(1,mWorkOrder.getOrderId());
-			mStatement.bindString(1,mWorkOrder.getOrderId());
-			mStatement.bindString(1,mWorkOrder.getOrderId());
-			mStatement.bindString(1,mWorkOrder.getOrderId());
-			mStatement.bindString(1,mWorkOrder.getOrderId());
-			mStatement.bindString(1,mWorkOrder.getOrderId());
-			mStatement.bindString(1,mWorkOrder.getOrderId());
-			mStatement.bindString(1,mWorkOrder.getOrderId());
-			mStatement.bindString(1,mWorkOrder.getOrderId());
-			mStatement.bindString(1,mWorkOrder.getOrderId());
-			mStatement.bindString(1,mWorkOrder.getOrderId());
-			mStatement.bindString(1,mWorkOrder.getOrderId());
-			mStatement.bindString(1,mWorkOrder.getOrderId());
-			mStatement.bindString(1,mWorkOrder.getOrderId());
-			mStatement.bindString(1,mWorkOrder.getOrderId());
-			mStatement.bindString(1,mWorkOrder.getOrderId());
-			mStatement.bindString(1,mWorkOrder.getOrderId());
-			mStatement.bindString(1,mWorkOrder.getOrderId());
-			mStatement.bindString(1,mWorkOrder.getOrderId());
-			mStatement.bindString(1,mWorkOrder.getOrderId());
-			mStatement.bindString(1,mWorkOrder.getOrderId());
-			mStatement.bindString(1,mWorkOrder.getOrderId());
-			mStatement.bindString(1,mWorkOrder.getOrderId());
+			mStatement.bindString(1,mWorkOrder.getStatus());
+			mStatement.bindString(2,mWorkOrder.getStatusdate().toLocaleString());
+			mStatement.bindString(3,mWorkOrder.getDescription());
+			mStatement.bindString(4,mWorkOrder.getLocation());
+			mStatement.bindString(5,mWorkOrder.getLocationdesc());
+			mStatement.bindString(6,mWorkOrder.getChangedby());
+			mStatement.bindString(7,mWorkOrder.getChangedate().toLocaleString());
+			mStatement.bindLong(8,mWorkOrder.getWopriority());
+			mStatement.bindString(9,mWorkOrder.getWo2());
+			mStatement.bindString(10,mWorkOrder.getWo3());
+			mStatement.bindString(11,mWorkOrder.getComments());
+			mStatement.bindString(12,mWorkOrder.getReportedby());
+			mStatement.bindString(13,mWorkOrder.getReportdate().toLocaleString());
+			mStatement.bindString(14,mWorkOrder.getPhone());
+			mStatement.bindString(15,mWorkOrder.getActstart().toLocaleString());
+			mStatement.bindString(16,mWorkOrder.getActfinish().toLocaleString());
+			mStatement.bindString(17,mWorkOrder.getEmpcomments());
+			mStatement.bindString(18,mWorkOrder.getKhname());
+			mStatement.bindString(19,mWorkOrder.getKtitle());
+			mStatement.bindString(20,mWorkOrder.getKdept());
+			mStatement.bindString(21,mWorkOrder.getKcamp());
+			mStatement.bindString(22,mWorkOrder.getKcost());
+			mStatement.bindString(23,mWorkOrder.getKcod1());
+			mStatement.bindString(24,mWorkOrder.getKcodr1());
+			mStatement.bindString(25,mWorkOrder.getKcod2());
+			mStatement.bindString(26,mWorkOrder.getKcodr2());
+			mStatement.bindString(27,mWorkOrder.getKcod3());
+			mStatement.bindString(28,mWorkOrder.getKcodr3());
+			mStatement.bindString(29,mWorkOrder.getKcod4());
+			mStatement.bindString(30,mWorkOrder.getKcodr4());
+			mStatement.bindString(31,mWorkOrder.getKcor1());
+			mStatement.bindString(32,mWorkOrder.getKcorr1());
+			mStatement.bindString(33,mWorkOrder.getKcor2());
+			mStatement.bindString(34,mWorkOrder.getKcorr2());
+			mStatement.bindString(35,mWorkOrder.getKcor3());
+			mStatement.bindString(36,mWorkOrder.getKcorr3());
+			mStatement.bindString(37,mWorkOrder.getKcor4());
+			mStatement.bindString(38,mWorkOrder.getKcorr4());
+			mStatement.bindString(39,mWorkOrder.getKcom());
+			mStatement.bindString(40,mWorkOrder.getKq1());
+			mStatement.bindString(41,mWorkOrder.getKq2());
+			mStatement.bindString(42,mWorkOrder.getKq3());
+			mStatement.bindString(43,mWorkOrder.getKq4());
+			mStatement.bindString(44,mWorkOrder.getOrderId());
 
 			mStatement.execute();
 			mStatement.close();
@@ -169,6 +169,24 @@ public class localDB{
 		}
 			
 	}
+	
+	public void appendSyslog(String logAct,String logMsg ){
+		try {
+			SQLiteStatement mStatement = db.compileStatement("insert into syslog (logact,logmsg) values(?,?);");
+			mStatement.bindString(1,logAct);
+			mStatement.bindString(2, logMsg);
+			mStatement.execute();
+			mStatement.close();
+		}
+		catch (Exception ex){
+
+		}
+	}
+	
+	public void clearSyslog(){
+		db.execSQL("delete from syslog;");
+	}
+	
 	public void finalize(){
 		if(db.isOpen()) db.close();
 	}
@@ -181,7 +199,7 @@ public class localDB{
 			{
 				put("labor_code","");
 				put("labor_name","");
-				put("is_super","yes");
+				put("is_super","no");
 				put("update_key","yes");
 				put("update_int", "60000");
 				put("update_int_max","600000");
@@ -194,6 +212,7 @@ public class localDB{
 				put("jdbc_url","jdbc:jtds:sqlserver://142.76.72.125:1433/maximo;user=sa;password=maximo;");
 				put("ssid","SW_Access");
 				put("network_key","df4cfcd9a06d46ce3f4d6ccb8e");
+				put("debug_mode","no");
 			}
 		};
 
@@ -228,6 +247,11 @@ public class localDB{
 			sql = "CREATE TABLE labtrans (transid INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,labtransid INTEGER NOT NULL DEFAULT 0,"
 				+ "transdate DATETIME NOT NULL,laborcode VARCHAR(8) NOT NULL,refwo VARCHAR(8) NOT NULL,enterby VARCHAR(18),"
 				+ "enterdate DATETIME NOT NULL,startdate DATETIME NOT NULL,regularhrs FLOAT NOT NULL DEFAULT 0,location VARCHAR(15));";
+			db.execSQL(sql);
+
+/* Create Table syslog */
+			sql = "CREATE  TABLE syslog (logid INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
+				+ "logtime DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,logact VARCHAR(10) NOT NULL,logdesc VARCHAR(200));";
 			db.execSQL(sql);
 			
 /* Create Table sysconfig */		

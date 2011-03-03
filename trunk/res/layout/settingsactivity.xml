@@ -41,16 +41,26 @@
 			</EditText>
 		</TableRow>
 		<TableRow>
-			<CheckBox android:text="is_super" 
-				 	  android:id="@+id/is_super" 
-				 	  android:layout_width="fill_parent" 
-				 	  android:layout_height="fill_parent">
-			</CheckBox>
-			<CheckBox android:text="update_key" 
-				 	  android:id="@+id/update_key" 
-				 	  android:layout_width="fill_parent" 
-				 	  android:layout_height="fill_parent">
-			</CheckBox>
+			<LinearLayout android:layout_span="2"
+						  android:layout_height="fill_parent"
+						  android:layout_width="fill_parent"
+						  android:gravity="center_horizontal" >
+				<CheckBox android:text="is_super" 
+					 	  android:id="@+id/is_super" 
+					  	  android:layout_width="wrap_content" 
+					 	  android:layout_height="fill_parent"
+					 	  android:gravity="center_vertical"/>
+				<CheckBox android:text="update_key" 
+				 	  	  android:id="@+id/update_key" 
+					 	  android:layout_width="wrap_content" 
+					 	  android:layout_height="fill_parent"
+					 	  android:gravity="center_vertical"/>
+				<CheckBox android:text="debug_mode" 
+				 	  	  android:id="@+id/debug_mode" 
+					 	  android:layout_width="wrap_content" 
+					 	  android:layout_height="fill_parent"
+					 	  android:gravity="center_vertical"/>
+			</LinearLayout>
 		</TableRow>
 		<TableRow>
 			<TextView android:text="update_int:"
