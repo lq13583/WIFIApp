@@ -12,6 +12,7 @@
     	</activity>
     	<activity android:name="SettingsActivity"></activity>
     	<activity android:name="OwnordersActivity"></activity>
+    	<activity android:name="SyslogActivity"></activity>
 	</application>
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
     <uses-sdk android:minSdkVersion="8" />

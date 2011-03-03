@@ -18,12 +18,18 @@ public class sysconfig {
 	private String jdbc_url;
 	private String ssid;
 	private String network_key;
+	private boolean debug_mode;
 
 	public sysconfig(localDB localdb){
+		String mRet;
     	labor_code = localdb.getSysConfig("labor_code");
     	labor_name = localdb.getSysConfig("labor_name");
-    	is_super = localdb.getSysConfig("is_super").equals("yes");
-    	update_key = localdb.getSysConfig("update_key").equals("yes");
+    	mRet = localdb.getSysConfig("is_super");
+    	is_super = (mRet == null)?false:mRet.equals("yes");
+    	mRet = localdb.getSysConfig("update_key");
+    	update_key = (mRet == null)?false:mRet.equals("yes");
+    	mRet = localdb.getSysConfig("debug_mode");
+    	debug_mode = (mRet == null)?false:mRet.equals("yes");
     	update_int = Integer.parseInt(localdb.getSysConfig("update_int"));
     	update_int_max = Integer.parseInt(localdb.getSysConfig("update_int_max"));
     	font_size = Integer.parseInt(localdb.getSysConfig("font_size"));
@@ -40,6 +46,7 @@ public class sysconfig {
 		localdb.saveSysConfig("labor_name", labor_name);
 		localdb.saveSysConfig("is_super", is_super?"yes":"no");
 		localdb.saveSysConfig("update_key",update_key?"yes":"no");
+		localdb.saveSysConfig("debug_mode",debug_mode?"yes":"no");
 		localdb.saveSysConfig("update_int",Integer.toString(update_int) );
 		localdb.saveSysConfig("update_int_max",Integer.toString(update_int_max));
 		localdb.saveSysConfig("font_size", Integer.toString(font_size));
@@ -155,6 +162,14 @@ public class sysconfig {
 
 	public String getNetwork_key() {
 		return network_key;
+	}
+
+	public void setDebug_mode(boolean debug_mode) {
+		this.debug_mode = debug_mode;
+	}
+
+	public boolean isDebug_mode() {
+		return debug_mode;
 	}
 
 }

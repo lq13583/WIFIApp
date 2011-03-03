@@ -49,6 +49,8 @@ public class SettingsActivity extends Activity implements OnClickListener{
     	mCheckBox.setChecked(mSysconfig.is_super());
     	mCheckBox = (CheckBox) findViewById(R.id.update_key);
     	mCheckBox.setChecked(mSysconfig.isUpdate_key());
+    	mCheckBox = (CheckBox) findViewById(R.id.debug_mode);
+    	mCheckBox.setChecked(mSysconfig.isDebug_mode());
     }    
     
     private void setEvents() {
@@ -98,6 +100,8 @@ public class SettingsActivity extends Activity implements OnClickListener{
     	mSysconfig.set_super(mCheckBox.isChecked());
     	mCheckBox = (CheckBox) findViewById(R.id.update_key);
     	mSysconfig.setUpdate_key(mCheckBox.isChecked());
+    	mCheckBox = (CheckBox) findViewById(R.id.debug_mode);
+    	mSysconfig.setDebug_mode(mCheckBox.isChecked());
 
 		mSysconfig.saveAllToDB(WIFIApp.localdb);
     }
