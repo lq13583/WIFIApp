@@ -1,59 +1,61 @@
 package com.sunnybrook;
 
-import android.app.Activity;
+import java.util.ArrayList;
+
+import android.app.ListActivity;
 import android.content.Context;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.View.OnClickListener;
-import android.widget.BaseAdapter;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
-public class SyslogActivity extends Activity  implements OnClickListener{
-    public void onCreate(Bundle savedInstanceState) {
-    	super.onCreate(savedInstanceState);
-    	setContentView(R.layout.syslogactivity);
-    	ListView listview = (ListView) findViewById(R.id.lv_syslog);
-    	listview.setAdapter(new SyslogAdapter(this));
-    	
-    }
+public class SyslogActivity extends ListActivity{
+	private ArrayAdapter<String> mAdapter = null;
+	private String[] mItems = new String [] {"Android","iPhone"};
 
 	@Override
-	public void onClick(View arg0) {
-		// TODO Auto-generated method stub
+	public void onCreate(Bundle savedInstanceState) {
+    	super.onCreate(savedInstanceState);
+    	//setContentView(R.layout.syslogactivity);
+    	//ListView listview = (ListView) findViewById(R.id.lv_syslog);
+//    	mItems = new ArrayList<String> ();
+//    	mItems.add("Android");
+//    	mItems.add("iPhone");
+    	mAdapter = new ArrayAdapter<String>(this,R.layout.list_syslog,mItems);
+    	setListAdapter(mAdapter);
+    	ListView listview = getListView();
+    	listview.setTextFilterEnabled(true);
+    }
+
+	/*
+	public class SyslogAdapter extends ArrayAdapter<String> {
+		private String[] items;
+
+		public SyslogAdapter(Context context, int textViewResourceId, ArrayList<String> items) {
+			super(context, textViewResourceId);
+			this.items = items;
+			// TODO Auto-generated constructor stub
+		}
 		
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent){
+			View v = convertView;
+			if(v == null) {
+                LayoutInflater vi = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                v = vi.inflate(R.layout.list_syslog, null);
+			}
+			String mS = items.get(position);
+			if(mS != null) {
+				TextView t = (TextView) v.findViewById(R.id.logid);
+				if(t!= null) t.setText("ID:" + Integer.toString(position));
+				t = (TextView) v.findViewById(R.id.logtime);
+				if(t!=null) t.setText("Name:" + mS);
+			}
+			return v;
+		}
 	}
-	
-	private class SyslogAdapter extends BaseAdapter {
-		private Context mContext;
-		
-		public SyslogAdapter(Context c) {
-			mContext = c;
-		}
-
-		@Override
-		public int getCount() {
-			// TODO Auto-generated method stub
-			return 0;
-		}
-
-		@Override
-		public Object getItem(int arg0) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public long getItemId(int arg0) {
-			// TODO Auto-generated method stub
-			return 0;
-		}
-
-		@Override
-		public View getView(int arg0, View arg1, ViewGroup arg2) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
-	}
+*/
 }
