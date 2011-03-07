@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.*;
 
 public class localDB{
@@ -185,6 +186,12 @@ public class localDB{
 	
 	public void clearSyslog(){
 		db.execSQL("delete from syslog;");
+	}
+	
+	public Cursor getCursor(String mSql,String[] mSelectArgs) {
+		Cursor mCur;
+		mCur = db.rawQuery(mSql,mSelectArgs);
+		return mCur;
 	}
 	
 	public void finalize(){
