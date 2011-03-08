@@ -1,11 +1,15 @@
 package com.sunnybrook;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.*;
 
 public class localDB{
@@ -173,19 +177,30 @@ public class localDB{
 	
 	public void appendSyslog(String logAct,String logMsg ){
 		try {
-			SQLiteStatement mStatement = db.compileStatement("insert into syslog (logact,logmsg) values(?,?);");
+			SQLiteStatement mStatement = db.compileStatement("insert into syslog (logact,logdesc,logtime) values(?,?,?);");
 			mStatement.bindString(1,logAct);
 			mStatement.bindString(2, logMsg);
+			mStatement.bindString(3, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
 			mStatement.execute();
 			mStatement.close();
 		}
-		catch (Exception ex){
-
+		catch (SQLException ex){
 		}
 	}
 	
 	public void clearSyslog(){
 		db.execSQL("delete from syslog;");
+	}
+	
+	public List<loginfo> getLogList(){
+		List<loginfo> mList = new ArrayList<loginfo>();
+		Cursor mCur = db.query("syslog", null, null, null, null, null, "logid desc");
+		if(mCur.moveToFirst())
+		do {
+			mList.add(new loginfo(mCur.getInt(0),mCur.getString(1),mCur.getString(2),mCur.getString(3)));
+		} while (mCur.moveToNext());
+		mCur.close();
+		return mList;
 	}
 	
 	public Cursor getCursor(String mSql,String[] mSelectArgs) {

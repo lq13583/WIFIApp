@@ -122,7 +122,8 @@ public class remoteDB {
 			mPs.setString(1,labor_code);
 			mRs = mPs.executeQuery();
 			while (mRs.next()) {
-				ownorder mOwnorder = (ownorder) getWorkOrder(mRs.getString("wonum"));
+				workorder mWo = getWorkOrder(mRs.getString("wonum"));
+				ownorder mOwnorder = (ownorder) mWo;
 				mOwnorder.setReadStatus("UR");
 				orderList.add(mOwnorder);
 			}

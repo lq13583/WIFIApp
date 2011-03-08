@@ -57,6 +57,17 @@ public class SyncDataTask extends TimerTask {
 		return true;
 	}
 	
+	private boolean pullData(localDB localdb, remoteDB remotedb) {
+		if (!pullOwnOrders(localdb,remotedb)) return false;
+		if (myConfig.is_super())
+			if(!pullSuperOrders(localdb, remotedb)) return false;
+		if (!myConfig.getCraft_list().isEmpty())
+			if(!pullCraftOrders(localdb, remotedb)) return false;
+		if(myConfig.isUpdate_key())
+			if(!pullKeys(localdb,remotedb)) return false;
+		return true;
+	}
+
 	private boolean pullOwnOrders(localDB localdb, remoteDB remotedb) {
 		List<ownorder> mList = remotedb.getOwnOrders(myConfig.getLabor_code());
 		return true;
@@ -74,14 +85,4 @@ public class SyncDataTask extends TimerTask {
 		return true;
 	}
 	
-	private boolean pullData(localDB localdb, remoteDB remotedb) {
-		if (!pullOwnOrders(localdb,remotedb)) return false;
-		if (myConfig.is_super())
-			if(!pullSuperOrders(localdb, remotedb)) return false;
-		if (!myConfig.getCraft_list().isEmpty())
-			if(!pullCraftOrders(localdb, remotedb)) return false;
-		if(myConfig.isUpdate_key())
-			if(!pullKeys(localdb,remotedb)) return false;
-		return true;
-	}
 }
