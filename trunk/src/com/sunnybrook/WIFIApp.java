@@ -52,8 +52,8 @@ public class WIFIApp extends TabActivity{
         
         tabHost.setCurrentTab(0);        
 
-//        myTimer = new Timer();
-//        myTimer.schedule(new SyncDataTask(), 0, myConfig.getUpdate_int());
+        myTimer = new Timer();
+        myTimer.schedule(new SyncDataTask(), 0, myConfig.getUpdate_int());
 //        find_and_modify_button();
         
     }

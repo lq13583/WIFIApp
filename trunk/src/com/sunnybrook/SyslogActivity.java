@@ -1,6 +1,6 @@
 package com.sunnybrook;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import android.app.ListActivity;
 import android.content.Context;
@@ -8,35 +8,40 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.widget.Button;
 import android.widget.TextView;
 
-public class SyslogActivity extends ListActivity{
-	private ArrayAdapter<String> mAdapter = null;
-	private String[] mItems = new String [] {"Android","iPhone"};
+public class SyslogActivity extends ListActivity  implements OnClickListener{
+	private ArrayAdapter<loginfo> mAdapter = null;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
-    	//setContentView(R.layout.syslogactivity);
-    	//ListView listview = (ListView) findViewById(R.id.lv_syslog);
-//    	mItems = new ArrayList<String> ();
-//    	mItems.add("Android");
-//    	mItems.add("iPhone");
-    	mAdapter = new ArrayAdapter<String>(this,R.layout.list_syslog,mItems);
+    	setContentView(R.layout.syslogactivity);
+    	mAdapter = new SyslogAdapter(this,R.layout.list_syslog);
     	setListAdapter(mAdapter);
-    	ListView listview = getListView();
-    	listview.setTextFilterEnabled(true);
+    	refreshList(SysLog.getLogList());
+
+    	Button mBtn=(Button) findViewById(R.id.btnClear);
+    	mBtn.setOnClickListener(this);
+    	mBtn=(Button) findViewById(R.id.btnRefresh);
+    	mBtn.setOnClickListener(this);
     }
+	
+	private void refreshList(List<loginfo> _Items) {
+    	mAdapter.clear();
+    	for(int i=0;i<_Items.size();i++)
+    		mAdapter.add(_Items.get(i));
+		
+	}
 
-	/*
-	public class SyslogAdapter extends ArrayAdapter<String> {
-		private String[] items;
+	public class SyslogAdapter extends ArrayAdapter<loginfo> {
 
-		public SyslogAdapter(Context context, int textViewResourceId, ArrayList<String> items) {
+		public SyslogAdapter(Context context, int textViewResourceId) {
 			super(context, textViewResourceId);
-			this.items = items;
+			
 			// TODO Auto-generated constructor stub
 		}
 		
@@ -47,15 +52,31 @@ public class SyslogActivity extends ListActivity{
                 LayoutInflater vi = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 v = vi.inflate(R.layout.list_syslog, null);
 			}
-			String mS = items.get(position);
+			loginfo mS = getItem(position);
 			if(mS != null) {
 				TextView t = (TextView) v.findViewById(R.id.logid);
-				if(t!= null) t.setText("ID:" + Integer.toString(position));
+				if(t!= null) t.setText("ID:" + Integer.toString(mS.getLogid()));
 				t = (TextView) v.findViewById(R.id.logtime);
-				if(t!=null) t.setText("Name:" + mS);
+				if(t!=null) t.setText("Time:" + mS.getLogtime());
+				t = (TextView) v.findViewById(R.id.logact);
+				if(t!=null) t.setText("Activity:" + mS.getLogact());
+				t=(TextView) v.findViewById(R.id.logdesc);
+				if(t!=null) t.setText(mS.getLogdesc());
 			}
 			return v;
 		}
 	}
-*/
+
+	@Override
+	public void onClick(View _view) {
+		switch(_view.getId()) {
+			case R.id.btnClear:
+				SysLog.ClearLog();
+			case R.id.btnRefresh:
+		    	refreshList(SysLog.getLogList());
+				break;
+		}
+		// TODO Auto-generated method stub
+		
+	}
 }
