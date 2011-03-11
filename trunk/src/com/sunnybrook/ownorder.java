@@ -1,5 +1,7 @@
 package com.sunnybrook;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 public class ownorder extends workorder{
@@ -7,6 +9,10 @@ public class ownorder extends workorder{
 	private String mycomments;
 	private String readstatus;
 	
+	public ownorder(ResultSet mRS) throws SQLException {
+		super(mRS);
+	}
+
 	public ownorder(String wonum){
 		super(wonum);
 	}

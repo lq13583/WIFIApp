@@ -1,5 +1,7 @@
 package com.sunnybrook;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Date;
 
 public class workorder {
@@ -9,7 +11,7 @@ public class workorder {
 	private String description;
 	private String location;
 	private String locationdesc;
-	private String changedby;
+	private String changeby;
 	private Date changedate;
 	private int wopriority;
 	private String wo2;
@@ -48,8 +50,49 @@ public class workorder {
 	private String kq3;
 	private String kq4;
 
-	public workorder() {
-		
+	public workorder(ResultSet mRs) throws SQLException {
+		wonum = mRs.getString("wonum");
+		status = mRs.getString("status");
+		statusdate = mRs.getTimestamp("statusdate");
+		description = mRs.getString("description");
+		location = mRs.getString("location");
+		changeby = mRs.getString("changeby");
+		changedate = mRs.getTimestamp("changedate");
+		wopriority = mRs.getInt("wopriority");
+		wo2 = mRs.getString("wo2");
+		wo3 = mRs.getString("wo3");
+		comments = mRs.getString("comments");
+		reportedby = mRs.getString("reportedby");
+		setReportdate(mRs.getTimestamp("reportdate"));
+		setPhone(mRs.getString("phone"));
+		setLocationdesc(mRs.getString("locdesc"));
+		setEmpcomments(mRs.getString("remp"));
+		setKhname(mRs.getString("khname"));
+		setKtitle(mRs.getString("ktitle"));
+		setKdept(mRs.getString("kdept"));
+		setKcamp(mRs.getString("kcamp"));
+		setKcost(mRs.getString("kcost"));
+		setKcod1(mRs.getString("kcod1"));
+		setKcodr1(mRs.getString("kcodr1"));
+		setKcod2(mRs.getString("kcod2"));
+		setKcodr2(mRs.getString("kcodr2"));
+		setKcod3(mRs.getString("kcod3"));
+		setKcodr3(mRs.getString("kcodr3"));
+		setKcod4(mRs.getString("kcod4"));
+		setKcodr4(mRs.getString("kcodr4"));
+		setKcor1(mRs.getString("kcor1"));
+		setKcorr1(mRs.getString("kcorr1"));
+		setKcor2(mRs.getString("kcor2"));
+		setKcorr2(mRs.getString("kcorr2"));
+		setKcor3(mRs.getString("kcor3"));
+		setKcorr3(mRs.getString("kcorr3"));
+		setKcor4(mRs.getString("kcor4"));
+		setKcorr4(mRs.getString("kcorr4"));
+		setKcom(mRs.getString("kcom"));
+		setKq1(mRs.getString("kq1"));
+		setKq2(mRs.getString("kq2"));
+		setKq3(mRs.getString("kq3"));
+		setKq4(mRs.getString("kq4"));
 	}
 	
 	public workorder(String wonum){
@@ -100,12 +143,12 @@ public class workorder {
 		return locationdesc;
 	}
 
-	public void setChangedby(String changedby) {
-		this.changedby = changedby;
+	public void setChangeby(String changeby) {
+		this.changeby = changeby;
 	}
 
-	public String getChangedby() {
-		return changedby;
+	public String getChangeby() {
+		return changeby;
 	}
 
 	public void setChangedate(Date changedate) {

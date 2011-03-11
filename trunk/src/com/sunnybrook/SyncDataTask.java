@@ -42,7 +42,9 @@ public class SyncDataTask extends TimerTask {
 			mPeriod = 0;
 			if(pushData(myLocalDB,myRemoteDB)){
 				if(pullData(myLocalDB,myRemoteDB)) {
-					
+					if(cleanData(myLocalDB,myRemoteDB)) {
+						
+					}
 				}
 			}
 		}
@@ -58,31 +60,62 @@ public class SyncDataTask extends TimerTask {
 	}
 	
 	private boolean pullData(localDB localdb, remoteDB remotedb) {
+		SysLog.AppendLog("Debug", "pullData", "Start pulling data......");
+		localdb.clearExistedFlag("wo_labor");
 		if (!pullOwnOrders(localdb,remotedb)) return false;
 		if (myConfig.is_super())
 			if(!pullSuperOrders(localdb, remotedb)) return false;
 		if (!myConfig.getCraft_list().isEmpty())
 			if(!pullCraftOrders(localdb, remotedb)) return false;
+/*
 		if(myConfig.isUpdate_key())
 			if(!pullKeys(localdb,remotedb)) return false;
+*/
+		SysLog.AppendLog("Debug", "pullData", "End pulling data.");
+		return true;
+	}
+	
+	private boolean cleanData(localDB _localdb,remoteDB _remotedb) {
 		return true;
 	}
 
 	private boolean pullOwnOrders(localDB localdb, remoteDB remotedb) {
+		SysLog.AppendLog("Debug", "pullOwnOrder", "Start pulling remote own workorders......");
 		List<ownorder> mList = remotedb.getOwnOrders(myConfig.getLabor_code());
+		SysLog.AppendLog("Debug", "pullOwnOrder","Start writing local own workorders......");
+		for(int i=0;i<mList.size();i++){
+			localdb.saveOwnOrder(mList.get(i),myConfig.getLabor_code());
+		}
+		SysLog.AppendLog("Debug","pullOwnOrder", "End pull own workorders.");
 		return true;
 	}
 	
 	private boolean pullSuperOrders(localDB localdb, remoteDB remotedb) {
+		SysLog.AppendLog("Debug", "pullSuperOrder", "Start pulling remote super workorders......");
+		List<superorder> mList = remotedb.getSuperOrders(myConfig.getLabor_code());
+		SysLog.AppendLog("Debug", "pullSuperOrder", "Start writing local super workorders......");
+		for(int i=0;i<mList.size();i++){
+			localdb.saveSuperOrder(mList.get(i));
+		}
+		SysLog.AppendLog("Debug", "pullSuperOrder", "End pull super workorders.");
 		return true;
 	}
 	
 	private boolean pullCraftOrders(localDB localdb, remoteDB remotedb) {
+		SysLog.AppendLog("Debug", "pullCraftOrder", "Start pulling remote craft workorders......");
+		List<craftorder> mList = remotedb.getCraftOrders(myConfig.getCraft_list());
+		SysLog.AppendLog("Debug", "pullCraftOrder", "Start writing local craft workorders......");
+		for(int i=0;i<mList.size();i++){
+			localdb.saveCraftOrder(mList.get(i));
+		}
+		SysLog.AppendLog("Debug", "pullCraftOrder", "End pull craft workorders.");
 		return true;
 	}
-	
+
+/*	
 	private boolean pullKeys(localDB localdb, remoteDB remotedb) {
 		return true;
 	}
-	
+*/	
+
 }

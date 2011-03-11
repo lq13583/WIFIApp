@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -55,10 +56,10 @@ public class localDB{
 		mStatement.execute();
 		mStatement.close();
 	}
-	
+
+/*	
 	public workorder getWorkOrder(String wonum) {
 		workorder mWorkOrder = null;
-		String mReturn;
 		String sql="select * from workorder where wonum=?";
 		SQLiteStatement mStatement = db.compileStatement(sql);
 		mStatement.bindString(1,wonum);
@@ -66,113 +67,189 @@ public class localDB{
 		
 		return mWorkOrder;
 	}
+*/
 	
 	public void saveWorkOrder(workorder mWorkOrder){
-		String sql;
-		SQLiteStatement mStatement;
-		long mReturn = 0;
-		try {
-			sql  = "select count(*) from workorder where wonum = ?"; 
-			mStatement = db.compileStatement(sql);
-			mStatement.bindString(1,mWorkOrder.getOrderId());
-			mReturn = mStatement.simpleQueryForLong();
-			mStatement.close();
-		}
-		catch (SQLiteDoneException ex){
-			mReturn = 0;
-		}
-		if (mReturn == 0) {
-			sql = "insert into workorder(status,statusdate,description,location,locationdesc,changedby,changedate,wopriority,"
-				+ "wo2,wo3,comments,reportedby,reportdate,phone,actstart,actfinish,empcomments,khname,ktitle,kdept,kcamp,"
-				+ "kcost,kcod1,kcodr1,kcod2,kcodr2,kcod3,kcodr3,kcod4,kcodr4,kcor1,kcorr1,kcor2,kcorr2,kcor3,kcorr3,kcor4,"
-				+ "kcorr4,kcom,kq1,kq2,kq3,kq4,wonum) "
-				+ "values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-		}
-		else {
-			sql = "update workorder set status = ?, statusdate = ?, description = ?, location = ?, "
-				+ "locationdesc = ?, changedby = ?, changedate = ?, wopriority = ?,  wo2 = ?, wo3 = ?, "
-				+ "comments = ? , reportedby = ?, reportdate = ?, phone = ?, actstart = ?, actfinish = ?,"
-				+ "empcomments = ?, khname = ?, ktitle = ?, kdept = ?, kcamp = ?, kcost = ?, kcod1 = ?,"
-				+ "kcodr1 = ?, kcod2 = ?, kcodr2 = ?, kcod3 = ?, kcodr3 = ?, kcod4 = ?, kcodr4 = ?,"
-				+ "kcor1 = ?, kcorr1 = ?, kcor2 = ?, kcorr2 = ?, kcor3 = ?, kcorr3 = ?, kcor4 = ?,"
-				+ "kcorr4 = ?, kcom = ?, kq1 = ?, kq2 = ?, kq3 = ?, kq4 = ? "
-				+ "where wonum = ?";
-		}
-		try {
-			mStatement = db.compileStatement(sql);
-			mStatement.bindString(1,mWorkOrder.getStatus());
-			mStatement.bindString(2,mWorkOrder.getStatusdate().toLocaleString());
-			mStatement.bindString(3,mWorkOrder.getDescription());
-			mStatement.bindString(4,mWorkOrder.getLocation());
-			mStatement.bindString(5,mWorkOrder.getLocationdesc());
-			mStatement.bindString(6,mWorkOrder.getChangedby());
-			mStatement.bindString(7,mWorkOrder.getChangedate().toLocaleString());
-			mStatement.bindLong(8,mWorkOrder.getWopriority());
-			mStatement.bindString(9,mWorkOrder.getWo2());
-			mStatement.bindString(10,mWorkOrder.getWo3());
-			mStatement.bindString(11,mWorkOrder.getComments());
-			mStatement.bindString(12,mWorkOrder.getReportedby());
-			mStatement.bindString(13,mWorkOrder.getReportdate().toLocaleString());
-			mStatement.bindString(14,mWorkOrder.getPhone());
-			mStatement.bindString(15,mWorkOrder.getActstart().toLocaleString());
-			mStatement.bindString(16,mWorkOrder.getActfinish().toLocaleString());
-			mStatement.bindString(17,mWorkOrder.getEmpcomments());
-			mStatement.bindString(18,mWorkOrder.getKhname());
-			mStatement.bindString(19,mWorkOrder.getKtitle());
-			mStatement.bindString(20,mWorkOrder.getKdept());
-			mStatement.bindString(21,mWorkOrder.getKcamp());
-			mStatement.bindString(22,mWorkOrder.getKcost());
-			mStatement.bindString(23,mWorkOrder.getKcod1());
-			mStatement.bindString(24,mWorkOrder.getKcodr1());
-			mStatement.bindString(25,mWorkOrder.getKcod2());
-			mStatement.bindString(26,mWorkOrder.getKcodr2());
-			mStatement.bindString(27,mWorkOrder.getKcod3());
-			mStatement.bindString(28,mWorkOrder.getKcodr3());
-			mStatement.bindString(29,mWorkOrder.getKcod4());
-			mStatement.bindString(30,mWorkOrder.getKcodr4());
-			mStatement.bindString(31,mWorkOrder.getKcor1());
-			mStatement.bindString(32,mWorkOrder.getKcorr1());
-			mStatement.bindString(33,mWorkOrder.getKcor2());
-			mStatement.bindString(34,mWorkOrder.getKcorr2());
-			mStatement.bindString(35,mWorkOrder.getKcor3());
-			mStatement.bindString(36,mWorkOrder.getKcorr3());
-			mStatement.bindString(37,mWorkOrder.getKcor4());
-			mStatement.bindString(38,mWorkOrder.getKcorr4());
-			mStatement.bindString(39,mWorkOrder.getKcom());
-			mStatement.bindString(40,mWorkOrder.getKq1());
-			mStatement.bindString(41,mWorkOrder.getKq2());
-			mStatement.bindString(42,mWorkOrder.getKq3());
-			mStatement.bindString(43,mWorkOrder.getKq4());
-			mStatement.bindString(44,mWorkOrder.getOrderId());
 
-			mStatement.execute();
-			mStatement.close();
-		}
-		catch (SQLiteDoneException ex){
+		if (mWorkOrder.getOrderId().equals("00000")) return;
 
+		String mTable = "workorder";
+		String mWhereArgs = "wonum=?";
+		String mWhereVals[] = new String[] {mWorkOrder.getOrderId()};
+		
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		
+		Cursor mCur = db.query(mTable,null, mWhereArgs, mWhereVals,null, null, null);
+		if(mCur.getCount() == 0) {
+			ContentValues mValues = new ContentValues();
+			mValues.put("wonum", mWorkOrder.getOrderId());
+			mValues.put("status",mWorkOrder.getStatus());
+			mValues.put("statusdate",df.format(mWorkOrder.getStatusdate()));
+			try {
+				db.insertOrThrow(mTable,null,mValues);
+			} catch(SQLException ex) {
+				SysLog.AppendLog("Info", "localDB", ex.getMessage());
+			}
+		}
+		mCur.close();
+		ContentValues mValues = new ContentValues();
+		if (mWorkOrder.getStatus()!= null) mValues.put("status", mWorkOrder.getStatus());
+		if (mWorkOrder.getStatusdate()!= null) mValues.put("statusdate",df.format(mWorkOrder.getStatusdate()));
+		if (mWorkOrder.getDescription()!= null) mValues.put("description", mWorkOrder.getDescription());
+		if (mWorkOrder.getLocation()!= null) mValues.put("location", mWorkOrder.getLocation());
+		if (mWorkOrder.getLocationdesc()!= null) mValues.put("locationdesc", mWorkOrder.getLocationdesc());
+		if (mWorkOrder.getChangeby()!= null) mValues.put("changeby", mWorkOrder.getChangeby());
+		if (mWorkOrder.getChangedate()!= null) mValues.put("changedate", df.format(mWorkOrder.getChangedate()));
+		mValues.put("wopriority", mWorkOrder.getWopriority());
+		if (mWorkOrder.getWo2()!= null) mValues.put("wo2", mWorkOrder.getWo2());
+		if (mWorkOrder.getWo3()!= null) mValues.put("wo3", mWorkOrder.getWo3());
+		if (mWorkOrder.getComments()!= null) mValues.put("comments", mWorkOrder.getComments());
+		if (mWorkOrder.getReportedby()!= null) mValues.put("reportedby", mWorkOrder.getReportedby());
+		if (mWorkOrder.getReportdate().toLocaleString()!= null) mValues.put("reportdate", df.format(mWorkOrder.getReportdate()));
+		if (mWorkOrder.getPhone()!= null) mValues.put("phone", mWorkOrder.getPhone());
+		if (mWorkOrder.getActstart()!= null) mValues.put("actstart", df.format(mWorkOrder.getActstart()));
+		if (mWorkOrder.getActfinish()!= null) mValues.put("actfinish", df.format(mWorkOrder.getActfinish()));
+		if (mWorkOrder.getEmpcomments()!= null) mValues.put("empcomments", mWorkOrder.getEmpcomments());
+		if (mWorkOrder.getKhname()!= null) mValues.put("khname", mWorkOrder.getKhname());
+		if (mWorkOrder.getKtitle()!= null) mValues.put("ktitle", mWorkOrder.getKtitle());
+		if (mWorkOrder.getKdept()!= null) mValues.put("kdept", mWorkOrder.getKdept());
+		if (mWorkOrder.getKcamp()!= null) mValues.put("kcamp", mWorkOrder.getKcamp());
+		if (mWorkOrder.getKcost()!= null) mValues.put("kcost", mWorkOrder.getKcost());
+		if (mWorkOrder.getKcod1()!= null) mValues.put("kcod1", mWorkOrder.getKcod1());
+		if (mWorkOrder.getKcodr1()!= null) mValues.put("kcodr1", mWorkOrder.getKcodr1());
+		if (mWorkOrder.getKcod2()!= null) mValues.put("kcod2", mWorkOrder.getKcod2());
+		if (mWorkOrder.getKcodr2()!= null) mValues.put("kcodr2", mWorkOrder.getKcodr2());
+		if (mWorkOrder.getKcod3()!= null) mValues.put("kcod3", mWorkOrder.getKcod3());
+		if (mWorkOrder.getKcodr3()!= null) mValues.put("kcodr3", mWorkOrder.getKcodr3());
+		if (mWorkOrder.getKcod4()!= null) mValues.put("kcod4", mWorkOrder.getKcod4());
+		if (mWorkOrder.getKcodr4()!= null) mValues.put("kcodr4", mWorkOrder.getKcodr4());
+		if (mWorkOrder.getKcor1()!= null) mValues.put("kcor1", mWorkOrder.getKcor1());
+		if (mWorkOrder.getKcorr1()!= null) mValues.put("kcorr1", mWorkOrder.getKcorr1());
+		if (mWorkOrder.getKcor2()!= null) mValues.put("kcor2", mWorkOrder.getKcor2());
+		if (mWorkOrder.getKcorr2()!= null) mValues.put("kcorr2", mWorkOrder.getKcorr2());
+		if (mWorkOrder.getKcor3()!= null) mValues.put("kcor3", mWorkOrder.getKcor3());
+		if (mWorkOrder.getKcorr3()!= null) mValues.put("kcorr3", mWorkOrder.getKcorr3());
+		if (mWorkOrder.getKcor4()!= null) mValues.put("kcor4", mWorkOrder.getKcor4());
+		if (mWorkOrder.getKcorr4()!= null) mValues.put("kcorr4", mWorkOrder.getKcorr4());
+		if (mWorkOrder.getKcom()!= null) mValues.put("kcom", mWorkOrder.getKcom());
+		if (mWorkOrder.getKq1()!= null) mValues.put("kq1", mWorkOrder.getKq1());
+		if (mWorkOrder.getKq2()!= null) mValues.put("kq2", mWorkOrder.getKq2());
+		if (mWorkOrder.getKq3()!= null) mValues.put("kq3", mWorkOrder.getKq3());
+		if (mWorkOrder.getKq4()!= null) mValues.put("kq4", mWorkOrder.getKq4());
+		try {
+			db.update(mTable, mValues, mWhereArgs, mWhereVals);
+		} catch(SQLException ex) {
+			SysLog.AppendLog("Info", "localDB", ex.getMessage());
 		}
 	}
 
-	public void saveOwnOrder(ownorder mOwnorder){
-		String sql;
-		long mReturn = 0;
-		try {
-			sql  = "select count(*) from workorder where wonum = ?"; 
-			SQLiteStatement mStatement = db.compileStatement(sql);
-			mStatement.bindString(1,mOwnorder.getOrderId());
-			mReturn = mStatement.simpleQueryForLong();
+	public void saveOwnOrder(ownorder mOwnOrder,String _laborcode){
+		if(mOwnOrder.getOrderId().equals("00000")) return;
+		
+		String mTable = "wo_labor";
+		String mWhereArgs = "wonum=? and laborcode=? and labortype=?";
+		String mWhereVals[] = new String[] {mOwnOrder.getOrderId(),_laborcode,"O"};
+		
+		saveWorkOrder(mOwnOrder);
+
+		Cursor mCur = db.query(mTable,null, mWhereArgs, mWhereVals,null, null, null);
+		if(mCur.getCount() == 0) {
+			ContentValues mValues = new ContentValues();
+			mValues.put("wonum", mOwnOrder.getOrderId());
+			mValues.put("laborcode",_laborcode);
+			mValues.put("labortype", "O");
+			mValues.put("readstatus",mOwnOrder.getReadStatus());
+			try {
+				db.insertOrThrow(mTable,null,mValues);
+			} catch(SQLException ex) {
+				SysLog.AppendLog("Info", "localDB", ex.getMessage());
+			}
 		}
-		catch (SQLiteDoneException ex){
-			mReturn = 0;
+		mCur.close();
+		ContentValues mValues = new ContentValues();
+		if (mOwnOrder.getReadStatus()!= null) mValues.put("readstatus", mOwnOrder.getReadStatus());
+		if (mOwnOrder.getMyComments()!= null) mValues.put("empcomments",mOwnOrder.getMyComments());
+		mValues.put("existed", "true");
+		try {
+			db.update(mTable, mValues, mWhereArgs,mWhereVals );
+		} catch(SQLException ex) {
+			SysLog.AppendLog("Info", "localDB", ex.getMessage());
 		}
 		
-		if (mReturn == 0) {
-			sql = "insert into workorder;";
+		/* To Do -- Save labtrans */
+	}
+	
+	public void saveSuperOrder(superorder _Order){
+		if(_Order.getOrderId().equals("00000")) return;
+		
+		String mTable = "wo_labor";
+		String mWhereArgs = "wonum=? and laborcode=? and labortype=?";
+		String mWhereVals[] = new String[] {_Order.getOrderId(),_Order.getLaborCode(),"S"};
+		
+		saveWorkOrder(_Order);
+
+		Cursor mCur = db.query(mTable,null, mWhereArgs, mWhereVals,null, null, null);
+		if(mCur.getCount() == 0) {
+			ContentValues mValues = new ContentValues();
+			mValues.put("wonum", _Order.getOrderId());
+			mValues.put("laborcode",_Order.getLaborCode());
+			mValues.put("labortype", "S");
+			try {
+				db.insertOrThrow(mTable,null,mValues);
+			} catch(SQLException ex) {
+				SysLog.AppendLog("Info", "localDB", ex.getMessage());
+			}
 		}
-		else {
-			sql = "update workorder ";
+		mCur.close();
+		ContentValues mValues = new ContentValues();
+		mValues.put("existed", "true");
+		try {
+			db.update(mTable, mValues, mWhereArgs,mWhereVals );
+		} catch(SQLException ex) {
+			SysLog.AppendLog("Info", "localDB", ex.getMessage());
 		}
-			
+	}
+
+	public void saveCraftOrder(craftorder _Order){
+		if(_Order.getOrderId().equals("00000")) return;
+		
+		String mTable = "wo_labor";
+		String mWhereArgs = "wonum=? and laborcode=? and labortype=?";
+		String mWhereVals[] = new String[] {_Order.getOrderId(),_Order.getLaborCode(),"C"};
+		
+		saveWorkOrder(_Order);
+
+		Cursor mCur = db.query(mTable,null, mWhereArgs, mWhereVals,null, null, null);
+		if(mCur.getCount() == 0) {
+			ContentValues mValues = new ContentValues();
+			mValues.put("wonum", _Order.getOrderId());
+			mValues.put("laborcode",_Order.getLaborCode());
+			mValues.put("labortype", "C");
+			mValues.put("craft", _Order.getCraft());
+			try {
+				db.insertOrThrow(mTable,null,mValues);
+			} catch(SQLException ex) {
+				SysLog.AppendLog("Info", "localDB", ex.getMessage());
+			}
+		}
+		mCur.close();
+		ContentValues mValues = new ContentValues();
+		mValues.put("existed", "true");
+		try {
+			db.update(mTable, mValues, mWhereArgs,mWhereVals );
+		} catch(SQLException ex) {
+			SysLog.AppendLog("Info", "localDB", ex.getMessage());
+		}
+	}
+
+	public void clearExistedFlag(String _table) {
+		ContentValues mValues = new ContentValues();
+		mValues.put("existed", "false");
+		try {
+			db.update(_table, mValues, null, null );
+		} catch(SQLException ex) {
+			SysLog.AppendLog("Info", "localDB", ex.getMessage());
+		}
 	}
 	
 	public void appendSyslog(String logAct,String logMsg ){
@@ -202,12 +279,14 @@ public class localDB{
 		mCur.close();
 		return mList;
 	}
-	
+
+/*	
 	public Cursor getCursor(String mSql,String[] mSelectArgs) {
 		Cursor mCur;
 		mCur = db.rawQuery(mSql,mSelectArgs);
 		return mCur;
 	}
+*/
 	
 	public void finalize(){
 		if(db.isOpen()) db.close();
@@ -256,12 +335,13 @@ public class localDB{
 				+ "kcost varchar(40),kcod1 varchar(10),kcodr1 varchar(10),kcod2 varchar(10),kcodr2 varchar(10),"
 				+ "kcod3 varchar(10),kcodr3 varchar(10),kcod4 varchar(10),kcodr4 varchar(10),kcor1 varchar(10),"
 				+ "kcorr1 varchar(10),kcor2 varchar(10),kcorr2 varchar(10),kcor3 varchar(10),kcorr3 varchar(10),"
-				+ "kcor4 varchar(10),kcorr4 varchar(10),kcom text,kq1 varchar(3),kq2 varchar(3),kq3 varchar(3),kq4 varchar(3));";
+				+ "kcor4 varchar(10),kcorr4 varchar(10),kcom text,kq1 varchar(3),kq2 varchar(3),kq3 varchar(3),kq4 varchar(3),"
+				+ "existed bool default true);";
 			db.execSQL(sql);
 			
 /* Create table wo_labor */
 			sql = "CREATE TABLE wo_labor (wonum varchar(10) not null,laborcode varchar(8) not null,labortype varchar(1) not null,"
-				+ "laborname varchar(40),empcomments varchar(100),readstatus varchar(2),craft varchar(8),"
+				+ "laborname varchar(40),empcomments varchar(100),readstatus varchar(2),craft varchar(8),existed bool default true,"
 				+ "Primary Key (wonum, laborcode,labortype));";
 			db.execSQL(sql);
 			
