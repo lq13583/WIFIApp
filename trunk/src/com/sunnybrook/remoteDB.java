@@ -13,7 +13,7 @@ public class remoteDB {
 		connStr = connectionString;
 		try {
 			Class.forName("net.sourceforge.jtds.jdbc.Driver");
-			DriverManager.setLoginTimeout(60);
+			DriverManager.setLoginTimeout(120);
 			conn = DriverManager.getConnection(connStr);
 		} catch (ClassNotFoundException e) {
 			SysLog.AppendLog("Info", "remoteDB", e.getMessage());
@@ -39,30 +39,6 @@ public class remoteDB {
 			return false;
 		}
 	}
-/*	
-	public ResultSet getWorkOrderRS(String wonum) {
-		PreparedStatement mPs = null;
-		ResultSet mRs = null;
-		String sql = "select wo.wonum,wo.status,wo.statusdate,wo.description,wo.location,"
-				   + "wo.changeby,wo.changedate,wo.wopriority,wo.wo2,wo.wo3,des.ldtext comments,"
-				   + "wo.reportedby,wo.reportdate,wo.phone,loc.description locdesc,wo.empcomments remp," 
-				   + "khname,ktitle,kdept,kcamp,kcost,kcod1,kcodr1,kcod2,kcodr2,kcod3,kcodr3,kcod4,kcodr4," 
-                   + "kcor1,kcorr1,kcor2,kcorr2,kcor3,kcorr3,kcor4,kcorr4,kcom,kq1,kq2,kq3,kq4" 
-				   + " from workorder wo"
-				   + " left join longdescription des on des.ldkey = wo.ldkey"
-				   + " left join locations loc on loc.location = wo.location and loc.siteid = wo.siteid"
-				   + " where wo.wonum = ?";
-		try {
-			mPs = conn.prepareStatement(sql);
-			mPs.setString(1,wonum);
-			mRs = mPs.executeQuery();
-		}catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return mRs;
-	}
-*/
 	
 	public List<ownorder> getOwnOrders(String labor_code) {
 		List<ownorder> orderList = new ArrayList<ownorder>();
@@ -104,7 +80,7 @@ public class remoteDB {
 				   + "wo.reportedby,wo.reportdate,wo.phone,loc.description locdesc,wo.empcomments remp," 
 				   + "khname,ktitle,kdept,kcamp,kcost,kcod1,kcodr1,kcod2,kcodr2,kcod3,kcodr3,kcod4,kcodr4," 
 				   + "kcor1,kcorr1,kcor2,kcorr2,kcor3,kcorr3,kcor4,kcorr4,kcom,kq1,kq2,kq3,kq4,"
-				   + "labor.laborcode "
+				   + "labor.laborcode,labor.name laborname "
 				   + " from workorder wo"
 				   + " left join longdescription des on des.ldkey = wo.ldkey"
 				   + " left join locations loc on loc.location = wo.location and loc.siteid = wo.siteid"
@@ -144,7 +120,7 @@ public class remoteDB {
 				   + "wo.reportedby,wo.reportdate,wo.phone,loc.description locdesc,wo.empcomments remp," 
 				   + "khname,ktitle,kdept,kcamp,kcost,kcod1,kcodr1,kcod2,kcodr2,kcod3,kcodr3,kcod4,kcodr4," 
 				   + "kcor1,kcorr1,kcor2,kcorr2,kcor3,kcorr3,kcor4,kcorr4,kcom,kq1,kq2,kq3,kq4," 
-				   + "labor.laborcode,labor.craft"
+				   + "labor.laborcode,labor.craft,labor.name laborname"
 				   + " from workorder wo"
 				   + " left join longdescription des on des.ldkey = wo.ldkey"
 				   + " left join locations loc on loc.location = wo.location and loc.siteid = wo.siteid"

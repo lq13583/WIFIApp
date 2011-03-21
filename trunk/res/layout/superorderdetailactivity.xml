@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			  android:layout_width="match_parent"
+  			  android:layout_height="match_parent"
+  			  android:orientation="vertical">
+  	<LinearLayout android:id="@+id/top_control_bar"
+  				  android:layout_width="match_parent"
+  				  android:layout_height="wrap_content"
+  				  android:orientation="horizontal">	  
+	  	<Button android:id="@+id/btnRefresh"
+	  			android:text="Refresh"
+	  			android:layout_width="wrap_content"
+	  			android:layout_height="wrap_content"/>
+  		<Button android:id="@+id/btnClear"
+	  			android:text="Clear"
+	  			android:layout_width="wrap_content"
+	  			android:layout_height="wrap_content"/>
+	</LinearLayout>
+	<LinearLayout android:id="@+id/data_row_1"
+				  android:layout_width="match_parent"
+				  android:layout_height="wrap_content"
+				  android:orientation="horizontal"
+				  android:layout_below="@id/top_control_bar" >
+	  	<TextView android:text="Wonum:"
+	  			  android:layout_width="wrap_content"
+	  			  android:layout_height="match_parent" />
+	  	<TextView android:id="@+id/wonum"
+  				  android:layout_width="wrap_content"
+  				  android:layout_height="match_parent"
+  				  android:text="wonum" />
+  		<TextView android:text="Req Date:"
+  				  android:layout_width="wrap_content"
+  				  android:layout_height="match_parent" />
+  		<TextView android:id="@+id/reportdate"
+  				  android:layout_width="wrap_content"
+  				  android:layout_height="match_parent"
+  				  android:text="Report Date" />
+	</LinearLayout>
+	<LinearLayout android:id="@+id/data_row_2"
+				  android:layout_width="match_parent"
+				  android:layout_height="wrap_content"
+				  android:orientation="horizontal" 
+				  android:layout_below="@id/data_row_1">
+		<TextView android:text="Reported by:"
+				  android:layout_width="wrap_content"
+				  android:layout_height="match_parent" />
+		<TextView android:id="@+id/reportedby"
+				  android:layout_width="wrap_content"
+				  android:layout_height="match_parent"
+				  android:text="Reported by" />
+		<TextView android:id="@+id/reportedbyname"
+				  android:layout_width="wrap_content"
+				  android:layout_height="match_parent"
+				  android:text="Reported by name" />
+	</LinearLayout>
+	<LinearLayout android:id="@+id/data_row_3"
+				  android:layout_width="match_parent"
+				  android:layout_height="wrap_content"
+				  android:orientation="horizontal"
+				  android:layout_below="@id/data_row_2">
+	</LinearLayout>
+</RelativeLayout>

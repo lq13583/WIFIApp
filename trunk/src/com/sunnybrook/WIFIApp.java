@@ -1,5 +1,6 @@
 package com.sunnybrook;
 
+import java.text.SimpleDateFormat;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -13,6 +14,7 @@ public class WIFIApp extends TabActivity{
 	public static sysconfig myConfig;
 	public static localDB localdb;
 	public static Timer myTimer;
+	public static SimpleDateFormat myDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -37,6 +39,20 @@ public class WIFIApp extends TabActivity{
         				res.getDrawable(R.drawable.ic_tab_ownorders))
         			.setContent(intent);
         tabHost.addTab(spec);
+        if(myConfig.is_super()) {
+            intent = new Intent().setClass(this, SuperordersActivity.class);
+        	spec = tabHost.newTabSpec("superorder").setIndicator("Superorders",
+        			  		res.getDrawable(R.drawable.ic_tab_superorders))
+        			  	.setContent(intent);
+        	tabHost.addTab(spec);
+        }
+        if(myConfig.getCraft_list().size() > 0) {
+            intent = new Intent().setClass(this, CraftordersActivity.class);
+        	spec = tabHost.newTabSpec("craftorder").setIndicator("Craftorders",
+        			  		res.getDrawable(R.drawable.ic_tab_craftorders))
+        			  	.setContent(intent);
+        	tabHost.addTab(spec);
+        }
 
         intent = new Intent().setClass(this, SettingsActivity.class);
         spec = tabHost.newTabSpec("settings").setIndicator("Settings",

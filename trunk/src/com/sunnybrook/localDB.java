@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -193,6 +192,7 @@ public class localDB{
 			ContentValues mValues = new ContentValues();
 			mValues.put("wonum", _Order.getOrderId());
 			mValues.put("laborcode",_Order.getLaborCode());
+			mValues.put("laborname", _Order.getLaborName());
 			mValues.put("labortype", "S");
 			try {
 				db.insertOrThrow(mTable,null,mValues);
@@ -224,6 +224,7 @@ public class localDB{
 			ContentValues mValues = new ContentValues();
 			mValues.put("wonum", _Order.getOrderId());
 			mValues.put("laborcode",_Order.getLaborCode());
+			mValues.put("laborname", _Order.getLaborName());
 			mValues.put("labortype", "C");
 			mValues.put("craft", _Order.getCraft());
 			try {
@@ -280,6 +281,34 @@ public class localDB{
 		return mList;
 	}
 
+	public List<labor> getLaborList() {
+		List<labor> mList = new ArrayList<labor>();
+		String sql = "SELECT distinct laborcode, laborname FROM wo_labor WHERE labortype = 'S' order by laborcode;";
+		Cursor mCur = db.rawQuery(sql, null);
+		if (mCur.moveToFirst())
+			do {
+				mList.add(new labor(mCur.getString(mCur.getColumnIndex("laborcode")),mCur.getString(mCur.getColumnIndex("laborname"))));
+			} while (mCur.moveToNext());
+		mCur.close();
+		return mList;
+	}
+	
+	public List<superorder> getSuperOrderList(String _laborcode, String _orderby) {
+		List<superorder> mList = new ArrayList<superorder>();
+		String mWhereVals[] = new String[] {"S",_laborcode};
+		String mOrderby = " order by wo." + _orderby;
+		String sql = "SELECT wo.*,wl.laborcode,wl.laborname FROM workorder wo " 
+				   + " join wo_labor wl on wo.wonum=wl.wonum and wl.labortype=? and wl.laborcode=?"
+				   + mOrderby + ";";
+		Cursor mCur = db.rawQuery(sql, mWhereVals);
+		if (mCur.moveToFirst())
+			do {
+				mList.add(new superorder(Cursor2HashMap(mCur)));
+			} while (mCur.moveToNext());
+		mCur.close();
+		return mList;
+	}
+	
 /*	
 	public Cursor getCursor(String mSql,String[] mSelectArgs) {
 		Cursor mCur;
@@ -291,7 +320,15 @@ public class localDB{
 	public void finalize(){
 		if(db.isOpen()) db.close();
 	}
-
+	
+	private HashMap<String,String> Cursor2HashMap(Cursor _Cur) {
+		HashMap<String,String> mHashMap = new HashMap<String, String>() ;
+		for(int i = 0; i< _Cur.getColumnCount(); i++) {
+			mHashMap.put(_Cur.getColumnName(i), _Cur.getString(i));
+		}
+		return mHashMap;
+	}
+	
 	private static class OpenHelper extends SQLiteOpenHelper {
 		private static final int DATABASE_VERSION = 3;
 		private static final String DB_PATH="maximo.sqlite";

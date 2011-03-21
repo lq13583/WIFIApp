@@ -1,10 +1,15 @@
 package com.sunnybrook;
 
+import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+public class workorder implements Serializable{
 
-public class workorder {
+	private static final long serialVersionUID = 1L;
 	private String wonum;
 	private String status;
 	private Date statusdate;
@@ -63,36 +68,95 @@ public class workorder {
 		wo3 = mRs.getString("wo3");
 		comments = mRs.getString("comments");
 		reportedby = mRs.getString("reportedby");
-		setReportdate(mRs.getTimestamp("reportdate"));
-		setPhone(mRs.getString("phone"));
-		setLocationdesc(mRs.getString("locdesc"));
-		setEmpcomments(mRs.getString("remp"));
-		setKhname(mRs.getString("khname"));
-		setKtitle(mRs.getString("ktitle"));
-		setKdept(mRs.getString("kdept"));
-		setKcamp(mRs.getString("kcamp"));
-		setKcost(mRs.getString("kcost"));
-		setKcod1(mRs.getString("kcod1"));
-		setKcodr1(mRs.getString("kcodr1"));
-		setKcod2(mRs.getString("kcod2"));
-		setKcodr2(mRs.getString("kcodr2"));
-		setKcod3(mRs.getString("kcod3"));
-		setKcodr3(mRs.getString("kcodr3"));
-		setKcod4(mRs.getString("kcod4"));
-		setKcodr4(mRs.getString("kcodr4"));
-		setKcor1(mRs.getString("kcor1"));
-		setKcorr1(mRs.getString("kcorr1"));
-		setKcor2(mRs.getString("kcor2"));
-		setKcorr2(mRs.getString("kcorr2"));
-		setKcor3(mRs.getString("kcor3"));
-		setKcorr3(mRs.getString("kcorr3"));
-		setKcor4(mRs.getString("kcor4"));
-		setKcorr4(mRs.getString("kcorr4"));
-		setKcom(mRs.getString("kcom"));
-		setKq1(mRs.getString("kq1"));
-		setKq2(mRs.getString("kq2"));
-		setKq3(mRs.getString("kq3"));
-		setKq4(mRs.getString("kq4"));
+		reportdate = mRs.getTimestamp("reportdate");
+		phone = mRs.getString("phone");
+		locationdesc = mRs.getString("locdesc");
+		empcomments = mRs.getString("remp");
+		khname = mRs.getString("khname");
+		ktitle = mRs.getString("ktitle");
+		kdept = mRs.getString("kdept");
+		kcamp = mRs.getString("kcamp");
+		kcost = mRs.getString("kcost");
+		kcod1 = mRs.getString("kcod1");
+		kcodr1 = mRs.getString("kcodr1");
+		kcod2 = mRs.getString("kcod2");
+		kcodr2 = mRs.getString("kcodr2");
+		kcod3 = mRs.getString("kcod3");
+		kcodr3 = mRs.getString("kcodr3");
+		kcod4 = mRs.getString("kcod4");
+		kcodr4 = mRs.getString("kcodr4");
+		kcor1 = mRs.getString("kcor1");
+		kcorr1 = mRs.getString("kcorr1");
+		kcor2 = mRs.getString("kcor2");
+		kcorr2 = mRs.getString("kcorr2");
+		kcor3 = mRs.getString("kcor3");
+		kcorr3 = mRs.getString("kcorr3");
+		kcor4 = mRs.getString("kcor4");
+		kcorr4 = mRs.getString("kcorr4");
+		kcom = mRs.getString("kcom");
+		kq1 = mRs.getString("kq1");
+		kq2 = mRs.getString("kq2");
+		kq3 = mRs.getString("kq3");
+		kq4 = mRs.getString("kq4");
+	}
+
+	public workorder(HashMap<String,String> _HashMap) {
+		SimpleDateFormat df = new SimpleDateFormat();
+		wonum = _HashMap.get("wonum");
+		status = _HashMap.get("status");
+		
+		try {
+			statusdate =  df.parse(_HashMap.get("statusdate"));
+		} catch (ParseException e) {
+			SysLog.AppendLog("Debug", "workorder", "statusdate is null!");
+		}
+		description = _HashMap.get("description");
+		location = _HashMap.get("location");
+		changeby = _HashMap.get("changeby");
+		try {
+			changedate = df.parse(_HashMap.get("changedate"));
+		} catch (ParseException e) {
+			SysLog.AppendLog("Debug", "workorder", "changedate is null!");
+		}
+		wopriority = Integer.parseInt(_HashMap.get("wopriority"));
+		wo2 = _HashMap.get("wo2");
+		wo3 = _HashMap.get("wo3");
+		comments = _HashMap.get("comments");
+		reportedby = _HashMap.get("reportedby");
+		try {
+			reportdate = df.parse(_HashMap.get("reportdate"));
+		} catch (ParseException e) {
+			SysLog.AppendLog("Debug", "workorder", "reportdate is null!");
+		}
+		phone = _HashMap.get("phone");
+		locationdesc = _HashMap.get("locdesc");
+		empcomments = _HashMap.get("remp");
+		khname = _HashMap.get("khname");
+		ktitle = _HashMap.get("ktitle");
+		kdept = _HashMap.get("kdept");
+		kcamp = _HashMap.get("kcamp");
+		kcost = _HashMap.get("kcost");
+		kcod1 = _HashMap.get("kcod1");
+		kcodr1 = _HashMap.get("kcodr1");
+		kcod2 = _HashMap.get("kcod2");
+		kcodr2 = _HashMap.get("kcodr2");
+		kcod3 = _HashMap.get("kcod3");
+		kcodr3 = _HashMap.get("kcodr3");
+		kcod4 = _HashMap.get("kcod4");
+		kcodr4 = _HashMap.get("kcodr4");
+		kcor1 = _HashMap.get("kcor1");
+		kcorr1 = _HashMap.get("kcorr1");
+		kcor2 = _HashMap.get("kcor2");
+		kcorr2 = _HashMap.get("kcorr2");
+		kcor3 = _HashMap.get("kcor3");
+		kcorr3 = _HashMap.get("kcorr3");
+		kcor4 = _HashMap.get("kcor4");
+		kcorr4 = _HashMap.get("kcorr4");
+		kcom = _HashMap.get("kcom");
+		kq1 = _HashMap.get("kq1");
+		kq2 = _HashMap.get("kq2");
+		kq3 = _HashMap.get("kq3");
+		kq4 = _HashMap.get("kq4");
 	}
 	
 	public workorder(String wonum){
@@ -446,5 +510,5 @@ public class workorder {
 	public String getKq4() {
 		return kq4;
 	}
-
+	
 }

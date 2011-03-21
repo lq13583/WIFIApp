@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <resources>
     <string name="app_name">WIFIApp</string>
+    <string name="date_format">yyyy-MM-dd HH:mm:ss</string>
+    <string name="select_labor">Staff:</string>
+    <string name="select_order">Sort by:</string>
+    <string-array name="super_order_array">
+    	<item>wonum</item>
+    	<item>reportdate</item>
+    	<item>wopriority</item>
+    	<item>status</item>
+    </string-array>    
 </resources>
