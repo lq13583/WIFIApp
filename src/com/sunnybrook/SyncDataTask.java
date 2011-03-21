@@ -51,6 +51,7 @@ public class SyncDataTask extends TimerTask {
 
 
 //Clear the task running flag
+//		myRemoteDB.finalize();
 		is_running = false;
 		return;
 	}

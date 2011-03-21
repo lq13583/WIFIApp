@@ -5,12 +5,14 @@ import java.sql.SQLException;
 
 public class craftorder extends workorder{
 	private String laborcode;
+	private String laborname;
 	private String craft;
 
 	public craftorder(ResultSet _RS) throws SQLException {
 		super(_RS);
 		laborcode = _RS.getString("laborcode");
 		craft = _RS.getString("craft");
+		laborname = _RS.getString("laborname");
 	}
 	
 	public craftorder(String wonum,String laborcode,String craft) {
@@ -33,6 +35,14 @@ public class craftorder extends workorder{
 
 	public String getCraft() {
 		return craft;
+	}
+
+	public void setLaborName(String laborname) {
+		this.laborname = laborname;
+	}
+
+	public String getLaborName() {
+		return laborname;
 	}
 	
 }

@@ -55,11 +55,11 @@ public class SyslogActivity extends ListActivity  implements OnClickListener{
 			loginfo mS = getItem(position);
 			if(mS != null) {
 				TextView t = (TextView) v.findViewById(R.id.logid);
-				if(t!= null) t.setText("ID:" + Integer.toString(mS.getLogid()));
+				if(t!= null) t.setText(Integer.toString(mS.getLogid()));
 				t = (TextView) v.findViewById(R.id.logtime);
-				if(t!=null) t.setText("Time:" + mS.getLogtime());
+				if(t!=null) t.setText(mS.getLogtime());
 				t = (TextView) v.findViewById(R.id.logact);
-				if(t!=null) t.setText("Activity:" + mS.getLogact());
+				if(t!=null) t.setText(mS.getLogact());
 				t=(TextView) v.findViewById(R.id.logdesc);
 				if(t!=null) t.setText(mS.getLogdesc());
 			}
