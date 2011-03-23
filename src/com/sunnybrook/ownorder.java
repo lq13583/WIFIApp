@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class ownorder extends workorder{
+	private static final long serialVersionUID = 4L;
 	private List<labtrans> translist;
 	private String mycomments;
 	private String readstatus;
