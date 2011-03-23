@@ -1,11 +1,10 @@
 package com.sunnybrook;
 
-import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 
-public class superorder extends workorder implements Serializable{
+public class superorder extends workorder{
 
 	private static final long serialVersionUID = 2L;
 	private String laborcode;

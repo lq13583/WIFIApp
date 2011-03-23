@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class craftorder extends workorder{
+	private static final long serialVersionUID = 3L;
 	private String laborcode;
 	private String laborname;
 	private String craft;

@@ -382,6 +382,10 @@ public class localDB{
 				+ "Primary Key (wonum, laborcode,labortype));";
 			db.execSQL(sql);
 			
+/* Create indexes on table wo_labor */
+			sql = "CREATE  INDEX idx_1 ON wo_labor (laborcode ASC, labortype ASC);";
+			db.execSQL(sql);
+			
 /* Create Table labtrans */
 			sql = "CREATE TABLE labtrans (transid INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,labtransid INTEGER NOT NULL DEFAULT 0,"
 				+ "transdate DATETIME NOT NULL,laborcode VARCHAR(8) NOT NULL,refwo VARCHAR(8) NOT NULL,enterby VARCHAR(18),"

@@ -1,8 +1,7 @@
 package com.sunnybrook;
 
-import java.text.SimpleDateFormat;
 import java.util.Timer;
-import java.util.TimerTask;
+//import java.util.TimerTask;
 
 import android.app.TabActivity;
 import android.content.Intent;
@@ -14,7 +13,7 @@ public class WIFIApp extends TabActivity{
 	public static sysconfig myConfig;
 	public static localDB localdb;
 	public static Timer myTimer;
-	public static SimpleDateFormat myDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	public static MyDateFormat myDateFormat = new MyDateFormat();
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
