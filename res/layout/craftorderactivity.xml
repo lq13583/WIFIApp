@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			  android:layout_width="match_parent"
+  			  android:layout_height="match_parent"
+  			  android:orientation="vertical">
+  	<LinearLayout android:id="@+id/top_control_bar"
+  				  android:layout_width="match_parent"
+  				  android:layout_height="wrap_content"
+  				  android:orientation="horizontal">	  
+  		<Spinner android:id="@+id/spinner"
+  				 android:layout_width="wrap_content"
+  				 android:layout_height="wrap_content"
+  				 android:layout_gravity="center_vertical"
+  				 android:prompt="@string/select_craft" />
+  		<Spinner android:id="@+id/spinner_sort"
+  				 android:layout_width="wrap_content"
+  				 android:layout_height="wrap_content"
+  				 android:layout_gravity="center_vertical"
+  				 android:prompt="@string/select_order" />
+	</LinearLayout>
+  	<ListView android:id="@+id/android:list"
+  			  android:layout_width="fill_parent"
+  			  android:layout_height="fill_parent"
+  			  android:choiceMode="singleChoice"
+  			  android:focusable="true"
+  			  android:focusableInTouchMode="true"
+  			  android:layout_below="@id/top_control_bar" />
+  	<TextView android:id="@+id/android:empty"
+  			  android:layout_width="fill_parent"
+  			  android:layout_height="fill_parent"
+  			  android:text="No Craft Order Info"
+  			  android:layout_below="@id/top_control_bar" />
+</RelativeLayout>

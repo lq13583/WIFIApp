@@ -108,7 +108,7 @@ public class workorder implements Serializable{
 		try {
 			statusdate =  df.parse(_HashMap.get("statusdate"));
 		} catch (ParseException e) {
-			SysLog.AppendLog("Debug", "workorder", "statusdate is null!");
+//			SysLog.AppendLog("Debug", "workorder", "statusdate is null!");
 		}
 		description = _HashMap.get("description");
 		location = _HashMap.get("location");
@@ -116,7 +116,7 @@ public class workorder implements Serializable{
 		try {
 			changedate = df.parse(_HashMap.get("changedate"));
 		} catch (ParseException e) {
-			SysLog.AppendLog("Debug", "workorder", "changedate is null!");
+//			SysLog.AppendLog("Debug", "workorder", "changedate is null!");
 		}
 		wopriority = Integer.parseInt(_HashMap.get("wopriority"));
 		wo2 = _HashMap.get("wo2");
@@ -126,7 +126,7 @@ public class workorder implements Serializable{
 		try {
 			reportdate = df.parse(_HashMap.get("reportdate"));
 		} catch (ParseException e) {
-			SysLog.AppendLog("Debug", "workorder", "reportdate is null!");
+//			SysLog.AppendLog("Debug", "workorder", "reportdate is null!");
 		}
 		phone = _HashMap.get("phone");
 		locationdesc = _HashMap.get("locdesc");

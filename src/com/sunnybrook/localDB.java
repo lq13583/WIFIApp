@@ -309,6 +309,38 @@ public class localDB{
 		return mList;
 	}
 	
+	public List<ownorder> getOwnOrderList(String _laborcode, String _orderby) {
+		List<ownorder> mList = new ArrayList<ownorder>();
+		String mWhereVals[] = new String[] {"O",_laborcode};
+		String mOrderby = " order by " + _orderby;
+		String sql = "SELECT wo.*,wl.readstatus, wl.empcomments mycomments FROM workorder wo " 
+				   + " JOIN wo_labor wl on wo.wonum=wl.wonum and wl.labortype=? and wl.laborcode=?"
+				   + mOrderby + ";";
+		Cursor mCur = db.rawQuery(sql, mWhereVals);
+		if (mCur.moveToFirst())
+			do {
+				mList.add(new ownorder(Cursor2HashMap(mCur)));
+			} while (mCur.moveToNext());
+		mCur.close();
+		return mList;
+	}
+
+	public List<craftorder> getCraftOrderList(String _craft, String _orderby) {
+		List<craftorder> mList = new ArrayList<craftorder>();
+		String mWhereVals[] = new String[] {"C",_craft};
+		String mOrderby = " order by " + _orderby;
+		String sql = "SELECT wo.*,wl.laborcode,wl.laborname,wl.craft FROM workorder wo " 
+				   + " join wo_labor wl on wo.wonum=wl.wonum and wl.labortype=? and wl.craft=?"
+				   + mOrderby + ";";
+		Cursor mCur = db.rawQuery(sql, mWhereVals);
+		if (mCur.moveToFirst())
+			do {
+				mList.add(new craftorder(Cursor2HashMap(mCur)));
+			} while (mCur.moveToNext());
+		mCur.close();
+		return mList;
+	}
+	
 /*	
 	public Cursor getCursor(String mSql,String[] mSelectArgs) {
 		Cursor mCur;

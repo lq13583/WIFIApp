@@ -21,6 +21,7 @@ public class superorder extends workorder{
 		laborcode = _HashMap.get("laborcode");
 		laborname = _HashMap.get("laborname");
 	}
+
 	public superorder(String wonum,String laborcode){
 		super(wonum);
 		this.laborcode=laborcode;

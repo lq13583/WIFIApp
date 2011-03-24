@@ -1,21 +1,29 @@
 package com.sunnybrook;
-
 import java.util.Comparator;
 
-public class WorkorderComparator implements Comparator <workorder>{
+public class CraftorderComparator implements Comparator <craftorder> {
 	private String mCompareBy = "";
 	
-	public WorkorderComparator(String _Compareby) {
+	public CraftorderComparator(String _Compareby) {
 		mCompareBy = _Compareby;
 	}
 	
-	@Override
-	public int compare(workorder arg0, workorder arg1) {
+	public int compare(craftorder arg0, craftorder arg1) {
+		
 		if(mCompareBy.equals("wonum")) {
 			return(arg0.getOrderId().compareToIgnoreCase(arg1.getOrderId()));
 		}
 		if(mCompareBy.equals("status")) {
 			return(arg0.getStatus().compareToIgnoreCase(arg1.getStatus()));
+		}
+		if(mCompareBy.equals("location")) {
+			return(arg0.getLocation().compareToIgnoreCase(arg1.getLocation()));
+		}
+		if(mCompareBy.equals("laborcode")) {
+			return(arg0.getLaborCode().compareToIgnoreCase(arg1.getLaborCode()));
+		}
+		if(mCompareBy.equals("laborname")) {
+			return(arg0.getLaborName().compareToIgnoreCase(arg1.getLaborName()));
 		}
 		if(mCompareBy.equals("wopriority")) {
 			return(arg0.getWopriority() - arg1.getWopriority());
@@ -30,5 +38,5 @@ public class WorkorderComparator implements Comparator <workorder>{
 		}
 		return 0;
 	}
-	
+
 }
