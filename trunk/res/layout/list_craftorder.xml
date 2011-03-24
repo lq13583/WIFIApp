@@ -26,12 +26,7 @@
 	<TextView android:id="@+id/status"
   			  android:layout_width="wrap_content"
   			  android:layout_height="match_parent"
-  			  android:gravity="left"
-  			  android:paddingRight="5dip" />
-	<TextView android:id="@+id/readstatus"
-  			  android:layout_width="wrap_content"
-  			  android:layout_height="match_parent"
-  			  android:gravity="left"
+  			  android:gravity="center"
   			  android:paddingRight="5dip" />
 	<TextView android:id="@+id/laborcode"
   			  android:layout_width="wrap_content"

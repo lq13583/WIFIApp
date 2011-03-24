@@ -2,6 +2,7 @@ package com.sunnybrook;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 
 public class craftorder extends workorder{
 	private static final long serialVersionUID = 3L;
@@ -14,6 +15,13 @@ public class craftorder extends workorder{
 		laborcode = _RS.getString("laborcode");
 		craft = _RS.getString("craft");
 		laborname = _RS.getString("laborname");
+	}
+
+	public craftorder(HashMap<String,String> _HashMap) {
+		super(_HashMap);
+		laborcode = _HashMap.get("laborcode");
+		laborname = _HashMap.get("laborname");
+		craft = _HashMap.get("craft");
 	}
 	
 	public craftorder(String wonum,String laborcode,String craft) {

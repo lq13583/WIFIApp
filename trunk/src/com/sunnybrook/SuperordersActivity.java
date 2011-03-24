@@ -2,12 +2,12 @@ package com.sunnybrook;
 
 import java.util.List;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
+//import android.app.AlertDialog;
+//import android.app.Dialog;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
+//import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,24 +15,21 @@ import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-public class SuperordersActivity  extends ListActivity  implements OnClickListener, OnItemClickListener,OnItemSelectedListener{
+public class SuperordersActivity  extends ListActivity  implements OnItemClickListener,OnItemSelectedListener{
 	static private superLaborsAdapter mLaborAdapter;
 	static private superOrdersAdapter mOrderAdapter;
 	static private ProgressDialog mProgressDialog;
 	static private RefreshOrderListThread mRefreshOrderListThread;
 	static private String mLaborCode = "";
 	static private String mOrderby = "wonum";
-	static private String mWonum = "";
+//	static private String mWonum = "";
 	
     public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
@@ -56,7 +53,7 @@ public class SuperordersActivity  extends ListActivity  implements OnClickListen
     	
     	mOrderAdapter = new superOrdersAdapter(this,R.layout.list_workorder);
     	setListAdapter(mOrderAdapter);
-    	getListView().setOnItemSelectedListener(this);
+//    	getListView().setOnItemSelectedListener(this);
     	getListView().setOnItemClickListener(this);
     	refreshLaborList(WIFIApp.localdb.getLaborList());
     	
@@ -68,12 +65,6 @@ public class SuperordersActivity  extends ListActivity  implements OnClickListen
     	mBtn.setOnClickListener(this);
 */
     	}
-
-	@Override
-	public void onClick(View arg0) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	private void refreshLaborList(List<labor> _Items) {
     	mLaborAdapter.clear();
@@ -200,7 +191,7 @@ public class SuperordersActivity  extends ListActivity  implements OnClickListen
 				if(t!= null) t.setText(mS.getOrderId());
 				t = (TextView) v.findViewById(R.id.reportdate);
 				if(t!=null)
-					t.setText((mS.getReportdate()==null)?"report_date(null)":WIFIApp.myDateFormat.format(mS.getReportdate()));
+					t.setText(new MyDateFormat().myFormat(mS.getReportdate()));
 				t = (TextView) v.findViewById(R.id.location);
 				if(t!=null) t.setText(mS.getLocation());
 				t = (TextView) v.findViewById(R.id.wopriority);
@@ -260,7 +251,7 @@ public class SuperordersActivity  extends ListActivity  implements OnClickListen
 		switch(_AdapterView.getId()) {
 		case android.R.id.list:
 			superorder mItem = (superorder) _AdapterView.getItemAtPosition(_pos);
-			mWonum = mItem.getOrderId();
+//			mWonum = mItem.getOrderId();
 			Intent mIntent = new Intent(this,SuperOrderDetailActivity.class);
 			mIntent.putExtra("superorder", mItem);
 			this.startActivity(mIntent);

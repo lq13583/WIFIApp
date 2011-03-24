@@ -2,6 +2,7 @@ package com.sunnybrook;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 
 public class ownorder extends workorder{
@@ -12,6 +13,12 @@ public class ownorder extends workorder{
 	
 	public ownorder(ResultSet mRS) throws SQLException {
 		super(mRS);
+	}
+
+	public ownorder(HashMap<String,String> _HashMap) {
+		super(_HashMap);
+		readstatus = _HashMap.get("readstatus");
+		mycomments = _HashMap.get("mycomments");
 	}
 
 	public ownorder(String wonum){
