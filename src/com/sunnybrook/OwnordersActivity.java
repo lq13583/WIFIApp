@@ -5,6 +5,7 @@ import java.util.List;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -46,7 +47,7 @@ public class OwnordersActivity extends ListActivity  implements OnClickListener,
     	adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     	mSpinner.setAdapter(adapter);
     	mSpinner.setOnItemSelectedListener(this);
-
+    	getListView().setOnItemClickListener(this);
     	refreshOrderList(mLaborCode,mOrderby);
     }
 
@@ -155,9 +156,28 @@ public class OwnordersActivity extends ListActivity  implements OnClickListener,
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		// TODO Auto-generated method stub
-		
+	public void onItemClick(AdapterView<?> _AdapterView, View arg1, int _pos, long arg3) {
+		switch(_AdapterView.getId()) {
+		case android.R.id.list:
+			ownorder mItem = (ownorder) _AdapterView.getItemAtPosition(_pos);
+			Intent mIntent = new Intent(this,OwnOrderDetailActivity.class);
+			mIntent.putExtra("ownorder", mItem);
+			this.startActivityForResult(mIntent, 1);
+			break;
+		default:
+			break;
+		}
+	}
+	
+	@Override
+	public void onActivityResult(int _requestCode, int _resultCode, Intent _data) {
+		super.onActivityResult(_requestCode, _resultCode, _data);
+		if(_requestCode == 1) {
+//	    	ownorder mOrder = (ownorder) _data.getSerializableExtra("ownorder");
+	    	refreshOrderList(mLaborCode,mOrderby);
+//	    	int pos = mOrderAdapter.getPosition(mOrder);
+	    	return;
+		}
 	}
 
 	@Override
