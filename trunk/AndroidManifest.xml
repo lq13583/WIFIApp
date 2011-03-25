@@ -17,6 +17,8 @@
     	<activity android:name="SyslogActivity"></activity>
     	<activity android:name="SuperOrderDetailActivity"
     			  android:theme="@android:style/Theme.Dialog" />
+    	<activity android:name="OwnOrderDetailActivity"
+    			  android:theme="@android:style/Theme.Dialog" />
 	</application>
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
     <uses-sdk android:minSdkVersion="8" />
