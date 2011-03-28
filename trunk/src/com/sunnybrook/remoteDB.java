@@ -60,15 +60,37 @@ public class remoteDB {
 			mPs.setString(1,labor_code);
 			mRs = mPs.executeQuery();
 			while (mRs.next()) {
-				ownorder mOwnorder = new ownorder(mRs);
-				mOwnorder.setReadStatus("UR");
-				orderList.add(mOwnorder);
+				if(!isPending(mRs.getString("wonum"))) {
+					ownorder mOwnorder = new ownorder(mRs);
+					mOwnorder.setReadStatus("UR");
+					orderList.add(mOwnorder);
+				}
 			}
+			mRs.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			SysLog.AppendLog("Info", "remoteDB", e.getMessage());
 		}
 		return orderList;
+	}
+
+	private boolean isPending(String _wonum) {
+		boolean mReturn = false;
+		String sql = "Select * from [Facilities Services].dbo.WO_Projects " 
+                   + " where WorkOrder_No = ? and status = 'Quote Finalized'";
+		PreparedStatement mPs = null;
+		ResultSet mRs = null;
+		try {
+			mPs = conn.prepareStatement(sql);
+			mPs.setString(1,_wonum);
+			mRs = mPs.executeQuery();
+			if (mRs.next())	mReturn = true;
+			mRs.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			SysLog.AppendLog("Info", "remoteDB", e.getMessage());
+		}
+		return mReturn;
 	}
 	
 	public List<superorder> getSuperOrders(String _laborcode) {
@@ -147,17 +169,71 @@ public class remoteDB {
 		List<labtrans> mLabTransList = _order.getTranslist();
 		if(mLabTransList!= null) {
 			for(int i=0; i<mLabTransList.size();i++) {
-					if(!saveLabTrans(mLabTransList.get(i)))
+					if(!saveLabTrans(mLabTransList.get(i))){
+						SysLog.AppendLog("Info", "remoteDB-saveOwnOrder", "Save labtrans record error!");
 						return false;
+					}
 			}
 		}
-		
-		return false;
+
+/* Upload myComments if it is not null */
+		if(_order.getMyComments() != null) {
+			PreparedStatement mPs = null;
+			String sql = "update workorder set empcomments = SUBSTRING(ISNULL([empcomments],'') + ?,1,100) where wonum = ?;";
+			try {
+				mPs = conn.prepareStatement(sql);
+				mPs.setString(1,_order.getMyComments());
+				mPs.setString(2,_order.getOrderId());
+				mPs.executeUpdate();
+			} catch (SQLException e) {
+				SysLog.AppendLog("Info", "remoteDB-saveOwnOrder", e.getMessage());
+				return false;
+			}
+//Clear local comments when it is uploaded.			
+			_order.setMyComments("");
+			WIFIApp.localdb.updateMyComment(_order);
+		}
+
+/* Update workorder status if it is not INPRG */
+
+		if(!_order.getStatus().equals("INPRG")) {
+			PreparedStatement mPs = null;
+			if(_order.getStatus().equals("COMP")) {
+/* Update actstart and actfinish if the order is completed */
+				String sql = "update workorder set status = ?, actstart = ?, actfinish = ?  where wonum = ?;";
+				try {
+					mPs = conn.prepareStatement(sql);
+					mPs.setString(1,_order.getStatus());
+					mPs.setDate(2, Date2SQL(_order.getActstart()));
+					mPs.setDate(3,Date2SQL(_order.getActfinish()));
+					mPs.setString(4,_order.getOrderId());
+					mPs.executeUpdate();
+				} catch (SQLException e) {
+					SysLog.AppendLog("Info", "remoteDB-saveOwnOrder", e.getMessage());
+					return false;
+				}
+			}
+			else {
+				String sql = "update workorder set status = ? where wonum = ? and status = ?;";
+				try {
+					mPs = conn.prepareStatement(sql);
+					mPs.setString(1,_order.getStatus());
+					mPs.setString(2,_order.getOrderId());
+					mPs.setString(3,"INPRG");
+					mPs.executeUpdate();
+				} catch (SQLException e) {
+					SysLog.AppendLog("Info", "remoteDB-saveOwnOrder", e.getMessage());
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 	
 	public boolean saveLabTrans(labtrans _labtrans) {
 		String sql;
 		if(_labtrans.getLabTransId()==0) {
+			if(_labtrans.getRegularHrs()==0) return true;
 			int mLabTransId = 0;
 			PreparedStatement mPs = null;
 			ResultSet mRs = null;
@@ -166,10 +242,11 @@ public class remoteDB {
 				mPs = conn.prepareStatement(sql);
 				mRs = mPs.executeQuery();
 				if (mRs.next())
-					mLabTransId = mRs.getInt(0);
+					mLabTransId = mRs.getInt(1);
 	 			mRs.close();
  			} catch (SQLException e) {
 				SysLog.AppendLog("Info", "remoteDB(saveLabTrans)", e.getMessage());
+				return false;
 			}
 			mLabTransId++;
 			sql = "insert into labtrans " 
@@ -180,13 +257,13 @@ public class remoteDB {
                 + "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 			try {
 				mPs = conn.prepareStatement(sql);
-				mPs.setDate(1,(Date) _labtrans.getTransDate());
+				mPs.setDate(1,Date2SQL(_labtrans.getTransDate()));
 				mPs.setString(2,_labtrans.getLaborCode());
 				mPs.setFloat(3, _labtrans.getRegularHrs());
 				mPs.setString(4,_labtrans.getEnterBy());
-				mPs.setDate(5, (Date) _labtrans.getEnterDate());
-				mPs.setDate(6, (Date) _labtrans.getStartDate());
-				mPs.setDate(7, (Date) _labtrans.getStartDate());
+				mPs.setDate(5, Date2SQL(_labtrans.getEnterDate()));
+				mPs.setDate(6, Date2SQL(_labtrans.getStartDate()));
+				mPs.setDate(7, Date2SQL(_labtrans.getStartDate()));
 				mPs.setString(8,"WORK");
 				mPs.setString(9,_labtrans.getLocation());
 				mPs.setString(10, "MAXORG");
@@ -202,8 +279,11 @@ public class remoteDB {
 				mPs.setString(20,"Y");
 				mPs.setString(21,"N");
 				mPs.executeUpdate();
+				_labtrans.setLabTransId(mLabTransId);
+				if(!WIFIApp.localdb.updateLabTransId(_labtrans)) return false;
 			} catch (SQLException e) {
 				SysLog.AppendLog("Info", "remoteDB(saveLabTrans)", e.getMessage());
+				return false;
 			}
 		}
 		else {
@@ -214,19 +294,19 @@ public class remoteDB {
 				PreparedStatement mPs = conn.prepareStatement(sql);
 				mPs.setString(1,_labtrans.getLaborCode());
 				mPs.setFloat(2, _labtrans.getRegularHrs());
-				mPs.setDate(3, (Date) _labtrans.getStartDate());
-				mPs.setDate(4, (Date) _labtrans.getStartDate());
+				mPs.setDate(3, Date2SQL(_labtrans.getStartDate()));
+				mPs.setDate(4, Date2SQL(_labtrans.getStartDate()));
 				mPs.setInt(5,_labtrans.getLabTransId());
 				mPs.executeUpdate();
 			} catch (SQLException e) {
 				SysLog.AppendLog("Info", "remoteDB(saveLabTrans)", e.getMessage());
+				return false;
 			}
-/*			
-            rcmd.CommandText = "update labtrans set laborcode='" & trRow("laborcode") & "',regularhrs=" _
-            & trRow("regularhrs") & ",finishdate='" & trRow("startdate") & "',startdate='" & trRow("startdate") & "' " _
-            & " where labtransid = " & trRow("labtransid")
-*/
 		}
 		return true;
+	}
+	
+	private java.sql.Date Date2SQL(java.util.Date _date) {
+		return new java.sql.Date(_date.getTime());
 	}
 }

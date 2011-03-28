@@ -139,8 +139,8 @@ public class workorder implements Serializable{
 //			SysLog.AppendLog("Debug", "workorder", "actfinish is null!");
 		}
 		phone = _HashMap.get("phone");
-		locationdesc = _HashMap.get("locdesc");
-		empcomments = _HashMap.get("remp");
+		locationdesc = _HashMap.get("locationdesc");
+		empcomments = _HashMap.get("empcomments");
 		khname = _HashMap.get("khname");
 		ktitle = _HashMap.get("ktitle");
 		kdept = _HashMap.get("kdept");

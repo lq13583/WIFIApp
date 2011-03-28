@@ -68,6 +68,7 @@ public class localDB{
 	}
 */
 	public void saveLabTrans(labtrans _labtrans) {
+		if(_labtrans.getTransId()==0 && _labtrans.getRegularHrs()==0) return;
 		MyDateFormat mDateFormat = WIFIApp.myDateFormat;
 		String mTable = "labtrans";
 		String mWhereArgs = "transid=?";
@@ -104,7 +105,21 @@ public class localDB{
 		} catch(SQLException ex) {
 			SysLog.AppendLog("Info", "localDB", ex.getMessage());
 		}
-		return;
+	}
+	
+	public boolean updateLabTransId(labtrans _labtrans) {
+		String mTable = "labtrans";
+		String mWhereArgs = "transid=?";
+		String mWhereVals[] = new String[]{Integer.toString(_labtrans.getTransId())};
+		ContentValues mValues = new ContentValues();
+		mValues.put("labtransid", Integer.toString(_labtrans.getLabTransId()));
+		try {
+			db.update(mTable, mValues, mWhereArgs, mWhereVals);
+		} catch(SQLException ex) {
+			SysLog.AppendLog("Info", "localDB-updateLabTransId", ex.getMessage());
+			return false;
+		}
+		return true;
 	}
 	
 	public void saveWorkOrder(workorder mWorkOrder){
@@ -205,7 +220,7 @@ public class localDB{
 		}
 		mCur.close();
 		ContentValues mValues = new ContentValues();
-		if (mOwnOrder.getReadStatus()!= null) mValues.put("readstatus", mOwnOrder.getReadStatus());
+//		if (mOwnOrder.getReadStatus()!= null) mValues.put("readstatus", mOwnOrder.getReadStatus());
 		if (mOwnOrder.getMyComments()!= null) mValues.put("empcomments",mOwnOrder.getMyComments());
 		mValues.put("existed", "true");
 		try {
@@ -222,7 +237,13 @@ public class localDB{
 		String mWhereArgs = "wonum=?";
 		String mWhereVals[] = new String[] {_order.getOrderId()};
 		ContentValues mValues = new ContentValues();
-		if (_order.getStatus()!= null) mValues.put("status", _order.getStatus());
+		if (_order.getStatus()!= null){
+			mValues.put("status", _order.getStatus());
+			if(_order.getStatus().equals("COMP")) {
+				if(_order.getActstart()==null) mValues.put("actstart", WIFIApp.myDateFormat.myFormat(new Date()));
+				if(_order.getActfinish()==null) mValues.put("actfinish", WIFIApp.myDateFormat.myFormat(new Date()));
+			}
+		}
 		try {
 			db.update(mTable, mValues, mWhereArgs,mWhereVals );
 		} catch(SQLException ex) {
@@ -369,6 +390,23 @@ public class localDB{
 		} catch(SQLException ex) {
 			SysLog.AppendLog("Info", "localDB", ex.getMessage());
 		}
+	}
+	
+	public boolean cleanData() {
+		String mTable = "wo_labor";
+		String mWhereArgs = "existed = ?";
+		String mWhereVals[] = new String[] {"false"};
+		try {
+			db.delete(mTable,mWhereArgs,mWhereVals);
+		} catch(SQLException ex) {
+			SysLog.AppendLog("Info", "localDB", ex.getMessage());
+			return false;
+		}
+		String sql = "delete from workorder where not exists (select * from wo_labor where wo_labor.wonum=workorder.wonum);";
+		db.execSQL(sql);
+		sql = "delete from labtrans where not exists (select * from workorder where workorder.wonum=labtrans.refwo);";
+		db.execSQL(sql);
+		return true;
 	}
 	
 	public void appendSyslog(String logAct,String logMsg ){

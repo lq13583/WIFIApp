@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.TimerTask;
 
 public class SyncDataTask extends TimerTask {
+	public static boolean mEnabled = true; 
 	private static int mCounts = 0; 
 	private static int mPeriod = 0;
 	private static boolean is_running = false;
@@ -13,6 +14,7 @@ public class SyncDataTask extends TimerTask {
 	@Override
 	public void run() {
 		if(myConfig.getLabor_code().equals("")) return;
+		if(!mEnabled) return;
 		localDB myLocalDB = WIFIApp.localdb;
 		remoteDB myRemoteDB;
 
@@ -61,9 +63,10 @@ public class SyncDataTask extends TimerTask {
 		SysLog.AppendLog("Debug", "pushData", "Start pushing own orders ......");
 		List<ownorder> mOwnOrderList = localdb.getOwnOrderList(myConfig.getLabor_code(), "wonum");
 		for(int i=0;i<mOwnOrderList.size();i++ ) {
-			mOwnOrderList.get(i);
+			if(!remotedb.saveOwnOrder(mOwnOrderList.get(i))) return false;
 		}
-		return false;
+		SysLog.AppendLog("Debug", "pushData", "Push own orders end.");
+		return true;
 	}
 	
 	private boolean pullData(localDB localdb, remoteDB remotedb) {
@@ -83,6 +86,9 @@ public class SyncDataTask extends TimerTask {
 	}
 	
 	private boolean cleanData(localDB _localdb,remoteDB _remotedb) {
+		SysLog.AppendLog("Debug", "cleanData", "Start cleaning up data ......");
+		if(!_localdb.cleanData()) return false;
+		SysLog.AppendLog("Debug", "cleanData", "End cleaning up data ......");
 		return true;
 	}
 
