@@ -67,6 +67,45 @@ public class localDB{
 		return mWorkOrder;
 	}
 */
+	public void saveLabTrans(labtrans _labtrans) {
+		MyDateFormat mDateFormat = WIFIApp.myDateFormat;
+		String mTable = "labtrans";
+		String mWhereArgs = "transid=?";
+		String mWhereVals[] = new String[]{Integer.toString(_labtrans.getTransId())};
+		Cursor mCur = db.query(mTable, null,mWhereArgs, mWhereVals, null, null, null);
+		if(mCur.getCount() == 0) {
+			ContentValues mValues = new ContentValues();
+			if(_labtrans.getEnterBy()!= null) mValues.put("enterby", _labtrans.getEnterBy());
+			if(_labtrans.getEnterDate()!=null) mValues.put("enterdate", mDateFormat.format(_labtrans.getEnterDate()));
+			if(_labtrans.getLaborCode()!=null) mValues.put("laborcode", _labtrans.getLaborCode());
+			if(_labtrans.getLocation()!=null) mValues.put("location",_labtrans.getLocation());
+			if(_labtrans.getRefWo()!=null) mValues.put("refwo", _labtrans.getRefWo());
+			mValues.put("regularhrs", Float.toString(_labtrans.getRegularHrs()));
+			if(_labtrans.getStartDate()!=null) mValues.put("startdate", mDateFormat.format(_labtrans.getStartDate()));
+			if(_labtrans.getTransDate()!=null) mValues.put("transdate", mDateFormat.format(_labtrans.getTransDate()));
+			try {
+				db.insertOrThrow(mTable,null,mValues);
+			} catch(SQLException ex) {
+				SysLog.AppendLog("Info", "localDB", ex.getMessage());
+			}
+		}
+		mCur.close();
+		ContentValues mValues = new ContentValues();
+		if(_labtrans.getEnterBy()!= null) mValues.put("enterby", _labtrans.getEnterBy());
+		if(_labtrans.getEnterDate()!=null) mValues.put("enterdate", mDateFormat.format(_labtrans.getEnterDate()));
+		if(_labtrans.getLaborCode()!=null) mValues.put("laborcode", _labtrans.getLaborCode());
+		if(_labtrans.getLocation()!=null) mValues.put("location",_labtrans.getLocation());
+		if(_labtrans.getRefWo()!=null) mValues.put("refwo", _labtrans.getRefWo());
+		mValues.put("regularhrs", Float.toString(_labtrans.getRegularHrs()));
+		if(_labtrans.getStartDate()!=null) mValues.put("startdate", mDateFormat.format(_labtrans.getStartDate()));
+		if(_labtrans.getTransDate()!=null) mValues.put("transdate", mDateFormat.format(_labtrans.getTransDate()));
+		try {
+			db.update(mTable, mValues, mWhereArgs, mWhereVals);
+		} catch(SQLException ex) {
+			SysLog.AppendLog("Info", "localDB", ex.getMessage());
+		}
+		return;
+	}
 	
 	public void saveWorkOrder(workorder mWorkOrder){
 
@@ -191,12 +230,65 @@ public class localDB{
 		}
 	}
 	
+	public void updateActstart(workorder _order) {
+		String mTable = "workorder";
+		String mWhereArgs = "wonum=?";
+		String mWhereVals[] = new String[] {_order.getOrderId()};
+		ContentValues mValues = new ContentValues();
+		if (_order.getActstart()!= null) mValues.put("actstart", WIFIApp.myDateFormat.myFormat(_order.getActstart()));
+		try {
+			db.update(mTable, mValues, mWhereArgs,mWhereVals );
+		} catch(SQLException ex) {
+			SysLog.AppendLog("Info", "localDB", ex.getMessage());
+		}
+	}
+	
+	public void updateActfinish(workorder _order) {
+		String mTable = "workorder";
+		String mWhereArgs = "wonum=?";
+		String mWhereVals[] = new String[] {_order.getOrderId()};
+		ContentValues mValues = new ContentValues();
+		if (_order.getActfinish()!= null) mValues.put("actfinish", WIFIApp.myDateFormat.myFormat(_order.getActfinish()));
+		try {
+			db.update(mTable, mValues, mWhereArgs,mWhereVals );
+		} catch(SQLException ex) {
+			SysLog.AppendLog("Info", "localDB", ex.getMessage());
+		}
+	}
+	
 	public void updateReadStatus(ownorder _order) {
 		String mTable = "wo_labor";
 		String mWhereArgs = "wonum=?";
 		String mWhereVals[] = new String[] {_order.getOrderId()};
 		ContentValues mValues = new ContentValues();
 		if (_order.getReadStatus()!= null) mValues.put("readstatus", _order.getReadStatus());
+		try {
+			db.update(mTable, mValues, mWhereArgs,mWhereVals );
+		} catch(SQLException ex) {
+			SysLog.AppendLog("Info", "localDB", ex.getMessage());
+		}
+	}
+
+	public void updateLabTransList(ownorder _order) {
+		if(_order.getTranslist() == null) return;
+		List<labtrans> mItems = _order.getTranslist();
+		for(int i=0;i<mItems.size();i++) {
+			labtrans mItem = mItems.get(i);
+			mItem.setEnterBy(WIFIApp.myConfig.getLabor_code());
+			mItem.setEnterDate(new Date());
+			mItem.setLocation(_order.getLocation());
+			mItem.setRefWo(_order.getOrderId());
+			mItem.setTransDate(new Date());
+			saveLabTrans(mItem);
+		}
+	}
+	
+	public void updateMyComment(ownorder _order) {
+		String mTable = "wo_labor";
+		String mWhereArgs = "wonum=?";
+		String mWhereVals[] = new String[] {_order.getOrderId()};
+		ContentValues mValues = new ContentValues();
+		if (_order.getMyComments()!= null) mValues.put("empcomments", _order.getMyComments());
 		try {
 			db.update(mTable, mValues, mWhereArgs,mWhereVals );
 		} catch(SQLException ex) {
@@ -345,12 +437,47 @@ public class localDB{
 		Cursor mCur = db.rawQuery(sql, mWhereVals);
 		if (mCur.moveToFirst())
 			do {
-				mList.add(new ownorder(Cursor2HashMap(mCur)));
+				ownorder mOwnorder = new ownorder(Cursor2HashMap(mCur));
+				String mTableTrans = "labtrans";
+				String mWhereArgs = "refwo=?";
+				String mWhereValsTrans[] = new String[] {mOwnorder.getOrderId()};
+				
+				Cursor mCurTrans = db.query(mTableTrans,null, mWhereArgs, mWhereValsTrans,null, null, "transid");
+				if(mCurTrans.moveToFirst())
+					do {
+						mOwnorder.addLabTrans(new labtrans(Cursor2HashMap(mCurTrans)));
+					} while (mCurTrans.moveToNext());
+				mCurTrans.close();	
+				mList.add(mOwnorder);
 			} while (mCur.moveToNext());
 		mCur.close();
 		return mList;
 	}
 
+	public ownorder Craft2Own(craftorder _order, String _laborcode) {
+		ownorder mReturn = null;
+		String mTable = "wo_labor";
+		String mWhereArgs = "wonum=? and laborcode=? and craft=? and labortype=?";
+		String mWhereVals[] = new String[] {_order.getOrderId(),_order.getLaborCode(),_order.getCraft(),"C"}; 
+		ContentValues mValues = new ContentValues();
+		mValues.put("labortype", "O");
+		mValues.put("laborcode", _laborcode);
+		mValues.put("readstatus", "UR");
+		try {
+			db.update(mTable, mValues, mWhereArgs, mWhereVals);
+		} catch(SQLException ex) {
+			SysLog.AppendLog("Info", "localDB", ex.getMessage());
+		}
+		String mSelectVals[] = new String[] {"O",_laborcode,_order.getOrderId()};
+		String sql = "SELECT wo.*,wl.readstatus, wl.empcomments mycomments FROM workorder wo " 
+				   + " JOIN wo_labor wl on wo.wonum=wl.wonum and wl.labortype=? and wl.laborcode=? and wo.wonum=?;";
+		Cursor mCur = db.rawQuery(sql, mSelectVals);
+		if (mCur.moveToFirst()){
+				mReturn = new ownorder(Cursor2HashMap(mCur));
+		}
+		return mReturn;	
+	}
+	
 	public List<craftorder> getCraftOrderList(String _craft, String _orderby) {
 		List<craftorder> mList = new ArrayList<craftorder>();
 		String mWhereVals[] = new String[] {"C",_craft};

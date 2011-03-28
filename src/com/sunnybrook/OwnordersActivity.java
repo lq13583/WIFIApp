@@ -21,6 +21,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 
 public class OwnordersActivity extends ListActivity  implements OnClickListener, OnItemClickListener,OnItemSelectedListener{
+	static final int OWNORDER_ACTIVITY_ID = 1;
 	static private ownOrdersAdapter mOrderAdapter;
 	static private ProgressDialog mProgressDialog;
 	static private RefreshOrderListThread mRefreshOrderListThread;
@@ -162,7 +163,7 @@ public class OwnordersActivity extends ListActivity  implements OnClickListener,
 			ownorder mItem = (ownorder) _AdapterView.getItemAtPosition(_pos);
 			Intent mIntent = new Intent(this,OwnOrderDetailActivity.class);
 			mIntent.putExtra("ownorder", mItem);
-			this.startActivityForResult(mIntent, 1);
+			this.startActivityForResult(mIntent, OWNORDER_ACTIVITY_ID);
 			break;
 		default:
 			break;
@@ -172,10 +173,8 @@ public class OwnordersActivity extends ListActivity  implements OnClickListener,
 	@Override
 	public void onActivityResult(int _requestCode, int _resultCode, Intent _data) {
 		super.onActivityResult(_requestCode, _resultCode, _data);
-		if(_requestCode == 1) {
-//	    	ownorder mOrder = (ownorder) _data.getSerializableExtra("ownorder");
+		if(_requestCode == OWNORDER_ACTIVITY_ID) {
 	    	refreshOrderList(mLaborCode,mOrderby);
-//	    	int pos = mOrderAdapter.getPosition(mOrder);
 	    	return;
 		}
 	}

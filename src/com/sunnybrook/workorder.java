@@ -128,6 +128,16 @@ public class workorder implements Serializable{
 		} catch (ParseException e) {
 //			SysLog.AppendLog("Debug", "workorder", "reportdate is null!");
 		}
+		try {
+			actstart = WIFIApp.myDateFormat.myParse(_HashMap.get("actstart"));
+		} catch (ParseException e) {
+//			SysLog.AppendLog("Debug", "workorder", "actstart is null!");
+		}
+		try {
+			actfinish = WIFIApp.myDateFormat.myParse(_HashMap.get("actfinish"));
+		} catch (ParseException e) {
+//			SysLog.AppendLog("Debug", "workorder", "actfinish is null!");
+		}
 		phone = _HashMap.get("phone");
 		locationdesc = _HashMap.get("locdesc");
 		empcomments = _HashMap.get("remp");

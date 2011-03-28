@@ -6,6 +6,7 @@ import java.util.List;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -20,7 +21,11 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 
 public class CraftordersActivity extends ListActivity  implements OnItemClickListener,OnItemSelectedListener{
-
+	static final int OWNORDER_ACTIVITY_ID = 1;
+	static final int CRAFTORDER_ACTIVITY_ID = 2;
+	final static int RESULT_CLOSE_ID = 0;
+	final static int RESULT_OPEN_ID = 1;
+	
 	static private craftOrdersAdapter mOrderAdapter;
 	static private ProgressDialog mProgressDialog;
 	static private RefreshOrderListThread mRefreshOrderListThread;
@@ -162,9 +167,17 @@ public class CraftordersActivity extends ListActivity  implements OnItemClickLis
 	}
 	
 	@Override
-	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		// TODO Auto-generated method stub
-		
+	public void onItemClick(AdapterView<?> _AdapterView, View arg1, int _pos, long arg3) {
+		switch(_AdapterView.getId()) {
+		case android.R.id.list:
+			craftorder mItem = (craftorder) _AdapterView.getItemAtPosition(_pos);
+			Intent mIntent = new Intent(this,CraftOrderDetailActivity.class);
+			mIntent.putExtra("craftorder", mItem);
+			this.startActivityForResult(mIntent,CRAFTORDER_ACTIVITY_ID);
+			break;
+		default:
+			break;
+		}
 	}
 
 	@Override
@@ -183,6 +196,28 @@ public class CraftordersActivity extends ListActivity  implements OnItemClickLis
 				break;
 			default:
 				break;
+		}
+	}
+
+	@Override
+	public void onActivityResult(int _requestCode, int _resultCode, Intent _data) {
+		super.onActivityResult(_requestCode, _resultCode, _data);
+		switch (_requestCode) {
+			case CRAFTORDER_ACTIVITY_ID:
+				if(_resultCode == RESULT_OPEN_ID){
+					craftorder mCraftOrder = (craftorder) _data.getSerializableExtra("craftorder");
+					ownorder mOwnOrder = WIFIApp.localdb.Craft2Own(mCraftOrder, WIFIApp.myConfig.getLabor_code());
+					if(mOwnOrder!= null) {
+						Intent mIntent = new Intent(this,OwnOrderDetailActivity.class);
+						mIntent.putExtra("ownorder", mOwnOrder);
+						this.startActivityForResult(mIntent, OWNORDER_ACTIVITY_ID);
+					}
+				}
+				break;
+			case OWNORDER_ACTIVITY_ID:
+				refreshOrderList(mCraft,mOrderby);
+				break;
+			default: break;
 		}
 	}
 

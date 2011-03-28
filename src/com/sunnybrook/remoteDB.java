@@ -142,5 +142,91 @@ public class remoteDB {
 		
 		return orderList;
 	}
-
+	
+	public boolean saveOwnOrder(ownorder _order){
+		List<labtrans> mLabTransList = _order.getTranslist();
+		if(mLabTransList!= null) {
+			for(int i=0; i<mLabTransList.size();i++) {
+					if(!saveLabTrans(mLabTransList.get(i)))
+						return false;
+			}
+		}
+		
+		return false;
+	}
+	
+	public boolean saveLabTrans(labtrans _labtrans) {
+		String sql;
+		if(_labtrans.getLabTransId()==0) {
+			int mLabTransId = 0;
+			PreparedStatement mPs = null;
+			ResultSet mRs = null;
+			sql="select max(labtransid) from labtrans;";
+	 		try {
+				mPs = conn.prepareStatement(sql);
+				mRs = mPs.executeQuery();
+				if (mRs.next())
+					mLabTransId = mRs.getInt(0);
+	 			mRs.close();
+ 			} catch (SQLException e) {
+				SysLog.AppendLog("Info", "remoteDB(saveLabTrans)", e.getMessage());
+			}
+			mLabTransId++;
+			sql = "insert into labtrans " 
+                + "(transdate,laborcode,regularhrs,enterby,enterdate,"
+                + "startdate,finishdate,transtype,location,orgid," 
+                + "siteid,refwo,labtransid,linecost,rollup,othrs," 
+                + "otscale,payrate,outside,genapprservreceipt,enteredastask) " 
+                + "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+			try {
+				mPs = conn.prepareStatement(sql);
+				mPs.setDate(1,(Date) _labtrans.getTransDate());
+				mPs.setString(2,_labtrans.getLaborCode());
+				mPs.setFloat(3, _labtrans.getRegularHrs());
+				mPs.setString(4,_labtrans.getEnterBy());
+				mPs.setDate(5, (Date) _labtrans.getEnterDate());
+				mPs.setDate(6, (Date) _labtrans.getStartDate());
+				mPs.setDate(7, (Date) _labtrans.getStartDate());
+				mPs.setString(8,"WORK");
+				mPs.setString(9,_labtrans.getLocation());
+				mPs.setString(10, "MAXORG");
+				mPs.setString(11, "MAXSITE");
+				mPs.setString(12,_labtrans.getRefWo());
+				mPs.setInt(13, mLabTransId);
+				mPs.setInt(14,0);
+				mPs.setString(15,"N");
+				mPs.setInt(16,0);
+				mPs.setFloat(17,(float) 1.5);
+				mPs.setInt(18,0);
+				mPs.setString(19,"N");
+				mPs.setString(20,"Y");
+				mPs.setString(21,"N");
+				mPs.executeUpdate();
+			} catch (SQLException e) {
+				SysLog.AppendLog("Info", "remoteDB(saveLabTrans)", e.getMessage());
+			}
+		}
+		else {
+			sql = "update labtrans set laborcode = ? , regularhrs = ?, " 
+				+  " finishdate = ?, startdate = ? " 
+				+ " where labtransid = ?; ";
+			try {
+				PreparedStatement mPs = conn.prepareStatement(sql);
+				mPs.setString(1,_labtrans.getLaborCode());
+				mPs.setFloat(2, _labtrans.getRegularHrs());
+				mPs.setDate(3, (Date) _labtrans.getStartDate());
+				mPs.setDate(4, (Date) _labtrans.getStartDate());
+				mPs.setInt(5,_labtrans.getLabTransId());
+				mPs.executeUpdate();
+			} catch (SQLException e) {
+				SysLog.AppendLog("Info", "remoteDB(saveLabTrans)", e.getMessage());
+			}
+/*			
+            rcmd.CommandText = "update labtrans set laborcode='" & trRow("laborcode") & "',regularhrs=" _
+            & trRow("regularhrs") & ",finishdate='" & trRow("startdate") & "',startdate='" & trRow("startdate") & "' " _
+            & " where labtransid = " & trRow("labtransid")
+*/
+		}
+		return true;
+	}
 }
