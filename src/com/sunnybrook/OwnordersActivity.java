@@ -91,6 +91,7 @@ public class OwnordersActivity extends ListActivity  implements OnClickListener,
     		switch(msg.arg1)
     		{
     			case 0:
+//    				if(mProgressDialog == null)	mProgressDialog  = new ProgressDialog(parent);
     				mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
     				mProgressDialog.setMessage("Loading data ........");
     				mProgressDialog.show();

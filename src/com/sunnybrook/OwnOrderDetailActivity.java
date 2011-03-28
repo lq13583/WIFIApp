@@ -42,6 +42,7 @@ public class OwnOrderDetailActivity extends Activity implements OnClickListener,
 	private LabTransAdapter mLabTransAdapter;
 	
 	public void onCreate(Bundle savedInstanceState) {
+		SyncDataTask.mEnabled = false;	//Disable the Sync Data Task;
     	setTitle("Own Order Detail");
     	super.onCreate(savedInstanceState);
     	setContentView(R.layout.ownorderdetailactivity);
@@ -202,8 +203,9 @@ public class OwnOrderDetailActivity extends Activity implements OnClickListener,
     			String mLaborcode = mEditText.getText().toString();
     			if(mLaborcode.equals("")) return;
     			mEditText = (EditText) findViewById(R.id.hrs);
+
     			float mHrs = Float.parseFloat(mEditText.getText().toString());
-    			if (mHrs == 0) return;
+//    			if (mHrs == 0) return;
     			Button mButton = (Button) findViewById(R.id.btnTransdate);
     			Date mTransDate;
     			try {
@@ -323,6 +325,7 @@ public class OwnOrderDetailActivity extends Activity implements OnClickListener,
     	Intent resultIntent = new Intent();
     	resultIntent.putExtra("ownorder", mOrder);
     	setResult(0,resultIntent);
+    	SyncDataTask.mEnabled = true;	//Re-enable the Sync Data Task
     	super.finish();
     }
     
