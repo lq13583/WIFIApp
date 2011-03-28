@@ -1,233 +1,273 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 			  android:layout_width="fill_parent"
   			  android:orientation="vertical"
-  			  android:layout_height="wrap_content"
-  			  android:padding="5dp">
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-			  android:id="@+id/ScrollView"
-  		      android:layout_width="fill_parent"
-  		      android:layout_height="wrap_content">
-    <LinearLayout android:layout_width= "match_parent"
-    			  android:layout_height="wrap_content"
-    			  android:orientation="vertical" >
-	<LinearLayout android:id="@+id/data_row_1"
-				  android:layout_width="match_parent"
-				  android:layout_height="wrap_content"
-				  android:orientation="horizontal" >
-	  	<TextView android:text="Wonum:"
-	  			  android:layout_width="wrap_content"
-	  			  android:layout_height="match_parent" />
-	  	<TextView android:id="@+id/wonum"
-  				  android:layout_width="wrap_content"
-  				  android:layout_height="match_parent"
-  				  android:background="#707070"
-  				  android:text="wonum"
-  				  android:paddingRight="10dp" />
-  		<TextView android:text="Req Date:"
-  				  android:layout_width="wrap_content"
-  				  android:layout_height="match_parent" />
-  		<TextView android:id="@+id/reportdate"
-  				  android:layout_width="wrap_content"
-  				  android:layout_height="match_parent"
-  				  android:background="#707070"
-  				  android:text="Report Date"
-   				  android:paddingRight="10dp"  />
-	</LinearLayout>
-	<LinearLayout android:id="@+id/data_row_2"
-				  android:layout_width="match_parent"
-				  android:layout_height="wrap_content"
-				  android:orientation="horizontal" 
-				  android:paddingTop="2dp"
-				  android:layout_below="@id/data_row_1">
-		<TextView android:text="Reported by:"
-				  android:layout_width="wrap_content"
-				  android:layout_height="match_parent" />
-		<TextView android:id="@+id/reportedby"
-				  android:layout_width="wrap_content"
-				  android:layout_height="match_parent"
-  				  android:background="#707070"
-				  android:text="Reported by"
-				  android:paddingRight="10dp" />
-		<TextView android:id="@+id/wo3"
-				  android:layout_width="wrap_content"
-				  android:layout_height="match_parent"
-  				  android:background="#707070"
-				  android:text="Reported by name"
-				  android:paddingRight="10dp" />
-	</LinearLayout>
-	<LinearLayout android:id="@+id/data_row_3"
-				  android:layout_width="match_parent"
-				  android:layout_height="wrap_content"
-				  android:orientation="horizontal"
-				  android:paddingTop="2dp"
-				  android:layout_below="@id/data_row_2">
-		<TextView android:text="Phone/Ext:"
-				  android:layout_width="wrap_content"
-				  android:layout_height="match_parent" />
-		<TextView android:id="@+id/phone"
-				  android:layout_width="wrap_content"
-				  android:layout_height="match_parent"
-  				  android:background="#707070"
-				  android:text="Phone/Ext" />"
-	</LinearLayout>
-	<LinearLayout android:id="@+id/data_row_4"
-				  android:layout_width="match_parent"
-				  android:layout_height="wrap_content"
-  				  android:orientation="horizontal"
-				  android:paddingTop="2dp"
-				  android:layout_below="@id/data_row_3">
-		<TextView android:text="Location:"
-				  android:layout_width="wrap_content"
-				  android:layout_height="match_parent" />
-		<TextView android:id="@+id/location"
-				  android:layout_width="wrap_content"
-				  android:layout_height="match_parent"
-  				  android:background="#707070"
-				  android:text="Location" />
-	</LinearLayout>
-	<LinearLayout android:id="@+id/data_row_5"
-				  android:layout_width="match_parent"
-				  android:layout_height="wrap_content"
-  				  android:orientation="vertical"
-				  android:paddingTop="2dp"
-				  android:layout_below="@id/data_row_4">
-		<TextView android:id="@+id/locationdesc"
-				  android:layout_width="match_parent"
-				  android:layout_height="wrap_content"
-  				  android:background="#707070"
-				  android:text="location description" />
-		<TextView android:text="Description:"
-				  android:layout_width="wrap_content"
-				  android:layout_height="wrap_content" />"
-		<TextView android:id="@+id/comments"
-				  android:layout_width="match_parent"
-				  android:layout_height="wrap_content"
-  				  android:background="#707070"
-				  android:text="Comments" />
-		<TextView android:text="Employee Comments:"
-				  android:layout_width="wrap_content"
-				  android:layout_height="wrap_content" />"
-		<TextView android:id="@+id/empcomments"
-				  android:layout_width="match_parent"
-				  android:layout_height="wrap_content"
-  				  android:background="#707070"
-				  android:text="Comments" />
-		<TableLayout android:layout_width="fill_parent"
-				     android:layout_height="wrap_content"
-				     android:stretchColumns="1">
-			<TableRow android:paddingTop="2dp">
-				<TextView android:text="khname:"/>
-				<TextView android:id="@+id/khname"
+  			  android:layout_height="fill_parent"
+  			  android:padding="2dp" >
+	<ScrollView	android:id="@+id/ScrollView"
+ 	 		    android:layout_width="fill_parent"
+  			    android:layout_height="fill_parent"
+  			    android:layout_weight="2">
+    	<LinearLayout android:layout_width= "match_parent"
+    				  android:layout_height="wrap_content"
+    				  android:orientation="vertical" >
+			<LinearLayout android:id="@+id/data_row_1"
+						  android:layout_width="match_parent"
+						  android:layout_height="wrap_content"
+						  android:orientation="horizontal" >
+		  		<TextView android:text="Wonum:"
+		  				  android:layout_width="wrap_content"
+		  				  android:layout_height="match_parent"
+		  				  android:padding="2dp" />
+		  		<TextView android:id="@+id/wonum"
+  						  android:layout_width="wrap_content"
+  						  android:layout_height="match_parent"
+  						  android:background="#707070"
+  						  android:text="wonum"
+  						  android:paddingRight="5dp" />
+ 	 			<TextView android:text="Req Date:"
+	  					  android:layout_width="wrap_content"
+  						  android:layout_height="match_parent"
+  						  android:padding="2dp" />
+	  			<TextView android:id="@+id/reportdate"
+  						  android:layout_width="wrap_content"
+  						  android:layout_height="match_parent"
+  						  android:background="#707070"
+  						  android:text="Report Date"
+   						  android:paddingRight="5dp"  />
+			</LinearLayout>
+			<LinearLayout android:id="@+id/data_row_2"
+						  android:layout_width="match_parent"
+						  android:layout_height="wrap_content"
+						  android:orientation="horizontal" 
+						  android:paddingTop="2dp"
+						  android:layout_below="@id/data_row_1">
+				<TextView android:text="Reported by:"
+						  android:layout_width="wrap_content"
+						  android:layout_height="match_parent" />
+				<TextView android:id="@+id/reportedby"
+						  android:layout_width="wrap_content"
+						  android:layout_height="match_parent"
+  						  android:background="#707070"
+						  android:text="Reported by"
+						  android:paddingRight="10dp" />
+				<TextView android:id="@+id/wo3"
+						  android:layout_width="wrap_content"
+						  android:layout_height="match_parent"
+  						  android:background="#707070"
+						  android:text="Reported by name"
+						  android:paddingRight="10dp" />
+			</LinearLayout>
+			<LinearLayout android:id="@+id/data_row_3"
+						  android:layout_width="match_parent"
+						  android:layout_height="wrap_content"
+						  android:orientation="horizontal"
+						  android:paddingTop="2dp"
+						  android:layout_below="@id/data_row_2">
+				<TextView android:text="Phone/Ext:"
+						  android:layout_width="wrap_content"
+						  android:layout_height="match_parent" />
+				<TextView android:id="@+id/phone"
+						  android:layout_width="wrap_content"
+						  android:layout_height="match_parent"
+  						  android:background="#707070"
+						  android:text="Phone/Ext" />"
+			</LinearLayout>
+			<LinearLayout android:id="@+id/data_row_4"
+						  android:layout_width="match_parent"
+						  android:layout_height="wrap_content"
+  						  android:orientation="horizontal"
+						  android:paddingTop="2dp"
+						  android:layout_below="@id/data_row_3">
+				<TextView android:text="Location:"
+						  android:layout_width="wrap_content"
+						  android:layout_height="match_parent" />
+				<TextView android:id="@+id/location"
+						  android:layout_width="wrap_content"
+						  android:layout_height="match_parent"
+  						  android:background="#707070"
+						  android:text="Location" />
+			</LinearLayout>
+			<LinearLayout android:id="@+id/data_row_5"
+						  android:layout_width="match_parent"
+						  android:layout_height="wrap_content"
+  						  android:orientation="vertical"
+						  android:paddingTop="2dp"
+						  android:layout_below="@id/data_row_4">
+				<TextView android:id="@+id/locationdesc"
+						  android:layout_width="match_parent"
+						  android:layout_height="wrap_content"
+  						  android:background="#707070"
+						  android:text="location description" />
+				<TextView android:text="Description:"
+						  android:layout_width="wrap_content"
+						  android:layout_height="wrap_content" />"
+				<TextView android:id="@+id/comments"
+						  android:layout_width="match_parent"
+						  android:layout_height="wrap_content"
+  						  android:background="#707070"
+						  android:text="Comments" />
+				<TextView android:text="Employee Comments:"
+						  android:layout_width="wrap_content"
+						  android:layout_height="wrap_content" />"
+				<TextView android:id="@+id/empcomments"
+						  android:layout_width="match_parent"
+						  android:layout_height="wrap_content"
+  						  android:background="#707070"
+						  android:text="Comments" />
+				<TableLayout android:layout_width="fill_parent"
+						     android:layout_height="wrap_content"
+						     android:stretchColumns="1">
+					<TableRow android:paddingTop="2dp">
+						<TextView android:text="khname:"/>
+						<TextView android:id="@+id/khname"
+			   					  android:background="#707070"
+								  android:text= "khname" />
+					</TableRow>	   
+					<TableRow android:paddingTop="2dp">
+						<TextView android:text="kTitile:"/>
+						<TextView android:id="@+id/ktitle"
+			   					  android:background="#707070"
+								  android:text= "ktitle" />
+					</TableRow>	   
+					<TableRow android:paddingTop="2dp">
+						<TextView android:text="kDept:"/>
+						<TextView android:id="@+id/kdept"
+			   					  android:background="#707070"
+								  android:text= "kdept" />
+					</TableRow>	   
+					<TableRow android:paddingTop="2dp">
+						<TextView android:text="kCamp:"/>
+						<TextView android:id="@+id/kcamp"
+			   					  android:background="#707070"
+								  android:text= "kcamp" />
+					</TableRow>	   
+					<TableRow android:paddingTop="2dp">
+						<TextView android:text="kCost:"/>
+						<TextView android:id="@+id/kcost"
+			   					  android:background="#707070"
+								  android:text= "kcost" />
+					</TableRow>	   
+				</TableLayout>
+				<TableLayout android:layout_width="fill_parent"
+						     android:layout_height="wrap_content"
+						     android:stretchColumns="1,2,3,4">
+					<TableRow android:paddingTop="2dp">
+						<TextView android:text="kCods:"/>
+						<TextView android:id="@+id/kcod1"
+			   					  android:background="#707070"
+								  android:text= "kcod1" />
+						<TextView android:id="@+id/kcod2"
+			   					  android:background="#707070"
+								  android:text= "kcod2" />
+						<TextView android:id="@+id/kcod3"
+			   					  android:background="#707070"
+				 			  	  android:text= "kcod3" />
+						<TextView android:id="@+id/kcod4"
+			   					  android:background="#707070"
+								  android:text= "kcod4" />
+					</TableRow>
+					<TableRow android:paddingTop="2dp">
+						<TextView android:text="kCodrs:"/>
+						<TextView android:id="@+id/kcodr1"
+			   					  android:background="#707070"
+								  android:text= "kcodr1" />
+						<TextView android:id="@+id/kcodr2"
+			   					  android:background="#707070"
+								  android:text= "kcodr2" />
+						<TextView android:id="@+id/kcodr3"
+			   					  android:background="#707070"
+								  android:text= "kcodr3" />
+						<TextView android:id="@+id/kcodr4"
+			   					  android:background="#707070"
+								  android:text= "kcodr4" />
+					</TableRow>
+					<TableRow android:paddingTop="2dp">
+						<TextView android:text="kCors:"/>
+						<TextView android:id="@+id/kcor1"
+	   							  android:background="#707070"
+								  android:text= "kcor1" />
+						<TextView android:id="@+id/kcor2"
+	   							  android:background="#707070"
+								  android:text= "kcor2" />
+						<TextView android:id="@+id/kcor3"
+	   							  android:background="#707070"
+								  android:text= "kcor3" />
+						<TextView android:id="@+id/kcor4"
+	   							  android:background="#707070"
+								  android:text= "kcor4" />
+					</TableRow>
+					<TableRow android:paddingTop="2dp">
+						<TextView android:text="kqs:"/>
+						<TextView android:id="@+id/kq1"
+	   							  android:background="#707070"
+								  android:text= "kq1" />
+						<TextView android:id="@+id/kq2"
+	   							  android:background="#707070"
+								  android:text= "kq2" />
+						<TextView android:id="@+id/kq3"
+	   							  android:background="#707070"
+								  android:text= "kq3" />
+						<TextView android:id="@+id/kq4"
+	   							  android:background="#707070"
+								  android:text= "kq4" />
+					</TableRow>
+				</TableLayout>
+				<TextView android:text="Kcom:"
+						  android:layout_width="wrap_content"
+						  android:layout_height="wrap_content" />
+				<TextView android:id="@+id/kcom"
+						  android:layout_width="match_parent"
+						  android:layout_height="wrap_content"
 	   					  android:background="#707070"
-						  android:text= "khname" />
-			</TableRow>	   
-			<TableRow android:paddingTop="2dp">
-				<TextView android:text="kTitile:"/>
-				<TextView android:id="@+id/ktitle"
-	   					  android:background="#707070"
-						  android:text= "ktitle" />
-			</TableRow>	   
-			<TableRow android:paddingTop="2dp">
-				<TextView android:text="kDept:"/>
-				<TextView android:id="@+id/kdept"
-	   					  android:background="#707070"
-						  android:text= "kdept" />
-			</TableRow>	   
-			<TableRow android:paddingTop="2dp">
-				<TextView android:text="kCamp:"/>
-				<TextView android:id="@+id/kcamp"
-	   					  android:background="#707070"
-						  android:text= "kcamp" />
-			</TableRow>	   
-			<TableRow android:paddingTop="2dp">
-				<TextView android:text="kCost:"/>
-				<TextView android:id="@+id/kcost"
-	   					  android:background="#707070"
-						  android:text= "kcost" />
-			</TableRow>	   
-		</TableLayout>
-		<TableLayout android:layout_width="fill_parent"
-				     android:layout_height="wrap_content"
-				     android:stretchColumns="1,2,3,4">
-			<TableRow android:paddingTop="2dp">
-				<TextView android:text="kCods:"/>
-				<TextView android:id="@+id/kcod1"
-	   					  android:background="#707070"
-						  android:text= "kcod1" />
-				<TextView android:id="@+id/kcod2"
-	   					  android:background="#707070"
-						  android:text= "kcod2" />
-				<TextView android:id="@+id/kcod3"
-	   					  android:background="#707070"
-		 			  	  android:text= "kcod3" />
-				<TextView android:id="@+id/kcod4"
-	   					  android:background="#707070"
-						  android:text= "kcod4" />
-			</TableRow>
-			<TableRow android:paddingTop="2dp">
-				<TextView android:text="kCodrs:"/>
-				<TextView android:id="@+id/kcodr1"
-	   					  android:background="#707070"
-						  android:text= "kcodr1" />
-				<TextView android:id="@+id/kcodr2"
-	   					  android:background="#707070"
-						  android:text= "kcodr2" />
-				<TextView android:id="@+id/kcodr3"
-	   					  android:background="#707070"
-						  android:text= "kcodr3" />
-				<TextView android:id="@+id/kcodr4"
-	   					  android:background="#707070"
-						  android:text= "kcodr4" />
-			</TableRow>
-			<TableRow android:paddingTop="2dp">
-				<TextView android:text="kCors:"/>
-				<TextView android:id="@+id/kcor1"
-	   					  android:background="#707070"
-						  android:text= "kcor1" />
-				<TextView android:id="@+id/kcor2"
-	   					  android:background="#707070"
-						  android:text= "kcor2" />
-				<TextView android:id="@+id/kcor3"
-	   					  android:background="#707070"
-						  android:text= "kcor3" />
-				<TextView android:id="@+id/kcor4"
-	   					  android:background="#707070"
-						  android:text= "kcor4" />
-			</TableRow>
-			<TableRow android:paddingTop="2dp">
-				<TextView android:text="kqs:"/>
-				<TextView android:id="@+id/kq1"
-	   					  android:background="#707070"
-						  android:text= "kq1" />
-				<TextView android:id="@+id/kq2"
-	   					  android:background="#707070"
-						  android:text= "kq2" />
-				<TextView android:id="@+id/kq3"
-	   					  android:background="#707070"
-						  android:text= "kq3" />
-				<TextView android:id="@+id/kq4"
-	   					  android:background="#707070"
-						  android:text= "kq4" />
-			</TableRow>
-		</TableLayout>
-		<TextView android:text="Kcom:"
-				  android:layout_width="wrap_content"
-				  android:layout_height="wrap_content" />
-		<TextView android:id="@+id/kcom"
-				  android:layout_width="match_parent"
-				  android:layout_height="wrap_content"
-	   					  android:background="#707070"
-				  android:text="kcom" />
-	</LinearLayout>
-</LinearLayout>
-</ScrollView>
+						  android:text="kcom" />
+			</LinearLayout>
+		</LinearLayout>
+	</ScrollView>
 	<LinearLayout android:id = "@+id/update_data_row"
-				  android:layout_width="match_parent"
-				  android:layout_height="wrap_content"
+				  android:layout_width="fill_parent"
+				  android:layout_height="fill_parent"
 				  android:orientation="vertical"
+				  android:padding="2dp"
+				  android:layout_weight="1" >
+		<TableLayout android:layout_width="fill_parent"
+					 android:layout_height="wrap_content"
+					 android:stretchColumns="*"> 
+			<TableRow android:paddingTop="2dp">
+				<TextView android:text="Status:"
+						  android:layout_width="wrap_content"
+						  android:layout_height="match_parent" />
+				<TextView android:text="Read Status:"
+						  android:layout_width="wrap_content"
+						  android:layout_height="match_parent" />
+			</TableRow>
+			<TableRow android:paddingTop="2dp">
+				<Spinner android:id="@+id/status"
+						  android:layout_width="wrap_content"
+						  android:layout_height="wrap_content"
+						  android:textSize="8pt"
+						  android:prompt="@string/select_order_status" />
+				<Spinner android:id="@+id/readstatus"
+						  android:layout_width="wrap_content"
+						  android:layout_height="wrap_content"
+						  android:textSize="8pt"
+						  android:prompt="@string/select_order_readstatus" />
+			</TableRow>
+			<TableRow android:paddingTop="2dp">
+				<Button android:text="Start Date"
+						  android:layout_width="wrap_content"
+						  android:layout_height="match_parent"
+						  android:id="@+id/btnActstart" />
+				<Button android:text="Complete Date"
+						  android:layout_width="wrap_content"
+						  android:layout_height="match_parent"
+						  android:id="@+id/btnActfinish" />
+			</TableRow>
+		</TableLayout>		  
+<!-- 			
 				  android:layout_alignParentBottom = "true"
-				  android:layout_below="@id/ScrollView" >
+				  android:layout_below="@id/ScrollView"  -->
+<!-- 
 		<LinearLayout android:id="@+id/update_data_row_1"
 					  android:layout_width="match_parent"
 					  android:layout_height="wrap_content"
@@ -239,7 +279,7 @@
 			<Spinner android:id="@+id/status"
 					  android:layout_width="wrap_content"
 					  android:layout_height="wrap_content"
-					  android:textSize="10pt"
+					  android:textSize="8pt"
 					  android:prompt="@string/select_order_status" />
 			<TextView android:text="ReadStatus:"
 					  android:layout_width="wrap_content"
@@ -247,7 +287,7 @@
 			<Spinner android:id="@+id/readstatus"
 					  android:layout_width="wrap_content"
 					  android:layout_height="wrap_content"
-					  android:textSize="10pt"
+					  android:textSize="8pt"
 					  android:prompt="@string/select_order_readstatus" />
 		</LinearLayout>
 		<LinearLayout android:id="@+id/update_data_row_2"
@@ -255,18 +295,111 @@
 					  android:layout_height="wrap_content"
   					  android:orientation="horizontal"
 					  android:paddingTop="2dp" >
+			<TextView android:text="Start Date:"
+					  android:layout_width="fill_parent"
+					  android:layout_height="fill_parent"
+					  android:layout_weight="1" />
+			<EditText android:id="@+id/actstart"
+					  android:text="Start Date"
+					  android:layout_height="fill_parent"
+					  android:layout_width="fill_parent"
+					  android:layout_weight="2"
+					  android:inputType="date" />
+		</LinearLayout>
+ 		<LinearLayout android:id="@+id/update_data_row_3"
+					  android:layout_width="match_parent"
+					  android:layout_height="wrap_content"
+  					  android:orientation="horizontal"
+					  android:paddingTop="2dp" >
+			<TextView android:text="Complete Date:"
+					  android:layout_width="fill_parent"
+					  android:layout_height="fill_parent"
+					  android:layout_weight="1"/>
+			<EditText android:id="@+id/actfinish"
+					  android:text="Complete Date"
+					  android:layout_height="fill_parent"
+					  android:layout_width="fill_parent"
+					  android:layout_weight="2" 
+					  android:inputType="date" />
+		</LinearLayout>		
+-->		
+		<LinearLayout android:id="@+id/update_data_row_4"
+					  android:layout_width="match_parent"
+					  android:layout_height="wrap_content"
+  					  android:orientation="vertical"
+					  android:paddingTop="2dp" >
+			<TextView android:text="My Comment:"
+					  android:layout_width="wrap_content"
+					  android:layout_height="wrap_content"/>
+			<EditText android:id="@+id/mycomment"
+					  android:layout_width="match_parent"
+					  android:layout_height="wrap_content"
+					  android:minLines = "5"
+					  android:inputType="text|textMultiLine"
+					  android:gravity="top" />
+		</LinearLayout>
+		<TableLayout android:layout_width="fill_parent"
+					 android:layout_height="wrap_content"
+					 android:stretchColumns="*">
+			<TableRow android:paddingTop="2dp">
+				<TextView android:text = "Labor Code:"
+						  android:layout_width="wrap_content"
+						  android:layout_height="fill_parent" />
+				<TextView android:text = "Date:"
+						  android:layout_width="wrap_content"
+						  android:layout_height="fill_parent" />
+				<TextView android:text = "Hrs:"
+						  android:layout_width="wrap_content"
+						  android:layout_height="fill_parent" />
+			</TableRow>
+			<TableRow android:paddingTop="2dp">
+				<EditText android:hint="Labor code"
+						  android:inputType="number"
+						  android:id="@+id/labor_code"
+						  android:layout_width="wrap_content"
+						  android:layout_height="fill_parent" />
+				<Button android:id="@+id/btnTransdate"
+						android:layout_width="wrap_content"
+						android:layout_height="fill_parent"
+						android:text="Date" />
+ 				<EditText android:text = "0"
+ 						  android:layout_width="wrap_content"
+ 						  android:layout_height="fill_parent"
+ 						  android:inputType="numberDecimal"
+ 						  android:id="@+id/hrs" />
+			</TableRow>
+		</TableLayout>
+		<LinearLayout android:layout_width="match_parent"
+					  android:layout_height="wrap_content"
+					  android:orientation="horizontal">
+<!--			<TextView />
+			<EditText />
+ -->
 		</LinearLayout>
   		<LinearLayout android:id="@+id/bottom_control_bar"
-	  				  android:layout_width="match_parent"
+	  				  android:layout_width="fill_parent"
 	  				  android:layout_height="wrap_content"
 	  				  android:orientation="horizontal"
-	  				  android:gravity="center"
-	  				  android:layout_alignParentBottom="true" >	  
-	  		<Button android:id="@+id/btnClose"
-		  			android:text="Close"
-		  			android:layout_width="wrap_content"
-		  			android:layout_height="wrap_content"/>
+ 	  				  android:layout_alignParentBottom="true">
+			<ListView android:id="@+id/lvlabtrans"
+						  android:layout_width="fill_parent"
+						  android:layout_height="fill_parent"
+						  android:layout_weight="1">
+			</ListView>
+			<LinearLayout android:layout_width="fill_parent"
+						  android:layout_height="fill_parent"
+						  android:orientation="vertical"
+						  android:layout_weight="1"
+						  android:gravity="center">
+	  			<Button android:id="@+id/btnAdd"
+		  				android:text="Add Time"
+		  				android:layout_width="wrap_content"
+		  				android:layout_height="wrap_content"/>
+	  			<Button android:id="@+id/btnClose"
+		  				android:text="Close"
+		  				android:layout_width="wrap_content"
+		  				android:layout_height="wrap_content"/>
+			</LinearLayout>
 		</LinearLayout>
 	</LinearLayout>
-</RelativeLayout>
-
+</LinearLayout>

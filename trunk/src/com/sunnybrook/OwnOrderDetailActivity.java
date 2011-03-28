@@ -1,21 +1,47 @@
 package com.sunnybrook;
 
+import java.text.ParseException;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemSelectedListener;
 
-public class OwnOrderDetailActivity extends Activity implements OnClickListener,OnItemSelectedListener{
+public class OwnOrderDetailActivity extends Activity implements OnClickListener,OnItemSelectedListener,OnItemClickListener{
+	static final int DATE_START_ID = 0;
+	static final int DATE_FINISH_ID = 1;
+	static final int DATE_TRANS_ID = 2;
+	private MyDateFormat mDateFormat = new MyDateFormat("yyyy-MM-dd");
+	private DatePickerDialog mDatePicker;
 	private ownorder mOrder;
-    public void onCreate(Bundle savedInstanceState) {
+	private int mDateType = 0;
+	private int mYear;
+	private int mMonth;
+	private int mDay;
+
+	private labtrans mLabTrans;
+	private LabTransAdapter mLabTransAdapter;
+	
+	public void onCreate(Bundle savedInstanceState) {
     	setTitle("Own Order Detail");
     	super.onCreate(savedInstanceState);
     	setContentView(R.layout.ownorderdetailactivity);
@@ -23,7 +49,7 @@ public class OwnOrderDetailActivity extends Activity implements OnClickListener,
     	TextView mTextView = (TextView) findViewById(R.id.wonum);
     	mTextView.setText(mOrder.getOrderId());
     	mTextView = (TextView) findViewById(R.id.reportdate);
-    	mTextView.setText(new MyDateFormat().myFormat(mOrder.getReportdate()));
+    	mTextView.setText(WIFIApp.myDateFormat.myFormat(mOrder.getReportdate()));
     	mTextView = (TextView) findViewById(R.id.reportedby);
     	mTextView.setText(mOrder.getReportedby());
     	mTextView = (TextView) findViewById(R.id.wo3);
@@ -82,6 +108,11 @@ public class OwnOrderDetailActivity extends Activity implements OnClickListener,
     	mTextView.setText(mOrder.getKq4());
     	mTextView = (TextView) findViewById(R.id.kcom);
     	mTextView.setText(mOrder.getKcom());
+    	
+    	EditText mEditText = (EditText) findViewById(R.id.mycomment);
+    	mEditText.setText(mOrder.getMyComments());
+    	mEditText = (EditText) findViewById(R.id.labor_code);
+    	mEditText.setText(WIFIApp.myConfig.getLabor_code());
 
     	Spinner mSpinner = (Spinner) findViewById(R.id.status);
     	ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
@@ -101,22 +132,194 @@ public class OwnOrderDetailActivity extends Activity implements OnClickListener,
 
     	Button mButton = (Button) findViewById(R.id.btnClose);
     	mButton.setOnClickListener(this);
+    	mButton = (Button) findViewById(R.id.btnAdd);
+    	mButton.setOnClickListener(this);
+    	mButton = (Button) findViewById(R.id.btnActstart);
+    	mButton.setText("Start Date: " + mDateFormat.myFormat(mOrder.getActstart()));
+    	mButton.setOnClickListener(this);
+    	mButton = (Button) findViewById(R.id.btnActfinish);
+    	mButton.setText("Complete Date: " + mDateFormat.myFormat(mOrder.getActfinish()));
+    	mButton.setOnClickListener(this);
+    	mButton = (Button) findViewById(R.id.btnTransdate);
+    	mButton.setText(mDateFormat.myFormat(new Date()));
+    	mButton.setOnClickListener(this);
+    	
+    	mLabTransAdapter = new LabTransAdapter(this,R.layout.list_labtrans);    	
+    	ListView mListView = (ListView) findViewById(R.id.lvlabtrans);
+    	mListView.setAdapter(mLabTransAdapter);
+    	mListView.setOnItemClickListener(this);
+    	
+    	refreshLabTransList();
+    	
+    }
+
+    private DatePickerDialog.OnDateSetListener mDateSetListener =
+            new DatePickerDialog.OnDateSetListener() {
+
+                public void onDateSet(DatePicker view, int year, 
+                                      int monthOfYear, int dayOfMonth) {
+                    mYear = year;
+                    mMonth = monthOfYear;
+                    mDay = dayOfMonth;
+                    updateDate();
+                }
+
+            };
+
+    private void updateDate(){
+    	Button mButton;
+    	Date mDate = new Date(mYear-1900,mMonth,mDay);
+    	switch(mDateType) {
+    		case DATE_START_ID:
+    			mButton =(Button) findViewById(R.id.btnActstart);
+    			mButton.setText("Start Date: " + mDateFormat.myFormat(mDate));
+    			mOrder.setActstart(mDate);
+    			WIFIApp.localdb.updateActstart(mOrder);
+    			break;
+    		case DATE_FINISH_ID:
+    			mButton =(Button) findViewById(R.id.btnActfinish);
+    			mButton.setText("Complete Date: " + mDateFormat.myFormat(mDate));
+    			mOrder.setActfinish(mDate);
+    			WIFIApp.localdb.updateActfinish(mOrder);
+    			break;
+    		case DATE_TRANS_ID:
+    			mButton =(Button) findViewById(R.id.btnTransdate);
+    			mButton.setText(mDateFormat.myFormat(mDate));
+    			break;
+    	}
     }
 
     @Override
 	public void onClick(View _view) {
 		// TODO Auto-generated method stub
+    	Date mDate;
     	switch(_view.getId()) {
     		case R.id.btnClose :
     			this.finish();
+    			break;
+    		case R.id.btnAdd:
+    			EditText mEditText = (EditText) findViewById(R.id.labor_code);
+    			String mLaborcode = mEditText.getText().toString();
+    			if(mLaborcode.equals("")) return;
+    			mEditText = (EditText) findViewById(R.id.hrs);
+    			float mHrs = Float.parseFloat(mEditText.getText().toString());
+    			if (mHrs == 0) return;
+    			Button mButton = (Button) findViewById(R.id.btnTransdate);
+    			Date mTransDate;
+    			try {
+    				mTransDate = mDateFormat.myParse(mButton.getText().toString());
+    			} catch (ParseException e1) {
+    				// TODO Auto-generated catch block
+    				return;
+    			}
+    			if(mLabTrans == null)
+    				mLabTrans = new labtrans(mLaborcode, mTransDate, mHrs, mOrder.getOrderId(), mOrder.getLocation());
+    			else {
+    				mLabTrans.setLaborCode(mLaborcode);
+    				mLabTrans.setStartDate(mTransDate);
+    				mLabTrans.setRegularHrs(mHrs);
+    			}
+    				
+    			mOrder.addLabTrans(mLabTrans);
+    			mLabTrans = null;
+    			refreshLabTransList();
+    			break;
+    		case R.id.btnActstart:
+    			mDateType = DATE_START_ID;
+    			mDate = mOrder.getActstart();
+    			if(mDate == null) {
+    		        final Calendar c = Calendar.getInstance();
+    		        mYear = c.get(Calendar.YEAR);
+    		        mMonth = c.get(Calendar.MONTH);
+    		        mDay = c.get(Calendar.DAY_OF_MONTH);
+       			}
+    			else {
+    				mYear = mDate.getYear() + 1900;
+    				mMonth = mDate.getMonth();
+    				mDay = mDate.getDate();
+    			}
+    			if(mDatePicker == null)
+    				mDatePicker = new DatePickerDialog(this,mDateSetListener,mYear,mMonth,mDay);
+    			else
+    				mDatePicker.updateDate(mYear, mMonth, mDay);
+    			mDatePicker.show();
+    			break;
+    		case R.id.btnActfinish:
+    			mDateType = DATE_FINISH_ID;
+    			mDate = mOrder.getActfinish();
+    			if(mDate == null) {
+    		        final Calendar c = Calendar.getInstance();
+    		        mYear = c.get(Calendar.YEAR);
+    		        mMonth = c.get(Calendar.MONTH);
+    		        mDay = c.get(Calendar.DAY_OF_MONTH);
+       			}
+    			else {
+    				mYear = mDate.getYear() + 1900;
+    				mMonth = mDate.getMonth();
+    				mDay = mDate.getDate();
+    			}
+    			if(mDatePicker == null)
+    				mDatePicker = new DatePickerDialog(this,mDateSetListener,mYear,mMonth,mDay);
+    			else
+    				mDatePicker.updateDate(mYear, mMonth, mDay);
+    			mDatePicker.show();
+//    			showDialog(DATE_DIALOG_ID);
+    			break;
+    		case R.id.btnTransdate:
+    			mDateType = DATE_TRANS_ID;
+    			try {
+					mDate = mDateFormat.myParse(((Button) _view).getText().toString());
+				} catch (ParseException e) {
+				// TODO Auto-generated catch block
+					mDate = null;
+				}
+    			if(mDate == null) {
+    		        final Calendar c = Calendar.getInstance();
+    		        mYear = c.get(Calendar.YEAR);
+    		        mMonth = c.get(Calendar.MONTH);
+    		        mDay = c.get(Calendar.DAY_OF_MONTH);
+       			}
+    			else {
+    				mYear = mDate.getYear() + 1900;
+    				mMonth = mDate.getMonth();
+    				mDay = mDate.getDate();
+    			}
+    			if(mDatePicker == null)
+    				mDatePicker = new DatePickerDialog(this,mDateSetListener,mYear,mMonth,mDay);
+    			else
+    				mDatePicker.updateDate(mYear, mMonth, mDay);
+    			mDatePicker.show();
     			break;
     		default:
     			break;
     	}
 	}
 
+/*
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        switch (id) {
+        case DATE_DIALOG_ID:
+        	if(mDatePicker == null) {
+              mDatePicker = new DatePickerDialog(this, mDateSetListener, mYear, mMonth, mDay);
+        	}
+        	else {
+        		mDatePicker.updateDate(mYear, mMonth, mDay);
+        	}
+        	return mDatePicker;
+        }
+        return null;
+    }
+*/
+    
     @Override
     public void finish() {
+    	EditText mText = (EditText) findViewById(R.id.mycomment);
+    	if(!mOrder.getMyComments().equals(mText.getText().toString())) {
+    		mOrder.setMyComments(mText.getText().toString());
+    		WIFIApp.localdb.updateMyComment(mOrder);
+    	}
+    	WIFIApp.localdb.updateLabTransList(mOrder);
     	Intent resultIntent = new Intent();
     	resultIntent.putExtra("ownorder", mOrder);
     	setResult(0,resultIntent);
@@ -144,5 +347,60 @@ public class OwnOrderDetailActivity extends Activity implements OnClickListener,
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public class LabTransAdapter extends ArrayAdapter<labtrans> {
+
+		public LabTransAdapter(Context context, int textViewResourceId) {
+			super(context, textViewResourceId);
+			// TODO Auto-generated constructor stub
+		}
+		
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			View v = convertView;
+			if(v == null) {
+                LayoutInflater vi = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                v = vi.inflate(R.layout.list_labtrans, null);
+			}
+			labtrans mS = getItem(position);
+			if(mS != null) {
+				TextView t = (TextView) v.findViewById(R.id.labcode);
+				if(t!= null) t.setText(mS.getLaborCode());
+				t = (TextView) v.findViewById(R.id.labdate);
+				if(t!=null)
+					t.setText(mDateFormat.myFormat(mS.getStartDate()));
+				t = (TextView) v.findViewById(R.id.labhrs);
+				if(t!=null) t.setText(Float.toString(mS.getRegularHrs()));
+			}
+			return v;
+		}
+	}
     
+	public void refreshLabTransList(){
+		List<labtrans> mItems = mOrder.getTranslist();
+		if(mItems==null) return;
+		mLabTransAdapter.clear();
+		for(int i=0; i < mItems.size();i++) {
+			mLabTransAdapter.add(mItems.get(i));
+		}
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> _AdapterView, View _View, int _pos, long arg3) {
+		switch(_AdapterView.getId()) {
+			case R.id.lvlabtrans:
+				mLabTrans = (labtrans) _AdapterView.getItemAtPosition(_pos);
+    			EditText mEditText = (EditText) findViewById(R.id.labor_code);
+    			mEditText.setText(mLabTrans.getLaborCode());
+    			mEditText = (EditText) findViewById(R.id.hrs);
+    			mEditText.setText(Float.toString(mLabTrans.getRegularHrs()));
+    			Button mButton = (Button) findViewById(R.id.btnTransdate);
+    			mButton.setText(mDateFormat.myFormat(mLabTrans.getStartDate()));
+				mOrder.getTranslist().remove(_pos);
+				refreshLabTransList();
+			default: break;
+		}
+		// TODO Auto-generated method stub
+		
+	}
 }

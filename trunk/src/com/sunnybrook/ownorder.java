@@ -2,6 +2,7 @@ package com.sunnybrook;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -18,7 +19,7 @@ public class ownorder extends workorder{
 	public ownorder(HashMap<String,String> _HashMap) {
 		super(_HashMap);
 		readstatus = _HashMap.get("readstatus");
-		mycomments = _HashMap.get("mycomments");
+		mycomments = _HashMap.get("mycomments")==null?"":_HashMap.get("mycomments");
 	}
 
 	public ownorder(String wonum){
@@ -45,4 +46,8 @@ public class ownorder extends workorder{
 		return translist;
 	}
 	
+	public void addLabTrans(labtrans _labtrans) {
+		if(translist == null) translist = new ArrayList<labtrans>();
+		translist.add(_labtrans);
+	}
 }

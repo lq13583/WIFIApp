@@ -251,19 +251,9 @@ public class SuperordersActivity  extends ListActivity  implements OnItemClickLi
 		switch(_AdapterView.getId()) {
 		case android.R.id.list:
 			superorder mItem = (superorder) _AdapterView.getItemAtPosition(_pos);
-//			mWonum = mItem.getOrderId();
 			Intent mIntent = new Intent(this,SuperOrderDetailActivity.class);
 			mIntent.putExtra("superorder", mItem);
 			this.startActivity(mIntent);
-//			Dialog dialog = new Dialog(this);
-//			dialog.setTitle("Dialog Title");
-//			dialog.setContentView(R.layout.superorderdetailactivity);
-//			dialog.show(); 			
-/*
-			TextView mTxtComm = (TextView) findViewById(R.id.txtComment);
-			if(mTxtComm != null)
-				mTxtComm.setText(mItem.getComments() == null?"":mItem.getComments());
-*/
 			break;
 		default:
 			break;

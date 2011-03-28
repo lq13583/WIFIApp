@@ -12,6 +12,7 @@ public class SyncDataTask extends TimerTask {
 
 	@Override
 	public void run() {
+		if(myConfig.getLabor_code().equals("")) return;
 		localDB myLocalDB = WIFIApp.localdb;
 		remoteDB myRemoteDB;
 
@@ -57,7 +58,12 @@ public class SyncDataTask extends TimerTask {
 	}
 
 	private boolean pushData(localDB localdb, remoteDB remotedb){
-		return true;
+		SysLog.AppendLog("Debug", "pushData", "Start pushing own orders ......");
+		List<ownorder> mOwnOrderList = localdb.getOwnOrderList(myConfig.getLabor_code(), "wonum");
+		for(int i=0;i<mOwnOrderList.size();i++ ) {
+			mOwnOrderList.get(i);
+		}
+		return false;
 	}
 	
 	private boolean pullData(localDB localdb, remoteDB remotedb) {
