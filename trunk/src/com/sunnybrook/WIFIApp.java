@@ -1,26 +1,35 @@
 package com.sunnybrook;
 
 import java.util.Timer;
-//import java.util.TimerTask;
+import java.util.TimerTask;
 
 import android.app.TabActivity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.widget.TabHost;
+import android.widget.TextView;
 
 public class WIFIApp extends TabActivity{
 	public static sysconfig myConfig;
 	public static localDB localdb;
-	public static Timer myTimer;
+	private TextView mStatusBar;
+
+    public Timer myTimer = new Timer();
+	public TimerTask mySyncDataTask;
 	public static MyDateFormat myDateFormat = new MyDateFormat();
+	
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.main);
-        localdb = new localDB(this);
-        myConfig = new sysconfig(localdb);
+        if (localdb==null) localdb = new localDB(this);
+        
+        if (myConfig==null) myConfig = new sysconfig(localdb);
         SysLog.localdb = localdb;
         SysLog.debug_mode = myConfig.isDebug_mode();
         SysLog.AppendLog("Info", "WIFIApp", "Application Launched.");
@@ -66,30 +75,35 @@ public class WIFIApp extends TabActivity{
         tabHost.addTab(spec);
         
         tabHost.setCurrentTab(0);        
+        
+        mStatusBar = (TextView) findViewById(R.id.txtStatus);
+        mStatusBar.setText("Ready");
 
-        myTimer = new Timer();
-        myTimer.schedule(new SyncDataTask(), 0, myConfig.getUpdate_int());
-        
-//        find_and_modify_button();
-        
+        if(mySyncDataTask == null) {
+        	mySyncDataTask = new SyncDataTask(mHandler);
+        	myTimer.schedule(mySyncDataTask, 1000, myConfig.getUpdate_int());
+        }
+   
     }
+
+    final Handler mHandler = new Handler() {
+    	public void handleMessage(Message msg) {
+    		switch(msg.arg1)
+    		{
+    			case 0:
+    		        mStatusBar = (TextView) findViewById(R.id.txtStatus);
+    				mStatusBar.setText((String) msg.obj);
+    				break;
+    			default:
+    				break;
+    		}
+    	}
+    };
     
-    public void finalize() {
+    @Override
+    public void onDestroy() {
+    	super.onDestroy();
     	SysLog.AppendLog("Info", "WIFIApp", "Application Closed.");
     }
     
-/*
-    private void find_and_modify_button() {
-    	Button button = (Button) findViewById(R.id.Button_Test);
-    	button.setOnClickListener(button_test_listener); 
-    }    
-
-    
-    private OnClickListener button_test_listener = new OnClickListener() {
-    	public void onClick(View v) {	
-    		SyncData();
-    	}
-    };
-*/
-
 }

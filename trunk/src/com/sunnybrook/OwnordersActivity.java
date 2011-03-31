@@ -37,7 +37,7 @@ public class OwnordersActivity extends ListActivity  implements OnClickListener,
     	setContentView(R.layout.ownorderactivity);
 
 /* Initialise the OrdersAdapter */
-    	mOrderAdapter = new ownOrdersAdapter(this,R.layout.list_workorder);
+    	mOrderAdapter = new ownOrdersAdapter(this,R.layout.list_ownorder);
     	setListAdapter(mOrderAdapter);
     	
 
@@ -64,7 +64,7 @@ public class OwnordersActivity extends ListActivity  implements OnClickListener,
 			View v = convertView;
 			if(v == null) {
                 LayoutInflater vi = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                v = vi.inflate(R.layout.list_workorder, null);
+                v = vi.inflate(R.layout.list_ownorder, null);
 			}
 			ownorder mS = getItem(position);
 			if(mS != null) {

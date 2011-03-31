@@ -14,10 +14,12 @@ import android.database.sqlite.*;
 
 public class localDB{
 
-	private SQLiteDatabase db;
+	private static SQLiteDatabase db;
+	private Context mContext;
 
-	public localDB(Context context){
-		OpenHelper openHelper = new OpenHelper(context);
+	public localDB(Context _context){
+		mContext = _context;
+		OpenHelper openHelper = new OpenHelper(mContext);
 		db = openHelper.getWritableDatabase();
 	}
 	
@@ -390,6 +392,7 @@ public class localDB{
 		} catch(SQLException ex) {
 			SysLog.AppendLog("Info", "localDB", ex.getMessage());
 		}
+		
 	}
 	
 	public boolean cleanData() {
@@ -513,6 +516,7 @@ public class localDB{
 		if (mCur.moveToFirst()){
 				mReturn = new ownorder(Cursor2HashMap(mCur));
 		}
+		mCur.close();
 		return mReturn;	
 	}
 	
@@ -556,7 +560,7 @@ public class localDB{
 		private static final int DATABASE_VERSION = 3;
 		private static final String DB_PATH="maximo.sqlite";
 		private static final HashMap<String,String> configMap = new HashMap<String,String>(){
-			private static final long serialVersionUID = 1L;
+			private static final long serialVersionUID = -326351322637173991L;
 			{
 				put("labor_code","");
 				put("labor_name","");
