@@ -13,8 +13,8 @@ public class sysconfig {
 	private boolean update_key;
 	private int font_size;
 	private int desc_font_size;
-	private int update_int;
-	private int update_int_max;
+	private long update_int;
+	private long update_int_max;
 	private String jdbc_url;
 	private String ssid;
 	private String network_key;
@@ -30,8 +30,8 @@ public class sysconfig {
     	update_key = (mRet == null)?false:mRet.equals("yes");
     	mRet = localdb.getSysConfig("debug_mode");
     	debug_mode = (mRet == null)?false:mRet.equals("yes");
-    	update_int = Integer.parseInt(localdb.getSysConfig("update_int"));
-    	update_int_max = Integer.parseInt(localdb.getSysConfig("update_int_max"));
+    	update_int = Long.parseLong(localdb.getSysConfig("update_int"));
+    	update_int_max = Long.parseLong(localdb.getSysConfig("update_int_max"));
     	font_size = Integer.parseInt(localdb.getSysConfig("font_size"));
     	desc_font_size = Integer.parseInt(localdb.getSysConfig("desc_font_size"));
         jdbc_url = localdb.getSysConfig("jdbc_url");
@@ -47,8 +47,8 @@ public class sysconfig {
 		localdb.saveSysConfig("is_super", is_super?"yes":"no");
 		localdb.saveSysConfig("update_key",update_key?"yes":"no");
 		localdb.saveSysConfig("debug_mode",debug_mode?"yes":"no");
-		localdb.saveSysConfig("update_int",Integer.toString(update_int) );
-		localdb.saveSysConfig("update_int_max",Integer.toString(update_int_max));
+		localdb.saveSysConfig("update_int",Long.toString(update_int) );
+		localdb.saveSysConfig("update_int_max",Long.toString(update_int_max));
 		localdb.saveSysConfig("font_size", Integer.toString(font_size));
 		localdb.saveSysConfig("desc_font_size", Integer.toString(desc_font_size));
 		localdb.saveSysConfig("jdbc_url", jdbc_url);
@@ -81,8 +81,8 @@ public class sysconfig {
 	}
 	
 	public void saveUpdateIntToDB(localDB localdb){
-		localdb.saveSysConfig("update_int",Integer.toString(update_int) );
-		localdb.saveSysConfig("update_int_max",Integer.toString(update_int_max));
+		localdb.saveSysConfig("update_int",Long.toString(update_int) );
+		localdb.saveSysConfig("update_int_max",Long.toString(update_int_max));
 	}
 	
 	public void setLabor_code(String labor_code) {
@@ -132,19 +132,19 @@ public class sysconfig {
 		return jdbc_url;
 	}
 
-	public void setUpdate_int(int update_int) {
+	public void setUpdate_int(long update_int) {
 		this.update_int = update_int;
 	}
 
-	public int getUpdate_int() {
+	public long getUpdate_int() {
 		return update_int;
 	}
 
-	public void setUpdate_int_max(int max_update_int) {
+	public void setUpdate_int_max(long max_update_int) {
 		this.update_int_max = max_update_int;
 	}
 
-	public int getUpdate_int_max() {
+	public long getUpdate_int_max() {
 		return update_int_max;
 	}
 

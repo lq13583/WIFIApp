@@ -37,9 +37,9 @@ public class SettingsActivity extends Activity implements OnClickListener{
     	mEditText.setText(mSysconfig.getCrafts());
 
     	mEditText = (EditText) findViewById(R.id.update_int);
-    	mEditText.setText(Integer.toString(mSysconfig.getUpdate_int()));
+    	mEditText.setText(Long.toString(mSysconfig.getUpdate_int()));
     	mEditText = (EditText) findViewById(R.id.update_int_max);
-    	mEditText.setText(Integer.toString(mSysconfig.getUpdate_int_max()));
+    	mEditText.setText(Long.toString(mSysconfig.getUpdate_int_max()));
     	mEditText = (EditText) findViewById(R.id.font_size);
     	mEditText.setText(Integer.toString(mSysconfig.getFont_size()));
     	mEditText = (EditText) findViewById(R.id.desc_font_size);
@@ -88,9 +88,9 @@ public class SettingsActivity extends Activity implements OnClickListener{
     	mSysconfig.setCrafts(mEditText.getText().toString());
  
     	mEditText = (EditText) findViewById(R.id.update_int);
-    	mSysconfig.setUpdate_int(Integer.parseInt(mEditText.getText().toString()));
+    	mSysconfig.setUpdate_int(Long.parseLong(mEditText.getText().toString()));
     	mEditText = (EditText) findViewById(R.id.update_int_max);
-    	mSysconfig.setUpdate_int_max(Integer.parseInt(mEditText.getText().toString()));
+    	mSysconfig.setUpdate_int_max(Long.parseLong(mEditText.getText().toString()));
     	mEditText = (EditText) findViewById(R.id.font_size);
     	mSysconfig.setFont_size(Integer.parseInt(mEditText.getText().toString()));
     	mEditText = (EditText) findViewById(R.id.desc_font_size);
