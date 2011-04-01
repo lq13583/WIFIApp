@@ -5,18 +5,18 @@
 			  android:orientation="horizontal" >
 	<TextView style="@style/ListFont"
 			  android:id="@+id/wonum"
-			  android:layout_weight = "1" />
+			  android:layout_weight = "11" />
 	<TextView style="@style/ListFont"
 			  android:id="@+id/reportdate"
-			  android:layout_weight = "1" />
+			  android:layout_weight = "9" />
 	<TextView style="@style/ListFont"
 			  android:id="@+id/location"
-			  android:layout_weight = "1" />
+			  android:layout_weight = "9" />
 	<TextView style="@style/ListFont"
 			  android:id="@+id/wopriority"
-			  android:layout_weight = "1"
+			  android:layout_weight = "12"
 			  android:gravity="top|center_horizontal" />
 	<TextView style="@style/ListFont"
 			  android:id="@+id/status"
-			  android:layout_weight = "1" />
+			  android:layout_weight = "11" />
 </LinearLayout>

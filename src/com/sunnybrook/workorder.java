@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 public class workorder implements Serializable{
@@ -101,12 +100,11 @@ public class workorder implements Serializable{
 	}
 
 	public workorder(HashMap<String,String> _HashMap) {
-		SimpleDateFormat df = new SimpleDateFormat();
 		wonum = _HashMap.get("wonum");
 		status = _HashMap.get("status");
 		
 		try {
-			statusdate =  df.parse(_HashMap.get("statusdate"));
+			statusdate =  WIFIApp.myDateFormat.myParse(_HashMap.get("statusdate"));
 		} catch (ParseException e) {
 //			SysLog.AppendLog("Debug", "workorder", "statusdate is null!");
 		}
@@ -114,7 +112,7 @@ public class workorder implements Serializable{
 		location = _HashMap.get("location");
 		changeby = _HashMap.get("changeby");
 		try {
-			changedate = df.parse(_HashMap.get("changedate"));
+			changedate = WIFIApp.myDateFormat.myParse(_HashMap.get("changedate"));
 		} catch (ParseException e) {
 //			SysLog.AppendLog("Debug", "workorder", "changedate is null!");
 		}
@@ -124,7 +122,7 @@ public class workorder implements Serializable{
 		comments = _HashMap.get("comments");
 		reportedby = _HashMap.get("reportedby");
 		try {
-			reportdate = df.parse(_HashMap.get("reportdate"));
+			reportdate = WIFIApp.myDateFormat.myParse(_HashMap.get("reportdate"));
 		} catch (ParseException e) {
 //			SysLog.AppendLog("Debug", "workorder", "reportdate is null!");
 		}
