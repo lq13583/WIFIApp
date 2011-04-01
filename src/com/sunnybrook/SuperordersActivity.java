@@ -51,7 +51,7 @@ public class SuperordersActivity  extends ListActivity  implements OnItemClickLi
     	mSpinner.setAdapter(adapter);
     	mSpinner.setOnItemSelectedListener(this);
     	
-    	mOrderAdapter = new superOrdersAdapter(this,R.layout.list_workorder);
+    	mOrderAdapter = new superOrdersAdapter(this,R.layout.list_superorder);
     	setListAdapter(mOrderAdapter);
 //    	getListView().setOnItemSelectedListener(this);
     	getListView().setOnItemClickListener(this);
@@ -183,7 +183,7 @@ public class SuperordersActivity  extends ListActivity  implements OnItemClickLi
 			View v = convertView;
 			if(v == null) {
                 LayoutInflater vi = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                v = vi.inflate(R.layout.list_workorder, null);
+                v = vi.inflate(R.layout.list_superorder, null);
 			}
 			workorder mS = getItem(position);
 			if(mS != null) {

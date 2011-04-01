@@ -19,7 +19,4 @@
 	<TextView style="@style/ListFont"
 			  android:id="@+id/status"
 			  android:layout_weight = "1" />
-	<TextView style="@style/ListFont"
-			  android:id="@+id/readstatus"
-			  android:layout_weight = "1" />
 </LinearLayout>

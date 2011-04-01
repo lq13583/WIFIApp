@@ -15,9 +15,9 @@ import android.widget.TextView;
 public class WIFIApp extends TabActivity{
 	public static sysconfig myConfig;
 	public static localDB localdb;
-	private TextView mStatusBar;
+//	private TextView mStatusBar;
+    private static Timer myTimer = new Timer();
 
-    public Timer myTimer = new Timer();
 	public TimerTask mySyncDataTask;
 	public static MyDateFormat myDateFormat = new MyDateFormat();
 	
@@ -76,22 +76,20 @@ public class WIFIApp extends TabActivity{
         
         tabHost.setCurrentTab(0);        
         
-        mStatusBar = (TextView) findViewById(R.id.txtStatus);
+        TextView mStatusBar = (TextView) findViewById(R.id.txtStatus);
         mStatusBar.setText("Ready");
-
         if(mySyncDataTask == null) {
         	mySyncDataTask = new SyncDataTask(mHandler);
         	myTimer.schedule(mySyncDataTask, 1000, myConfig.getUpdate_int());
         }
-   
     }
 
-    final Handler mHandler = new Handler() {
+    Handler mHandler = new Handler() {
     	public void handleMessage(Message msg) {
     		switch(msg.arg1)
     		{
     			case 0:
-    		        mStatusBar = (TextView) findViewById(R.id.txtStatus);
+    		        TextView mStatusBar = (TextView) findViewById(R.id.txtStatus);
     				mStatusBar.setText((String) msg.obj);
     				break;
     			default:

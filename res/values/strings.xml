@@ -7,6 +7,7 @@
     <string name="select_order">Sort by:</string>
     <string name="select_order_status">Order Status:</string>
     <string name="select_order_readstatus">Read Status:</string>
+    <string name="list_font_size">9</string>
     <string-array name="super_order_array">
     	<item>wonum</item>
     	<item>reportdate</item>
