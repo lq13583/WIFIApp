@@ -59,7 +59,7 @@ public class CraftordersActivity extends ListActivity  implements OnItemClickLis
     	mSpinner.setAdapter(adapter);
     	mSpinner.setOnItemSelectedListener(this);
 
-    	mOrderAdapter = new craftOrdersAdapter(this,R.layout.list_workorder);
+    	mOrderAdapter = new craftOrdersAdapter(this,R.layout.list_craftorder);
     	setListAdapter(mOrderAdapter);
     	getListView().setOnItemClickListener(this);
     	
@@ -113,7 +113,7 @@ public class CraftordersActivity extends ListActivity  implements OnItemClickLis
 			View v = convertView;
 			if(v == null) {
                 LayoutInflater vi = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                v = vi.inflate(R.layout.list_workorder, null);
+                v = vi.inflate(R.layout.list_craftorder, null);
 			}
 			craftorder mS = getItem(position);
 			if(mS != null) {
