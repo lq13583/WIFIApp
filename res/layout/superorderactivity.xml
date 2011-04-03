@@ -7,16 +7,6 @@
   				  android:layout_width="match_parent"
   				  android:layout_height="wrap_content"
   				  android:orientation="horizontal">	  
-<!-- 
-	  	<Button android:id="@+id/btnRefresh"
-	  			android:text="Refresh"
-	  			android:layout_width="wrap_content"
-	  			android:layout_height="wrap_content"/>
-  		<Button android:id="@+id/btnClear"
-	  			android:text="Clear"
-	  			android:layout_width="wrap_content"
-	  			android:layout_height="wrap_content"/>
--->
   		<Spinner android:id="@+id/spinner"
   				 android:layout_width="wrap_content"
   				 android:layout_height="wrap_content"
@@ -28,16 +18,37 @@
   				 android:layout_gravity="center_vertical"
   				 android:prompt="@string/select_order" />
 	</LinearLayout>
+	<LinearLayout android:id="@+id/list_title"
+				  android:layout_width="fill_parent"
+				  android:layout_height="wrap_content"
+				  android:orientation="horizontal"
+				  android:layout_below="@id/top_control_bar" >
+		<TextView style="@style/ListTitle"
+				  android:text="Wonum"
+				  android:layout_weight = "10" />
+		<TextView style="@style/ListTitle"
+				  android:text="Reportdate"
+				  android:layout_weight = "9" />
+		<TextView style="@style/ListTitle"
+				  android:text="Location"
+				  android:layout_weight = "9" />
+		<TextView style="@style/ListTitle"
+				  android:layout_weight = "12"
+				  android:gravity="top|center_horizontal" />
+		<TextView style="@style/ListTitle"
+				  android:text="Status"
+				  android:layout_weight = "11" />
+	</LinearLayout>
   	<ListView android:id="@+id/android:list"
   			  android:layout_width="fill_parent"
   			  android:layout_height="fill_parent"
   			  android:choiceMode="singleChoice"
   			  android:focusable="true"
   			  android:focusableInTouchMode="true"
-  			  android:layout_below="@id/top_control_bar" />
+  			  android:layout_below="@id/list_title" />
   	<TextView android:id="@+id/android:empty"
   			  android:layout_width="fill_parent"
   			  android:layout_height="fill_parent"
   			  android:text="No Super Order Info"
-  			  android:layout_below="@id/top_control_bar" />
+  			  android:layout_below="@id/list_title" />
 </RelativeLayout>
