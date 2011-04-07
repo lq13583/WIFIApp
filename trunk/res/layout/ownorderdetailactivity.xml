@@ -230,6 +230,108 @@
 				  android:orientation="vertical"
 				  android:padding="2dp"
 				  android:layout_weight="1" >
+		<LinearLayout android:orientation="horizontal"
+					  android:layout_width="fill_parent"
+					  android:layout_height="wrap_content">
+			<TableLayout android:layout_width="fill_parent"
+			 			 android:layout_height="fill_parent"
+						 android:layout_weight="1" >
+				<TableRow android:paddingTop="2dp">
+					<TextView android:text = "Labor Code:"
+							  android:layout_weight="0.8"
+							  android:layout_width="0dp"
+							  android:layout_height="fill_parent" />
+					<TextView android:text = "Date:"
+							  android:layout_weight="1"
+							  android:layout_width="0dp"
+							  android:gravity="center"
+							  android:layout_height="fill_parent" />
+					<TextView android:text = "Hrs:"
+							  android:layout_weight="0.5"
+							  android:layout_width="0dp"
+							  android:gravity="center"
+							  android:layout_height="fill_parent" />
+				</TableRow>
+				<TableRow android:paddingTop="2dp">
+					<EditText android:hint="Labor code"
+							  android:inputType="number"
+							  android:id="@+id/labor_code"
+							  android:maxLength="6"
+							  android:layout_gravity="left"
+							  android:layout_weight="0.8"
+							  android:layout_width="0dp"
+							  android:layout_height="fill_parent" />
+					<Button android:id="@+id/btnTransdate"
+ 							android:layout_width="0dp"
+							android:layout_height="fill_parent"
+						    android:layout_weight="1"
+							android:text="Date" />
+ 					<EditText android:text = "0.0"
+ 							  android:layout_width="0dp"
+ 							  android:layout_height="fill_parent"
+ 							  android:inputType="numberDecimal"
+							  android:layout_weight="0.5"
+							  android:gravity="center_vertical|right"
+ 							  android:id="@+id/hrs" />
+				</TableRow>
+				<TableRow android:paddingTop="2dp">
+		  			<Button android:id="@+id/btnAdd"
+			  				android:text="Add Time"
+			  				android:layout_width="wrap_content"
+			  				android:layout_height="wrap_content"/>
+		  			<Button android:id="@+id/btnDel"
+			  				android:text="Delete"
+			  				android:layout_width="wrap_content"
+			  				android:layout_height="wrap_content"/>
+		  			<Button android:id="@+id/btnMod"
+			  				android:text="Mod"
+			  				android:layout_width="wrap_content"
+			  				android:layout_height="wrap_content"/>
+				</TableRow>
+			</TableLayout>
+			<LinearLayout android:layout_width="fill_parent"
+						  android:layout_height="fill_parent"
+						  android:layout_weight="1.5"
+						  android:orientation="vertical" >
+				<LinearLayout android:layout_width="fill_parent"
+	 						  android:layout_height="wrap_content"
+	 			  			  android:orientation="horizontal" >
+					<TextView android:text="Labour"
+	  			  			  android:layout_width="fill_parent"
+				  			  android:layout_height="match_parent"
+							  android:layout_weight="1.3"
+				  			  android:gravity="left" />
+					<TextView android:text="Date"
+	  						  android:layout_width="fill_parent"
+	  						  android:layout_height="match_parent"
+							  android:layout_weight="1"
+	  						  android:gravity="center" />
+					<TextView android:text="Hrs"
+	  						  android:layout_width="fill_parent"
+							  android:layout_weight="1.5"
+	  			  			  android:layout_height="match_parent"
+	  			 			  android:gravity="center" />
+				</LinearLayout>
+				<ListView android:id="@+id/lvlabtrans"
+						  android:layout_width="fill_parent"
+						  android:layout_height="fill_parent" />
+			</LinearLayout>
+		</LinearLayout> 
+		<LinearLayout android:id="@+id/update_data_row_4"
+					  android:layout_width="match_parent"
+					  android:layout_height="wrap_content"
+  					  android:orientation="vertical"
+					  android:paddingTop="2dp" >
+			<TextView android:text="My Comment:"
+					  android:layout_width="wrap_content"
+					  android:layout_height="wrap_content"/>
+			<EditText android:id="@+id/mycomment"
+					  android:layout_width="match_parent"
+					  android:layout_height="wrap_content"
+					  android:minLines = "5"
+					  android:inputType="text|textMultiLine"
+					  android:gravity="top" />
+		</LinearLayout>
 		<TableLayout android:layout_width="fill_parent"
 					 android:layout_height="wrap_content"
 					 android:stretchColumns="*"> 
@@ -264,52 +366,6 @@
 						  android:id="@+id/btnActfinish" />
 			</TableRow>
 		</TableLayout>		  
-		<LinearLayout android:id="@+id/update_data_row_4"
-					  android:layout_width="match_parent"
-					  android:layout_height="wrap_content"
-  					  android:orientation="vertical"
-					  android:paddingTop="2dp" >
-			<TextView android:text="My Comment:"
-					  android:layout_width="wrap_content"
-					  android:layout_height="wrap_content"/>
-			<EditText android:id="@+id/mycomment"
-					  android:layout_width="match_parent"
-					  android:layout_height="wrap_content"
-					  android:minLines = "5"
-					  android:inputType="text|textMultiLine"
-					  android:gravity="top" />
-		</LinearLayout>
-		<TableLayout android:layout_width="fill_parent"
-					 android:layout_height="wrap_content"
-					 android:stretchColumns="*">
-			<TableRow android:paddingTop="2dp">
-				<TextView android:text = "Labor Code:"
-						  android:layout_width="wrap_content"
-						  android:layout_height="fill_parent" />
-				<TextView android:text = "Date:"
-						  android:layout_width="wrap_content"
-						  android:layout_height="fill_parent" />
-				<TextView android:text = "Hrs:"
-						  android:layout_width="wrap_content"
-						  android:layout_height="fill_parent" />
-			</TableRow>
-			<TableRow android:paddingTop="2dp">
-				<EditText android:hint="Labor code"
-						  android:inputType="number"
-						  android:id="@+id/labor_code"
-						  android:layout_width="wrap_content"
-						  android:layout_height="fill_parent" />
-				<Button android:id="@+id/btnTransdate"
-						android:layout_width="wrap_content"
-						android:layout_height="fill_parent"
-						android:text="Date" />
- 				<EditText android:text = "0"
- 						  android:layout_width="wrap_content"
- 						  android:layout_height="fill_parent"
- 						  android:inputType="numberDecimal"
- 						  android:id="@+id/hrs" />
-			</TableRow>
-		</TableLayout>
 <!-- 
 		<LinearLayout android:layout_width="match_parent"
 					  android:layout_height="wrap_content"
@@ -321,20 +377,11 @@
 	  				  android:layout_height="wrap_content"
 	  				  android:orientation="horizontal"
  	  				  android:layout_alignParentBottom="true">
-			<ListView android:id="@+id/lvlabtrans"
-						  android:layout_width="fill_parent"
-						  android:layout_height="fill_parent"
-						  android:layout_weight="1">
-			</ListView>
 			<LinearLayout android:layout_width="fill_parent"
 						  android:layout_height="fill_parent"
 						  android:orientation="vertical"
 						  android:layout_weight="1"
 						  android:gravity="top|center">
-	  			<Button android:id="@+id/btnAdd"
-		  				android:text="Add Time"
-		  				android:layout_width="wrap_content"
-		  				android:layout_height="wrap_content"/>
 	  			<Button android:id="@+id/btnClose"
 		  				android:text="Close"
 		  				android:layout_width="wrap_content"
