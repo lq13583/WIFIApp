@@ -18,7 +18,7 @@ public class WIFIApp extends TabActivity{
 //	private TextView mStatusBar;
     private static Timer myTimer = new Timer();
 
-	public TimerTask mySyncDataTask;
+	private TimerTask mySyncDataTask;
 	public static MyDateFormat myDateFormat = new MyDateFormat();
 	
 	
