@@ -40,6 +40,7 @@ public class OwnOrderDetailActivity extends Activity implements OnClickListener,
 
 	private labtrans mLabTrans;
 	private LabTransAdapter mLabTransAdapter;
+	private int mPos = -1;
 	
 	public void onCreate(Bundle savedInstanceState) {
 		SyncDataTask.mEnabled = false;	//Disable the Sync Data Task;
@@ -135,6 +136,10 @@ public class OwnOrderDetailActivity extends Activity implements OnClickListener,
     	mButton.setOnClickListener(this);
     	mButton = (Button) findViewById(R.id.btnAdd);
     	mButton.setOnClickListener(this);
+    	mButton = (Button) findViewById(R.id.btnMod);
+    	mButton.setOnClickListener(this);
+    	mButton = (Button) findViewById(R.id.btnDel);
+    	mButton.setOnClickListener(this);
     	mButton = (Button) findViewById(R.id.btnActstart);
     	mButton.setText("Start Date: " + mDateFormat.myFormat(mOrder.getActstart()));
     	mButton.setOnClickListener(this);
@@ -194,20 +199,57 @@ public class OwnOrderDetailActivity extends Activity implements OnClickListener,
 	public void onClick(View _view) {
 		// TODO Auto-generated method stub
     	Date mDate;
+    	EditText mEditText;
+    	String mLaborcode;
+    	float mHrs;
+    	Button mButton;
+		Date mTransDate;
+    	
     	switch(_view.getId()) {
     		case R.id.btnClose :
     			this.finish();
     			break;
-    		case R.id.btnAdd:
-    			EditText mEditText = (EditText) findViewById(R.id.labor_code);
-    			String mLaborcode = mEditText.getText().toString();
+    		case R.id.btnDel:
+    			if(mPos < 0) return;
+    			if(mLabTrans == null) return;
+				mOrder.getTranslist().remove(mPos);
+				WIFIApp.localdb.deleteLabTrans(mLabTrans);
+				mLabTrans = null;
+				refreshLabTransList();
+    			break;
+    		case R.id.btnMod:
+    			mEditText = (EditText) findViewById(R.id.labor_code);
+    			mLaborcode = mEditText.getText().toString();
     			if(mLaborcode.equals("")) return;
     			mEditText = (EditText) findViewById(R.id.hrs);
 
-    			float mHrs = Float.parseFloat(mEditText.getText().toString());
-//    			if (mHrs == 0) return;
-    			Button mButton = (Button) findViewById(R.id.btnTransdate);
-    			Date mTransDate;
+    			mHrs = Float.parseFloat(mEditText.getText().toString());
+    			if (mHrs == 0) return;
+    			mButton = (Button) findViewById(R.id.btnTransdate);
+    			try {
+    				mTransDate = mDateFormat.myParse(mButton.getText().toString());
+    			} catch (ParseException e1) {
+    				// TODO Auto-generated catch block
+    				return;
+    			}
+    			if(mLabTrans == null)
+    				return;
+    			else {
+    				mLabTrans.setLaborCode(mLaborcode);
+    				mLabTrans.setStartDate(mTransDate);
+    				mLabTrans.setRegularHrs(mHrs);
+    			}
+    			refreshLabTransList();
+    			break;
+    		case R.id.btnAdd:
+    			mEditText = (EditText) findViewById(R.id.labor_code);
+    			mLaborcode = mEditText.getText().toString();
+    			if(mLaborcode.equals("")) return;
+    			mEditText = (EditText) findViewById(R.id.hrs);
+
+    			mHrs = Float.parseFloat(mEditText.getText().toString());
+    			if (mHrs == 0) return;
+    			mButton = (Button) findViewById(R.id.btnTransdate);
     			try {
     				mTransDate = mDateFormat.myParse(mButton.getText().toString());
     			} catch (ParseException e1) {
@@ -380,6 +422,7 @@ public class OwnOrderDetailActivity extends Activity implements OnClickListener,
 	}
     
 	public void refreshLabTransList(){
+		mPos = -1;
 		List<labtrans> mItems = mOrder.getTranslist();
 		if(mItems==null) return;
 		mLabTransAdapter.clear();
@@ -392,6 +435,9 @@ public class OwnOrderDetailActivity extends Activity implements OnClickListener,
 	public void onItemClick(AdapterView<?> _AdapterView, View _View, int _pos, long arg3) {
 		switch(_AdapterView.getId()) {
 			case R.id.lvlabtrans:
+				ListView lv = (ListView) findViewById(R.id.lvlabtrans);
+				lv.requestFocusFromTouch();
+				lv.setSelection(_pos);
 				mLabTrans = (labtrans) _AdapterView.getItemAtPosition(_pos);
     			EditText mEditText = (EditText) findViewById(R.id.labor_code);
     			mEditText.setText(mLabTrans.getLaborCode());
@@ -399,8 +445,11 @@ public class OwnOrderDetailActivity extends Activity implements OnClickListener,
     			mEditText.setText(Float.toString(mLabTrans.getRegularHrs()));
     			Button mButton = (Button) findViewById(R.id.btnTransdate);
     			mButton.setText(mDateFormat.myFormat(mLabTrans.getStartDate()));
+    			mPos = _pos;
+/*			
 				mOrder.getTranslist().remove(_pos);
 				refreshLabTransList();
+*/
 			default: break;
 		}
 		// TODO Auto-generated method stub
