@@ -109,6 +109,19 @@ public class localDB{
 		}
 	}
 	
+	public boolean deleteLabTrans(labtrans _labtrans) {
+		String mTable = "labtrans";
+		String mWhereArgs = "transid=?";
+		String mWhereVals[] = new String[]{Integer.toString(_labtrans.getTransId())};
+		try {
+			db.delete(mTable,mWhereArgs, mWhereVals);
+		} catch(SQLException ex) {
+			SysLog.AppendLog("Info", "localDB-deleteLabTrans", ex.getMessage());
+			return false;
+		}
+		return true;
+	}
+
 	public boolean updateLabTransId(labtrans _labtrans) {
 		String mTable = "labtrans";
 		String mWhereArgs = "transid=?";
