@@ -10,17 +10,20 @@
 	  			  android:layout_width="fill_parent"
 	  			  android:layout_height="match_parent"
 	  			  android:gravity="left"
-	  			  android:layout_weight="1.3" />
+	  			  android:layout_weight="1.3"
+	  			  android:textColor="@drawable/color_selector" />
 		<TextView android:id="@+id/labdate"
 	  			  android:layout_width="fill_parent"
 	  			  android:layout_height="match_parent"
 	  			  android:gravity="center"
-	  			  android:layout_weight="1" />
+	  			  android:layout_weight="1"
+	  			  android:textColor="@drawable/color_selector" />
 		<TextView android:id="@+id/labhrs"
 	  			  android:layout_width="fill_parent"
 	  			  android:layout_height="match_parent"
 	  			  android:gravity="right"
-	  			  android:layout_weight="1.5"/>
+	  			  android:layout_weight="1.5"
+	  			  android:textColor="@drawable/color_selector" />
 	</LinearLayout>
 </LinearLayout>
 

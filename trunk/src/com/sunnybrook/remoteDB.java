@@ -24,7 +24,7 @@ public class remoteDB {
 
 	protected void finalize(){
 		try {
-			if(!conn.isClosed()) conn.close();
+			if(conn!= null && !conn.isClosed()) conn.close();
 		} catch (SQLException e) {
 			SysLog.AppendLog("Info", "remoteDB", e.getMessage());
 		}

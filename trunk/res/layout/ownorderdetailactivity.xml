@@ -314,7 +314,8 @@
 				</LinearLayout>
 				<ListView android:id="@+id/lvlabtrans"
 						  android:layout_width="fill_parent"
-						  android:layout_height="fill_parent" />
+						  android:layout_height="fill_parent"
+						  android:listSelector="@android:color/transparent" />
 			</LinearLayout>
 		</LinearLayout> 
 		<LinearLayout android:id="@+id/update_data_row_4"

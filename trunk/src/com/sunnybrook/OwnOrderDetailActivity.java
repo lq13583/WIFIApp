@@ -446,10 +446,6 @@ public class OwnOrderDetailActivity extends Activity implements OnClickListener,
     			Button mButton = (Button) findViewById(R.id.btnTransdate);
     			mButton.setText(mDateFormat.myFormat(mLabTrans.getStartDate()));
     			mPos = _pos;
-/*			
-				mOrder.getTranslist().remove(_pos);
-				refreshLabTransList();
-*/
 			default: break;
 		}
 		// TODO Auto-generated method stub
