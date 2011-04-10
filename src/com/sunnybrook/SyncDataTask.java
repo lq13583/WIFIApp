@@ -3,6 +3,9 @@ package com.sunnybrook;
 import java.util.List;
 import java.util.TimerTask;
 
+import android.net.wifi.WifiConfiguration;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Handler;
 import android.os.Message;
 
@@ -14,7 +17,7 @@ public class SyncDataTask extends TimerTask {
 	private sysconfig myConfig = WIFIApp.myConfig;
 	private long maxPeriod = myConfig.getUpdate_int_max()/WIFIApp.myConfig.getUpdate_int();
 	private Handler mHandler;
-
+	private WifiManager mWifi = WIFIApp.mWifi;
 	public SyncDataTask(Handler _handler) {
 		super();
 		mHandler = _handler;
@@ -34,7 +37,9 @@ public class SyncDataTask extends TimerTask {
 			mCounts--;
 			return;
 		}
-
+		
+		if(!checkWifiStatus()) return;
+		
 		//Set the task running flag
 		is_running=true;
 
@@ -101,10 +106,7 @@ public class SyncDataTask extends TimerTask {
 			if(!pullCraftOrders(localdb, remotedb)) return false;
 			updateStatus("Pull craftorders finished.");
 		}
-/*
-		if(myConfig.isUpdate_key())
-			if(!pullKeys(localdb,remotedb)) return false;
-*/
+
 		SysLog.AppendLog("Debug", "pullData", "End pulling data.");
 		return true;
 	}
@@ -155,10 +157,56 @@ public class SyncDataTask extends TimerTask {
 		msg.obj = _msg;
 		mHandler.sendMessage(msg);		
 	}
-/*	
-	private boolean pullKeys(localDB localdb, remoteDB remotedb) {
+
+	private boolean checkWifiStatus() {
+		WifiInfo mWifiInfo = mWifi.getConnectionInfo();
+		if((mWifiInfo.getSSID() == null) || !mWifiInfo.getSSID().equals(myConfig.getSsid())) {
+			List<WifiConfiguration> mWifiConfList = mWifi.getConfiguredNetworks();
+			WifiConfiguration mWifiConfig = null;
+			int mNetId = 0;
+			for(int i = 0;i<mWifiConfList.size();i++) 
+				if(mWifiConfList.get(i).SSID.equals("\"" + myConfig.getSsid() + "\"")) {
+					mWifiConfig = mWifiConfList.get(i);
+					mNetId = mWifiConfig.networkId;
+					mWifiConfig.status = WifiConfiguration.Status.ENABLED;
+					updateStatus("WIFI Configuration is found.");
+					break;
+				}
+			if(mWifiConfig == null){
+				mWifiConfig = new WifiConfiguration();
+				mWifiConfig.SSID = "\"" + myConfig.getSsid() + "\"";
+				mWifiConfig.allowedAuthAlgorithms.set(WifiConfiguration.AuthAlgorithm.SHARED);
+				mWifiConfig.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
+//				mWifiConfig.allowedAuthAlgorithms.set(WifiConfiguration.AuthAlgorithm.SHARED);
+				mWifiConfig.wepKeys[0] = myConfig.getNetwork_key();
+				mWifiConfig.wepTxKeyIndex = 0;
+				mWifiConfig.priority = 1;
+				mWifiConfig.status = WifiConfiguration.Status.ENABLED;
+				mNetId = mWifi.addNetwork(mWifiConfig);
+				if(mNetId >= 0) {
+					mWifiConfig.networkId = mNetId;
+					updateStatus("WIFI Configuration is added.");
+				}
+				else {
+					updateStatus("Faild to add WIFI Configuration!");
+					return false;
+				}
+			}
+			mWifi.enableNetwork(mNetId, true);
+			updateStatus("WIFI Configuration is enabled.");
+			return false;
+		}
+		if(!mWifi.isWifiEnabled()) {
+			mWifi.setWifiEnabled(true);
+			updateStatus("WIFI Connection is enabled.");
+			return false;
+		}
+		if(mWifiInfo.getIpAddress()==0) {
+			updateStatus("Trying to reconnect WIFI......");
+			mWifi.reconnect();
+			return false;
+		}
 		return true;
 	}
-*/	
 
 }

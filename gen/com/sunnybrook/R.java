@@ -18,13 +18,14 @@ public final class R {
     public static final class attr {
     }
     public static final class drawable {
-        public static final int ic_tab_craftorders=0x7f020000;
-        public static final int ic_tab_ownorders=0x7f020001;
-        public static final int ic_tab_settings=0x7f020002;
-        public static final int ic_tab_settings_ico=0x7f020003;
-        public static final int ic_tab_superorders=0x7f020004;
-        public static final int ic_tab_syslog=0x7f020005;
-        public static final int icon=0x7f020006;
+        public static final int color_selector=0x7f020000;
+        public static final int ic_tab_craftorders=0x7f020001;
+        public static final int ic_tab_ownorders=0x7f020002;
+        public static final int ic_tab_settings=0x7f020003;
+        public static final int ic_tab_settings_ico=0x7f020004;
+        public static final int ic_tab_superorders=0x7f020005;
+        public static final int ic_tab_syslog=0x7f020006;
+        public static final int icon=0x7f020007;
     }
     public static final class id {
         public static final int ScrollView=0x7f070038;

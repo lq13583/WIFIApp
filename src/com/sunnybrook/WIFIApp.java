@@ -4,8 +4,10 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import android.app.TabActivity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -20,11 +22,12 @@ public class WIFIApp extends TabActivity{
 
 	private TimerTask mySyncDataTask;
 	public static MyDateFormat myDateFormat = new MyDateFormat();
-	
+	public static WifiManager mWifi;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mWifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
 
         setContentView(R.layout.main);
         if (localdb==null) localdb = new localDB(this);
@@ -75,7 +78,6 @@ public class WIFIApp extends TabActivity{
         tabHost.addTab(spec);
         
         tabHost.setCurrentTab(0);        
-        
         TextView mStatusBar = (TextView) findViewById(R.id.txtStatus);
         mStatusBar.setText("Ready");
         if(mySyncDataTask == null) {
