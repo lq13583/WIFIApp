@@ -211,8 +211,10 @@ public class localDB{
 		}
 	}
 
-	public void saveOwnOrder(ownorder mOwnOrder,String _laborcode){
-		if(mOwnOrder.getOrderId().equals("00000")) return;
+	public boolean saveOwnOrder(ownorder mOwnOrder,String _laborcode){
+		boolean mReturn = false; /* Return true if it is a new order; */
+		
+		if(mOwnOrder.getOrderId().equals("00000")) return mReturn;
 		
 		String mTable = "wo_labor";
 		String mWhereArgs = "wonum=? and laborcode=? and labortype=?";
@@ -229,13 +231,13 @@ public class localDB{
 			mValues.put("readstatus",mOwnOrder.getReadStatus());
 			try {
 				db.insertOrThrow(mTable,null,mValues);
+				mReturn = true;
 			} catch(SQLException ex) {
 				SysLog.AppendLog("Info", "localDB", ex.getMessage());
 			}
 		}
 		mCur.close();
 		ContentValues mValues = new ContentValues();
-//		if (mOwnOrder.getReadStatus()!= null) mValues.put("readstatus", mOwnOrder.getReadStatus());
 		if (mOwnOrder.getMyComments()!= null) mValues.put("empcomments",mOwnOrder.getMyComments());
 		mValues.put("existed", "true");
 		try {
@@ -244,7 +246,8 @@ public class localDB{
 			SysLog.AppendLog("Info", "localDB", ex.getMessage());
 		}
 		
-		/* To Do -- Save labtrans */
+		return mReturn;
+		
 	}
 	
 	public void updateStatus(workorder _order) {

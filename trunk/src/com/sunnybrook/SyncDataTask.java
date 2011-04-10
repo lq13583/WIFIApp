@@ -15,9 +15,10 @@ public class SyncDataTask extends TimerTask {
 	private static int mPeriod = 1;
 	private static boolean is_running = false;
 	private sysconfig myConfig = WIFIApp.myConfig;
-	private long maxPeriod = myConfig.getUpdate_int_max()/WIFIApp.myConfig.getUpdate_int();
+	private long maxPeriod = myConfig.getUpdate_int_max()/myConfig.getUpdate_int();
 	private Handler mHandler;
 	private WifiManager mWifi = WIFIApp.mWifi;
+	
 	public SyncDataTask(Handler _handler) {
 		super();
 		mHandler = _handler;
@@ -119,11 +120,19 @@ public class SyncDataTask extends TimerTask {
 	}
 
 	private boolean pullOwnOrders(localDB localdb, remoteDB remotedb) {
+		String mNewOrders = "";
 		SysLog.AppendLog("Debug", "pullOwnOrder", "Start pulling remote own workorders......");
 		List<ownorder> mList = remotedb.getOwnOrders(myConfig.getLabor_code());
 		SysLog.AppendLog("Debug", "pullOwnOrder","Start writing local own workorders......");
 		for(int i=0;i<mList.size();i++){
-			localdb.saveOwnOrder(mList.get(i),myConfig.getLabor_code());
+			if(localdb.saveOwnOrder(mList.get(i),myConfig.getLabor_code()))
+				mNewOrders = mNewOrders + mList.get(i).getOrderId() + ",";
+		}
+		if(mNewOrders.length()>0) {
+			Message msg = mHandler.obtainMessage();
+			msg.arg1 = 1;
+			msg.obj = mNewOrders;
+			mHandler.sendMessage(msg);		
 		}
 		SysLog.AppendLog("Debug","pullOwnOrder", "End pull own workorders.");
 		return true;
@@ -159,6 +168,12 @@ public class SyncDataTask extends TimerTask {
 	}
 
 	private boolean checkWifiStatus() {
+		if(!mWifi.isWifiEnabled()) {
+			mWifi.setWifiEnabled(true);
+			updateStatus("WIFI Connection is enabled.");
+			return false;
+		}
+
 		WifiInfo mWifiInfo = mWifi.getConnectionInfo();
 		if((mWifiInfo.getSSID() == null) || !mWifiInfo.getSSID().equals(myConfig.getSsid())) {
 			List<WifiConfiguration> mWifiConfList = mWifi.getConfiguredNetworks();
@@ -177,7 +192,6 @@ public class SyncDataTask extends TimerTask {
 				mWifiConfig.SSID = "\"" + myConfig.getSsid() + "\"";
 				mWifiConfig.allowedAuthAlgorithms.set(WifiConfiguration.AuthAlgorithm.SHARED);
 				mWifiConfig.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
-//				mWifiConfig.allowedAuthAlgorithms.set(WifiConfiguration.AuthAlgorithm.SHARED);
 				mWifiConfig.wepKeys[0] = myConfig.getNetwork_key();
 				mWifiConfig.wepTxKeyIndex = 0;
 				mWifiConfig.priority = 1;
@@ -194,11 +208,6 @@ public class SyncDataTask extends TimerTask {
 			}
 			mWifi.enableNetwork(mNetId, true);
 			updateStatus("WIFI Configuration is enabled.");
-			return false;
-		}
-		if(!mWifi.isWifiEnabled()) {
-			mWifi.setWifiEnabled(true);
-			updateStatus("WIFI Connection is enabled.");
 			return false;
 		}
 		if(mWifiInfo.getIpAddress()==0) {
