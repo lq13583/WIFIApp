@@ -3,10 +3,14 @@ package com.sunnybrook;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.TabActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,16 +23,19 @@ public class WIFIApp extends TabActivity{
 	public static localDB localdb;
 //	private TextView mStatusBar;
     private static Timer myTimer = new Timer();
-
 	private TimerTask mySyncDataTask;
+	private TextView mStatusBar;
 	public static MyDateFormat myDateFormat = new MyDateFormat();
 	public static WifiManager mWifi;
+	private static NotificationManager mNotificationManager;
+	private Notification mNotification;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mWifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-
+        mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotification = new Notification();
         setContentView(R.layout.main);
         if (localdb==null) localdb = new localDB(this);
         
@@ -78,12 +85,14 @@ public class WIFIApp extends TabActivity{
         tabHost.addTab(spec);
         
         tabHost.setCurrentTab(0);        
-        TextView mStatusBar = (TextView) findViewById(R.id.txtStatus);
-        mStatusBar.setText("Ready");
+        mStatusBar = (TextView) findViewById(R.id.txtStatus);
+        updateStatus("Ready");
         if(mySyncDataTask == null) {
         	mySyncDataTask = new SyncDataTask(mHandler);
         	myTimer.schedule(mySyncDataTask, 1000, myConfig.getUpdate_int());
         }
+      
+        setTitle("WIFIApp (" + myConfig.getLabor_code() + " - " + myConfig.getLabor_name() + ")");
     }
 
     Handler mHandler = new Handler() {
@@ -91,14 +100,50 @@ public class WIFIApp extends TabActivity{
     		switch(msg.arg1)
     		{
     			case 0:
-    		        TextView mStatusBar = (TextView) findViewById(R.id.txtStatus);
-    				mStatusBar.setText((String) msg.obj);
+    				updateStatus((String) msg.obj);
+    				break;
+    			case 1:
+    				notifyNewOrders((String) msg.obj);
     				break;
     			default:
     				break;
     		}
     	}
     };
+    
+    private void updateStatus(String _msg) {
+    	String mStatusMsg;
+		WifiInfo mWifiInfo = mWifi.getConnectionInfo();
+		if(mWifiInfo.getIpAddress()==0) {
+			mStatusMsg = "Wifi:Disconnected.";
+		}
+		else {
+			mStatusMsg = "Wifi:" + getStringIp(mWifiInfo.getIpAddress());
+		}
+		mStatusMsg = mStatusMsg + " Sync:" + _msg;
+		mStatusBar.setText(mStatusMsg);
+    }
+    
+    private void notifyNewOrders(String _msg) {
+    	Context context = getApplicationContext();
+    	CharSequence contentTitle = "My notification";
+    	CharSequence contentText = _msg;
+    	Intent notificationIntent = new Intent(this, WIFIApp.class);
+    	PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+    	mNotification.defaults = Notification.DEFAULT_ALL;
+    	mNotification.setLatestEventInfo(context, contentTitle, contentText, contentIntent);
+    	mNotificationManager.notify(1,mNotification);
+    }
+    
+    private String getStringIp(int _ip) {
+    	String mReturn = "";
+    	int mTemp = _ip;
+    	while (mTemp >0) {
+    		mReturn = mReturn + Integer.toString(mTemp % 256) + ".";
+    		mTemp = mTemp / 256;
+    	}
+    	return mReturn;
+    }
     
     @Override
     public void onDestroy() {
