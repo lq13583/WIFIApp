@@ -9,6 +9,8 @@ import android.app.PendingIntent;
 import android.app.TabActivity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Resources;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
@@ -29,7 +31,7 @@ public class WIFIApp extends TabActivity{
 	public static WifiManager mWifi;
 	private static NotificationManager mNotificationManager;
 	private Notification mNotification;
-	
+	private String mAppVer;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,8 +93,12 @@ public class WIFIApp extends TabActivity{
         	mySyncDataTask = new SyncDataTask(mHandler);
         	myTimer.schedule(mySyncDataTask, 1000, myConfig.getUpdate_int());
         }
-      
-        setTitle("WIFIApp (" + myConfig.getLabor_code() + " - " + myConfig.getLabor_name() + ")");
+        try {
+			mAppVer = getPackageManager().getPackageInfo(getPackageName(),0).versionName;
+		} catch (NameNotFoundException e) {
+			mAppVer = "0";
+		}
+        setTitle("WIFIApp V" + mAppVer + " (" + myConfig.getLabor_code() + " - " + myConfig.getLabor_name() + ")");
     }
 
     Handler mHandler = new Handler() {

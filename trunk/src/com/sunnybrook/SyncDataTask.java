@@ -3,6 +3,7 @@ package com.sunnybrook;
 import java.util.List;
 import java.util.TimerTask;
 
+import android.net.DhcpInfo;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
@@ -211,8 +212,9 @@ public class SyncDataTask extends TimerTask {
 			return false;
 		}
 		if(mWifiInfo.getIpAddress()==0) {
-			updateStatus("Trying to reconnect WIFI......");
-			mWifi.reconnect();
+			updateStatus("Waiting for WIFI connection......");
+//			DhcpInfo mDhcpInfo = mWifi.getDhcpInfo();
+//			mWifi.reconnect();
 			return false;
 		}
 		return true;
