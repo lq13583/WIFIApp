@@ -12,21 +12,22 @@ import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 
-public class OwnordersActivity extends ListActivity  implements OnClickListener, OnItemClickListener,OnItemSelectedListener{
+public class OwnordersActivity extends ListActivity  implements  OnItemClickListener,OnItemSelectedListener{
 	static final int OWNORDER_ACTIVITY_ID = 1;
 	static private ownOrdersAdapter mOrderAdapter;
 	static private ProgressDialog mProgressDialog;
 	static private RefreshOrderListThread mRefreshOrderListThread;
 	static private String mLaborCode = WIFIApp.myConfig.getLabor_code();
 	static private String mOrderby = "wonum";
+	private String mOrderId = "";
 
 	public void onCreate(Bundle savedInstanceState) {
 
@@ -51,7 +52,7 @@ public class OwnordersActivity extends ListActivity  implements OnClickListener,
     	getListView().setOnItemClickListener(this);
     	refreshOrderList(mLaborCode,mOrderby);
     }
-
+	
 	public class ownOrdersAdapter extends ArrayAdapter<ownorder> {
 
 		public ownOrdersAdapter(Context context, int textViewResourceId) {
@@ -102,11 +103,26 @@ public class OwnordersActivity extends ListActivity  implements OnClickListener,
     				mOrderAdapter.add((ownorder) msg.obj);
     	    		break;
     			default:
-    				if(mProgressDialog.isShowing()) mProgressDialog.dismiss();
+    				if(mProgressDialog.isShowing()){
+    					mProgressDialog.dismiss();
+        				locateOrder();
+    				}
     		}
     	}
     };
 
+    private void locateOrder() {
+    	if(mOrderId.length() == 0) return;
+		ListView lv = (ListView) findViewById(android.R.id.list);
+    	for (int i=0; i< lv.getCount(); i++) {
+    		if(((ownorder) lv.getItemAtPosition(i)).getOrderId().equals(mOrderId)) {
+    			lv.requestFocusFromTouch();
+    			lv.setSelection(i);
+    			lv.scrollTo(i,0);
+    			break;
+    		}
+    	}
+    }
 	private class RefreshOrderListThread extends Thread {
 		private Handler mHandler;
 		private String mLaborcode;
@@ -149,19 +165,18 @@ public class OwnordersActivity extends ListActivity  implements OnClickListener,
     	mRefreshOrderListThread = new RefreshOrderListThread(_laborcode,_orderby,mHandler);
 		mOrderAdapter.clear();
 		mRefreshOrderListThread.start();
+		WIFIApp.mRefreshOwnOrder = false;
 	}
 	
-	@Override
-	public void onClick(View arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
 	@Override
 	public void onItemClick(AdapterView<?> _AdapterView, View arg1, int _pos, long arg3) {
 		switch(_AdapterView.getId()) {
 		case android.R.id.list:
+			ListView lv = (ListView) _AdapterView;
+			lv.requestFocusFromTouch();
+			lv.setSelection(_pos);
 			ownorder mItem = (ownorder) _AdapterView.getItemAtPosition(_pos);
+			mOrderId = mItem.getOrderId();
 			Intent mIntent = new Intent(this,OwnOrderDetailActivity.class);
 			mIntent.putExtra("ownorder", mItem);
 			this.startActivityForResult(mIntent, OWNORDER_ACTIVITY_ID);
@@ -187,6 +202,7 @@ public class OwnordersActivity extends ListActivity  implements OnClickListener,
 				mOrderby = _AdapterView.getItemAtPosition(_pos).toString();
 				OwnorderComparator mComparator = new OwnorderComparator(mOrderby);
 				mOrderAdapter.sort(mComparator);
+//				locateOrder();
 				break;
 			case android.R.id.list:
 				break;

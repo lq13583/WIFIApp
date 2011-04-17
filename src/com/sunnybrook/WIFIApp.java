@@ -9,7 +9,6 @@ import android.app.PendingIntent;
 import android.app.TabActivity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Resources;
 import android.net.wifi.WifiInfo;
@@ -23,12 +22,12 @@ import android.widget.TextView;
 public class WIFIApp extends TabActivity{
 	public static sysconfig myConfig;
 	public static localDB localdb;
-//	private TextView mStatusBar;
     private static Timer myTimer = new Timer();
 	private TimerTask mySyncDataTask;
 	private TextView mStatusBar;
 	public static MyDateFormat myDateFormat = new MyDateFormat();
 	public static WifiManager mWifi;
+	public static boolean mRefreshOwnOrder = false;
 	private static NotificationManager mNotificationManager;
 	private Notification mNotification;
 	private String mAppVer;
@@ -110,6 +109,7 @@ public class WIFIApp extends TabActivity{
     				break;
     			case 1:
     				notifyNewOrders((String) msg.obj);
+    				mRefreshOwnOrder=true;
     				break;
     			default:
     				break;
