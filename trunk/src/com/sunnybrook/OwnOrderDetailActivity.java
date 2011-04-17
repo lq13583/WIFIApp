@@ -435,7 +435,7 @@ public class OwnOrderDetailActivity extends Activity implements OnClickListener,
 	public void onItemClick(AdapterView<?> _AdapterView, View _View, int _pos, long arg3) {
 		switch(_AdapterView.getId()) {
 			case R.id.lvlabtrans:
-				ListView lv = (ListView) findViewById(R.id.lvlabtrans);
+				ListView lv = (ListView) _AdapterView;
 				lv.requestFocusFromTouch();
 				lv.setSelection(_pos);
 				mLabTrans = (labtrans) _AdapterView.getItemAtPosition(_pos);

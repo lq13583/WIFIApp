@@ -472,6 +472,7 @@ public class localDB{
 		List<superorder> mList = new ArrayList<superorder>();
 		String mWhereVals[] = new String[] {"S",_laborcode};
 		String mOrderby = " order by wo." + _orderby;
+		if(!_orderby.equals("wonum")) mOrderby += ",wonum";
 		String sql = "SELECT wo.*,wl.laborcode,wl.laborname FROM workorder wo " 
 				   + " join wo_labor wl on wo.wonum=wl.wonum and wl.labortype=? and wl.laborcode=?"
 				   + mOrderby + ";";
@@ -488,6 +489,7 @@ public class localDB{
 		List<ownorder> mList = new ArrayList<ownorder>();
 		String mWhereVals[] = new String[] {"O",_laborcode};
 		String mOrderby = " order by " + _orderby;
+		if(!_orderby.equals("wonum")) mOrderby += ",wonum";
 		String sql = "SELECT wo.*,wl.readstatus, wl.empcomments mycomments FROM workorder wo " 
 				   + " JOIN wo_labor wl on wo.wonum=wl.wonum and wl.labortype=? and wl.laborcode=?"
 				   + mOrderby + ";";
@@ -540,6 +542,7 @@ public class localDB{
 		List<craftorder> mList = new ArrayList<craftorder>();
 		String mWhereVals[] = new String[] {"C",_craft};
 		String mOrderby = " order by " + _orderby;
+		if(!_orderby.equals("wonum")) mOrderby += ",wonum";
 		String sql = "SELECT wo.*,wl.laborcode,wl.laborname,wl.craft FROM workorder wo " 
 				   + " join wo_labor wl on wo.wonum=wl.wonum and wl.labortype=? and wl.craft=?"
 				   + mOrderby + ";";
