@@ -3,7 +3,6 @@ package com.sunnybrook;
 import java.util.List;
 import java.util.TimerTask;
 
-import android.net.DhcpInfo;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
