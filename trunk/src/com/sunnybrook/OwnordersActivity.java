@@ -92,7 +92,6 @@ public class OwnordersActivity extends ListActivity  implements  OnItemClickList
     		switch(msg.arg1)
     		{
     			case 0:
-//    				if(mProgressDialog == null)	mProgressDialog  = new ProgressDialog(parent);
     				mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
     				mProgressDialog.setMessage("Loading data ........");
     				mProgressDialog.show();
@@ -118,7 +117,6 @@ public class OwnordersActivity extends ListActivity  implements  OnItemClickList
     		if(((ownorder) lv.getItemAtPosition(i)).getOrderId().equals(mOrderId)) {
     			lv.requestFocusFromTouch();
     			lv.setSelection(i);
-    			lv.scrollTo(i,0);
     			break;
     		}
     	}
@@ -202,7 +200,7 @@ public class OwnordersActivity extends ListActivity  implements  OnItemClickList
 				mOrderby = _AdapterView.getItemAtPosition(_pos).toString();
 				OwnorderComparator mComparator = new OwnorderComparator(mOrderby);
 				mOrderAdapter.sort(mComparator);
-//				locateOrder();
+				locateOrder();
 				break;
 			case android.R.id.list:
 				break;
