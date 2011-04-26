@@ -33,14 +33,15 @@ public final class R {
         public static final int btnActfinish=0x7f070045;
         public static final int btnActstart=0x7f070044;
         public static final int btnAdd=0x7f07003e;
-        public static final int btnClear=0x7f070055;
+        public static final int btnClear=0x7f070056;
         public static final int btnClose=0x7f07002b;
         public static final int btnDel=0x7f07003f;
         public static final int btnMod=0x7f070040;
         public static final int btnOpen=0x7f07002a;
-        public static final int btnRefresh=0x7f070054;
+        public static final int btnRefresh=0x7f070055;
         public static final int btnReset=0x7f070052;
         public static final int btnSave=0x7f070053;
+        public static final int btnSync=0x7f070054;
         public static final int btnTransdate=0x7f07003c;
         public static final int comments=0x7f070012;
         public static final int crafts=0x7f070047;

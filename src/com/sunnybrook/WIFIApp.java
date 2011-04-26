@@ -31,6 +31,8 @@ public class WIFIApp extends TabActivity{
 	private static NotificationManager mNotificationManager;
 	private Notification mNotification;
 	private String mAppVer;
+	private Intent iOwnOrder;
+	private Handler hOwnOrder;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,10 +55,10 @@ public class WIFIApp extends TabActivity{
         Intent intent;  // Reusable Intent for each tab
         
         
-        intent = new Intent().setClass(this, OwnordersActivity.class);
+        iOwnOrder = new Intent().setClass(this, OwnordersActivity.class);
         spec = tabHost.newTabSpec("ownorders").setIndicator("Ownorders",
         				res.getDrawable(R.drawable.ic_tab_ownorders))
-        			.setContent(intent);
+        			.setContent(iOwnOrder);
         tabHost.addTab(spec);
         if(myConfig.is_super()) {
             intent = new Intent().setClass(this, SuperordersActivity.class);
@@ -119,6 +121,7 @@ public class WIFIApp extends TabActivity{
     
     private void updateStatus(String _msg) {
     	String mStatusMsg;
+        mWifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
 		WifiInfo mWifiInfo = mWifi.getConnectionInfo();
 		if(mWifiInfo.getIpAddress()==0) {
 			mStatusMsg = "Wifi:Disconnected.";
@@ -144,8 +147,8 @@ public class WIFIApp extends TabActivity{
     private String getStringIp(int _ip) {
     	String mReturn = "";
     	int mTemp = _ip;
-    	while (mTemp >0) {
-    		mReturn = mReturn + Integer.toString(mTemp % 256) + ".";
+    	while (mTemp != 0) {
+    		mReturn = mReturn + Long.toString(mTemp % 256) + ".";
     		mTemp = mTemp / 256;
     	}
     	return mReturn;

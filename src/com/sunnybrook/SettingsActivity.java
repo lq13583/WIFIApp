@@ -58,6 +58,8 @@ public class SettingsActivity extends Activity implements OnClickListener{
     	btn.setOnClickListener(this);
     	btn = (Button) findViewById(R.id.btnReset);
     	btn.setOnClickListener(this);
+    	btn = (Button) findViewById(R.id.btnSync);
+    	btn.setOnClickListener(this);
     }
     
    	public void onClick(View v) {
@@ -69,6 +71,9 @@ public class SettingsActivity extends Activity implements OnClickListener{
    			case R.id.btnReset:
    				initValues();
    				showMessage("Reset Ok!");
+   				break;
+   			case R.id.btnSync:
+   				
    				break;
    		}
     };
