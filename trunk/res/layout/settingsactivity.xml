@@ -160,6 +160,10 @@
 	  	    			android:layout_width="wrap_content"
 	        			android:layout_height="fill_parent"
 	       				android:text="Save" />
+				<Button android:id="@+id/btnSync"
+	  	    			android:layout_width="wrap_content"
+	        			android:layout_height="fill_parent"
+	       				android:text="Sync" />
 	       	</LinearLayout>
 		</TableRow>
 	</TableLayout>

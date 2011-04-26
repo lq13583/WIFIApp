@@ -191,6 +191,7 @@ public class SyncDataTask extends TimerTask {
 				mWifiConfig = new WifiConfiguration();
 				mWifiConfig.SSID = "\"" + myConfig.getSsid() + "\"";
 				mWifiConfig.allowedAuthAlgorithms.set(WifiConfiguration.AuthAlgorithm.SHARED);
+				mWifiConfig.allowedAuthAlgorithms.set(WifiConfiguration.AuthAlgorithm.OPEN);
 				mWifiConfig.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
 				mWifiConfig.wepKeys[0] = myConfig.getNetwork_key();
 				mWifiConfig.wepTxKeyIndex = 0;

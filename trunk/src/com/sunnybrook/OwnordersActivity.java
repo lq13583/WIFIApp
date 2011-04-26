@@ -33,6 +33,7 @@ public class OwnordersActivity extends ListActivity  implements  OnItemClickList
 
     	super.onCreate(savedInstanceState);
 
+    	mLaborCode = WIFIApp.myConfig.getLabor_code();
     	mProgressDialog  = new ProgressDialog(this);
 
     	setContentView(R.layout.ownorderactivity);
