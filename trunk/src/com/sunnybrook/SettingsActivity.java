@@ -12,7 +12,7 @@ import android.widget.EditText;
 
 public class SettingsActivity extends Activity implements OnClickListener{
 	private sysconfig mSysconfig;
-	
+
     public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
     	setContentView(R.layout.settingsactivity);
@@ -73,7 +73,8 @@ public class SettingsActivity extends Activity implements OnClickListener{
    				showMessage("Reset Ok!");
    				break;
    			case R.id.btnSync:
-   				
+   				WIFIApp mParent = (WIFIApp) getParent();
+   				mParent.startSyncData();
    				break;
    		}
     };

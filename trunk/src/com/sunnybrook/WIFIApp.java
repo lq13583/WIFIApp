@@ -154,6 +154,10 @@ public class WIFIApp extends TabActivity{
     	return mReturn;
     }
     
+    public void startSyncData() {
+    	if(mySyncDataTask != null) mySyncDataTask.run();
+    }
+    
     @Override
     public void onDestroy() {
     	super.onDestroy();
