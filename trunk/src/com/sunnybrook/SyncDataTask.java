@@ -129,7 +129,7 @@ public class SyncDataTask extends TimerTask {
 	private boolean pullOwnOrders(localDB localdb, remoteDB remotedb) {
 		String mNewOrders = "";
 		SysLog.AppendLog("Debug", "pullOwnOrder", "Start pulling remote own workorders......");
-		List<ownorder> mList = remotedb.getOwnOrders(myConfig.getLabor_code());
+		List<ownorder> mList = remotedb.getOwnOrders(myConfig.getLabor_code(),5);
 		SysLog.AppendLog("Debug", "pullOwnOrder","Start writing local own workorders......");
 		for(int i=0;i<mList.size();i++){
 			if(localdb.saveOwnOrder(mList.get(i),myConfig.getLabor_code()))

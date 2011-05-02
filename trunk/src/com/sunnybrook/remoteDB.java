@@ -40,7 +40,7 @@ public class remoteDB {
 		}
 	}
 	
-	public List<ownorder> getOwnOrders(String labor_code) {
+	public List<ownorder> getOwnOrders(String labor_code, int _days) {
 		List<ownorder> orderList = new ArrayList<ownorder>();
 		PreparedStatement mPs = null;
 		ResultSet mRs = null;
@@ -63,6 +63,7 @@ public class remoteDB {
 				if(!isPending(mRs.getString("wonum"))) {
 					ownorder mOwnorder = new ownorder(mRs);
 					mOwnorder.setReadStatus("UR");
+					mOwnorder.setNeedsupdate(isUpdating(mRs.getString("wonum"),_days));
 					orderList.add(mOwnorder);
 				}
 			}
@@ -90,6 +91,29 @@ public class remoteDB {
 			// TODO Auto-generated catch block
 			SysLog.AppendLog("Info", "remoteDB", e.getMessage());
 		}
+		return mReturn;
+	}
+	
+	private boolean isUpdating(String _wonum, int _days) {
+		boolean mReturn = false;
+		String sql = "Select * from [WRM_Sunnybrook].dbo.ServiceCall "
+				   + " where WorkOrder_No = ? and isnull(ED_Completion,DateAdd(day,?,Ticket_DateTime)) < getdate()";
+		PreparedStatement mPs = null;
+		ResultSet mRs = null;
+		try {
+			mPs = conn.prepareStatement(sql);
+			mPs.setString(1,_wonum);
+			mPs.setInt(2,_days);
+			mRs = mPs.executeQuery();
+			if (mRs.next()){
+				mReturn = true;
+			}
+			mRs.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			SysLog.AppendLog("Info", "remoteDB", e.getMessage());
+		}
+		
 		return mReturn;
 	}
 	

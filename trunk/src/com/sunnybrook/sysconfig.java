@@ -19,6 +19,7 @@ public class sysconfig {
 	private String ssid;
 	private String network_key;
 	private boolean debug_mode;
+	private int outstanding_days;
 
 	public sysconfig(localDB localdb){
 		String mRet;
@@ -39,6 +40,7 @@ public class sysconfig {
         network_key = localdb.getSysConfig("network_key");
         craft_list = new ArrayList<String>();
 		setCrafts(localdb.getSysConfig("crafts"));
+    	outstanding_days = Integer.parseInt(localdb.getSysConfig("outstanding_days"));
 	}
 	
 	public void saveAllToDB(localDB localdb){
@@ -55,6 +57,7 @@ public class sysconfig {
 		localdb.saveSysConfig("ssid", ssid);
 		localdb.saveSysConfig("network_key", network_key);
 		localdb.saveSysConfig("crafts", getCrafts());
+		localdb.saveSysConfig("outstanding_days", Integer.toString(outstanding_days));
 	}
 	
 	public String getCrafts() {
@@ -170,6 +173,14 @@ public class sysconfig {
 
 	public boolean isDebug_mode() {
 		return debug_mode;
+	}
+
+	public void setOutstanding_days(int outstanding_days) {
+		this.outstanding_days = outstanding_days;
+	}
+
+	public int getOutstanding_days() {
+		return outstanding_days;
 	}
 
 }
