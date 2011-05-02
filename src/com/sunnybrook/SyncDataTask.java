@@ -14,19 +14,27 @@ public class SyncDataTask extends TimerTask {
 	private static int mCounts = 0; 
 	private static int mPeriod = 1;
 	private static boolean is_running = false;
-	private sysconfig myConfig = WIFIApp.myConfig;
-	private long maxPeriod = myConfig.getUpdate_int_max()/myConfig.getUpdate_int();
+	private sysconfig myConfig;
+	private long maxPeriod;
 	private Handler mHandler;
-	private WifiManager mWifi = WIFIApp.mWifi;
+	private WifiManager mWifi;
+	private localDB myLocalDB;
 	
-	public SyncDataTask(Handler _handler) {
+	public SyncDataTask(Handler _handler,sysconfig _config, localDB _localdb, WifiManager _wifi) {
 		super();
 		mHandler = _handler;
+		myConfig = _config;
+		mWifi = _wifi;
+		myLocalDB = _localdb;
+		maxPeriod = myConfig.getUpdate_int_max()/myConfig.getUpdate_int();
 	}
 	
+	public boolean isRunning() {
+		return is_running;
+	}
 	@Override
 	public void run() {
-
+		
 		if(myConfig.getLabor_code().equals("")) return;	//Initial setup is not done.
 
 		if(!mEnabled) return;	//SyncData task is disabled.
@@ -44,7 +52,6 @@ public class SyncDataTask extends TimerTask {
 		//Set the task running flag
 		is_running=true;
 
-		localDB myLocalDB = WIFIApp.localdb;
 
 //Open remote DB connection
 
@@ -84,7 +91,7 @@ public class SyncDataTask extends TimerTask {
 		updateStatus("Pushing local data ......");
 		List<ownorder> mOwnOrderList = localdb.getOwnOrderList(myConfig.getLabor_code(), "wonum");
 		for(int i=0;i<mOwnOrderList.size();i++ ) {
-			if(!remotedb.saveOwnOrder(mOwnOrderList.get(i))) return false;
+			if(!remotedb.saveOwnOrder(mOwnOrderList.get(i),localdb)) return false;
 		}
 		updateStatus("Pushing local data finished.");
 		SysLog.AppendLog("Debug", "pushData", "Push own orders end.");
@@ -213,8 +220,6 @@ public class SyncDataTask extends TimerTask {
 		}
 		if(mWifiInfo.getIpAddress()==0) {
 			updateStatus("Waiting for WIFI connection......");
-//			DhcpInfo mDhcpInfo = mWifi.getDhcpInfo();
-//			mWifi.reconnect();
 			return false;
 		}
 		return true;

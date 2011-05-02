@@ -11,29 +11,31 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 
-public class OwnordersActivity extends ListActivity  implements  OnItemClickListener,OnItemSelectedListener{
+public class OwnordersActivity extends ListActivity  implements  OnClickListener,OnItemClickListener,OnItemSelectedListener{
 	static final int OWNORDER_ACTIVITY_ID = 1;
 	static private ownOrdersAdapter mOrderAdapter;
 	static private ProgressDialog mProgressDialog;
 	static private RefreshOrderListThread mRefreshOrderListThread;
-	static private String mLaborCode = WIFIApp.myConfig.getLabor_code();
+	static private String mLaborCode;
 	static private String mOrderby = "wonum";
 	private String mOrderId = "";
-
+	private WIFIApp mParent;
 	public void onCreate(Bundle savedInstanceState) {
 
     	super.onCreate(savedInstanceState);
-
-    	mLaborCode = WIFIApp.myConfig.getLabor_code();
+    	mParent = (WIFIApp) getParent();
+    	mLaborCode = mParent.myConfig.getLabor_code();
     	mProgressDialog  = new ProgressDialog(this);
 
     	setContentView(R.layout.ownorderactivity);
@@ -51,6 +53,10 @@ public class OwnordersActivity extends ListActivity  implements  OnItemClickList
     	mSpinner.setAdapter(adapter);
     	mSpinner.setOnItemSelectedListener(this);
     	getListView().setOnItemClickListener(this);
+    	
+    	Button mButton = (Button) findViewById(R.id.btnRefresh);
+    	mButton.setOnClickListener(this);
+    	
     	refreshOrderList(mLaborCode,mOrderby);
     }
 	
@@ -138,7 +144,7 @@ public class OwnordersActivity extends ListActivity  implements  OnItemClickList
 			Message msg = mHandler.obtainMessage();
 			msg.arg1 = 0;
 			mHandler.sendMessage(msg);
-	    	mItems = WIFIApp.localdb.getOwnOrderList(mLaborcode,mOrderby);
+	    	mItems = mParent.localdb.getOwnOrderList(mLaborcode,mOrderby);
 	    	msg = mHandler.obtainMessage();
 	    	msg.arg1 = 1;
 	    	msg.arg2 = mItems.size() - 1;
@@ -164,7 +170,7 @@ public class OwnordersActivity extends ListActivity  implements  OnItemClickList
     	mRefreshOrderListThread = new RefreshOrderListThread(_laborcode,_orderby,mHandler);
 		mOrderAdapter.clear();
 		mRefreshOrderListThread.start();
-		WIFIApp.mRefreshOwnOrder = false;
+		mParent.mRefreshOwnOrder = false;
 	}
 	
 	@Override
@@ -214,6 +220,15 @@ public class OwnordersActivity extends ListActivity  implements  OnItemClickList
 	public void onNothingSelected(AdapterView<?> arg0) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public void refreshOrderList() {
+    	refreshOrderList(mLaborCode,mOrderby);
+	}
+	
+	@Override
+	public void onClick(View arg0) {
+    	refreshOrderList(mLaborCode,mOrderby);
 	}
 
 }

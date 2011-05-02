@@ -32,8 +32,9 @@ public class labtrans implements Serializable{
 	public labtrans(HashMap<String,String> _HashMap) {
 		transid = Integer.parseInt(_HashMap.get("transid"));
 		labtransid = Integer.parseInt(_HashMap.get("labtransid"));
+		MyDateFormat myDateFormat = new MyDateFormat();
 		try {
-			transdate = WIFIApp.myDateFormat.myParse(_HashMap.get("transdate"));
+			transdate = myDateFormat.myParse(_HashMap.get("transdate"));
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 		}
@@ -41,12 +42,12 @@ public class labtrans implements Serializable{
 		refwo = _HashMap.get("refwo");
 		enterby = _HashMap.get("enterby");
 		try {
-			enterdate = WIFIApp.myDateFormat.myParse(_HashMap.get("enterdate"));
+			enterdate = myDateFormat.myParse(_HashMap.get("enterdate"));
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 		}
 		try {
-			startdate = WIFIApp.myDateFormat.myParse(_HashMap.get("startdate"));
+			startdate = myDateFormat.myParse(_HashMap.get("startdate"));
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 		}
