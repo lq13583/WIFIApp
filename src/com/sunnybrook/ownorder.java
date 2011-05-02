@@ -3,6 +3,7 @@ package com.sunnybrook;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -11,9 +12,14 @@ public class ownorder extends workorder{
 	private List<labtrans> translist;
 	private String mycomments;
 	private String readstatus;
-	
+	private boolean needsupdate;
+	private String delayreason;
+	private String rfdcomments;
+	private Date edcompletion;
+
 	public ownorder(ResultSet mRS) throws SQLException {
 		super(mRS);
+		needsupdate = false;
 	}
 
 	public ownorder(HashMap<String,String> _HashMap) {
@@ -49,5 +55,37 @@ public class ownorder extends workorder{
 	public void addLabTrans(labtrans _labtrans) {
 		if(translist == null) translist = new ArrayList<labtrans>();
 		translist.add(_labtrans);
+	}
+
+	public void setNeedsupdate(boolean _needsupdate) {
+		this.needsupdate = _needsupdate;
+	}
+
+	public boolean isNeedsupdate() {
+		return needsupdate;
+	}
+
+	public void setDelayreason(String _delayreason) {
+		this.delayreason = _delayreason;
+	}
+
+	public String getDelayreason() {
+		return delayreason;
+	}
+
+	public void setRfdcomments(String _rfdcomments) {
+		this.rfdcomments = _rfdcomments;
+	}
+
+	public String getRfdcomments() {
+		return rfdcomments;
+	}
+
+	public void setEdcompletion(Date _edcompletion) {
+		this.edcompletion = _edcompletion;
+	}
+
+	public Date getEdcompletion() {
+		return edcompletion;
 	}
 }

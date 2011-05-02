@@ -601,6 +601,7 @@ public class localDB{
 				put("ssid","SW_Access");
 				put("network_key","df4cfcd9a06d46ce3f4d6ccb8e");
 				put("debug_mode","no");
+				put("outstanding_days","5");
 			}
 		};
 
@@ -630,6 +631,11 @@ public class localDB{
 			sql = "CREATE TABLE wo_labor (wonum varchar(10) not null,laborcode varchar(8) not null,labortype varchar(1) not null,"
 				+ "laborname varchar(40),empcomments varchar(100),readstatus varchar(2),craft varchar(8),existed bool default true,"
 				+ "Primary Key (wonum, laborcode,labortype));";
+			db.execSQL(sql);
+
+/* Create table wo_update */
+			sql = "CREATE TABLE wo_update (wonum varchar(10) not null, Reason_For_Delay varchar(40) null,"
+				+ " RFD_Comments varchar(100) null, ED_Completion datetime null, existed bool default true);";
 			db.execSQL(sql);
 			
 /* Create indexes on table wo_labor */
