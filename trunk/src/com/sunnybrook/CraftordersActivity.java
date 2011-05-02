@@ -32,8 +32,11 @@ public class CraftordersActivity extends ListActivity  implements OnItemClickLis
 	static private String mCraft = "";
 	static private String mOrderby = "wonum";
 	
+	private WIFIApp mParent;
+	
     public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
+    	mParent = (WIFIApp) getParent();
 
     	mProgressDialog  = new ProgressDialog(this);
 
@@ -47,7 +50,7 @@ public class CraftordersActivity extends ListActivity  implements OnItemClickLis
     	adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     	mSpinner.setAdapter(adapter);
     	mSpinner.setOnItemSelectedListener(this);
-		Iterator<String> itr = WIFIApp.myConfig.getCraft_list().iterator();
+		Iterator<String> itr = mParent.myConfig.getCraft_list().iterator();
 		while (itr.hasNext()) {
 			adapter.add(itr.next());
 		}
@@ -82,7 +85,7 @@ public class CraftordersActivity extends ListActivity  implements OnItemClickLis
 			Message msg = mHandler.obtainMessage();
 			msg.arg1 = 0;
 			mHandler.sendMessage(msg);
-	    	mItems = WIFIApp.localdb.getCraftOrderList(mCraft,mOrderby);
+	    	mItems = mParent.localdb.getCraftOrderList(mCraft,mOrderby);
 	    	msg = mHandler.obtainMessage();
 	    	msg.arg1 = 1;
 	    	msg.arg2 = mItems.size() - 1;
@@ -173,6 +176,8 @@ public class CraftordersActivity extends ListActivity  implements OnItemClickLis
 			craftorder mItem = (craftorder) _AdapterView.getItemAtPosition(_pos);
 			Intent mIntent = new Intent(this,CraftOrderDetailActivity.class);
 			mIntent.putExtra("craftorder", mItem);
+			mIntent.putExtra("fontsize", mParent.myConfig.getFont_size());
+			mIntent.putExtra("descfontsize", mParent.myConfig.getDesc_font_size());
 			this.startActivityForResult(mIntent,CRAFTORDER_ACTIVITY_ID);
 			break;
 		default:
@@ -206,7 +211,7 @@ public class CraftordersActivity extends ListActivity  implements OnItemClickLis
 			case CRAFTORDER_ACTIVITY_ID:
 				if(_resultCode == RESULT_OPEN_ID){
 					craftorder mCraftOrder = (craftorder) _data.getSerializableExtra("craftorder");
-					ownorder mOwnOrder = WIFIApp.localdb.Craft2Own(mCraftOrder, WIFIApp.myConfig.getLabor_code());
+					ownorder mOwnOrder = mParent.localdb.Craft2Own(mCraftOrder, mParent.myConfig.getLabor_code());
 					if(mOwnOrder!= null) {
 						Intent mIntent = new Intent(this,OwnOrderDetailActivity.class);
 						mIntent.putExtra("ownorder", mOwnOrder);

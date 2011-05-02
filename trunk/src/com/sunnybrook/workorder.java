@@ -102,9 +102,9 @@ public class workorder implements Serializable{
 	public workorder(HashMap<String,String> _HashMap) {
 		wonum = _HashMap.get("wonum");
 		status = _HashMap.get("status");
-		
+		MyDateFormat myDateFormat = new MyDateFormat();
 		try {
-			statusdate =  WIFIApp.myDateFormat.myParse(_HashMap.get("statusdate"));
+			statusdate =  myDateFormat.myParse(_HashMap.get("statusdate"));
 		} catch (ParseException e) {
 //			SysLog.AppendLog("Debug", "workorder", "statusdate is null!");
 		}
@@ -112,7 +112,7 @@ public class workorder implements Serializable{
 		location = _HashMap.get("location");
 		changeby = _HashMap.get("changeby");
 		try {
-			changedate = WIFIApp.myDateFormat.myParse(_HashMap.get("changedate"));
+			changedate = myDateFormat.myParse(_HashMap.get("changedate"));
 		} catch (ParseException e) {
 //			SysLog.AppendLog("Debug", "workorder", "changedate is null!");
 		}
@@ -122,17 +122,17 @@ public class workorder implements Serializable{
 		comments = _HashMap.get("comments");
 		reportedby = _HashMap.get("reportedby");
 		try {
-			reportdate = WIFIApp.myDateFormat.myParse(_HashMap.get("reportdate"));
+			reportdate = myDateFormat.myParse(_HashMap.get("reportdate"));
 		} catch (ParseException e) {
 //			SysLog.AppendLog("Debug", "workorder", "reportdate is null!");
 		}
 		try {
-			actstart = WIFIApp.myDateFormat.myParse(_HashMap.get("actstart"));
+			actstart = myDateFormat.myParse(_HashMap.get("actstart"));
 		} catch (ParseException e) {
 //			SysLog.AppendLog("Debug", "workorder", "actstart is null!");
 		}
 		try {
-			actfinish = WIFIApp.myDateFormat.myParse(_HashMap.get("actfinish"));
+			actfinish = myDateFormat.myParse(_HashMap.get("actfinish"));
 		} catch (ParseException e) {
 //			SysLog.AppendLog("Debug", "workorder", "actfinish is null!");
 		}

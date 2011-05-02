@@ -19,10 +19,10 @@ public class CraftOrderDetailActivity extends Activity implements OnClickListene
     public void onCreate(Bundle savedInstanceState) {
     	setTitle("Craft Order Detail");
     	super.onCreate(savedInstanceState);
-    	mFontSize = WIFIApp.myConfig.getFont_size();
-    	mDescFontSize = WIFIApp.myConfig.getDesc_font_size();
     	setContentView(R.layout.craftorderdetailactivity);
     	mOrder = (craftorder) getIntent().getSerializableExtra("craftorder");
+    	mFontSize = getIntent().getIntExtra("fontsize", 10);
+    	mDescFontSize = getIntent().getIntExtra("descfontsize", 12);
     	TextView mTextView = (TextView) findViewById(R.id.wonum);
     	mTextView.setText(mOrder.getOrderId());
     	mTextView.setTextSize(mFontSize);

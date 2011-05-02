@@ -7,21 +7,15 @@
   				  android:layout_width="fill_parent"
   				  android:layout_height="wrap_content"
   				  android:orientation="horizontal">	  
-<!-- 
-	  	<Button android:id="@+id/btnRefresh"
-	  			android:text="Refresh"
-	  			android:layout_width="wrap_content"
-	  			android:layout_height="wrap_content"/>
-  		<Button android:id="@+id/btnClear"
-	  			android:text="Clear"
-	  			android:layout_width="wrap_content"
-	  			android:layout_height="wrap_content"/>
--->
   		<Spinner android:id="@+id/spinner_sort"
   				 android:layout_width="wrap_content"
   				 android:layout_height="wrap_content"
   				 android:layout_gravity="center_vertical"
   				 android:prompt="@string/select_order" />
+	  	<Button android:id="@+id/btnRefresh"
+	  			android:text="Refresh"
+	  			android:layout_width="wrap_content"
+	  			android:layout_height="wrap_content"/>
 	</LinearLayout>
 <LinearLayout android:id="@+id/list_title"
 			  android:layout_width="fill_parent"

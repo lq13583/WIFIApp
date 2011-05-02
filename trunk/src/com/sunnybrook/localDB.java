@@ -14,20 +14,24 @@ import android.database.sqlite.*;
 
 public class localDB{
 
-	private static SQLiteDatabase db;
+	private SQLiteDatabase db;
 	private Context mContext;
-
+	private WIFIApp mParent;
+	private MyDateFormat mDateFormat = new MyDateFormat();
+	
 	public localDB(Context _context){
 		mContext = _context;
+		mParent = (WIFIApp) mContext;
 		OpenHelper openHelper = new OpenHelper(mContext);
 		db = openHelper.getWritableDatabase();
+		mDateFormat = mParent.myDateFormat;
 	}
 	
 	public String getSysConfig(String name){
 		String value = null;
 		String sql = "select conf_value from sysconfig where conf_name= ? ;";
 		try {
-			SQLiteStatement mystatement =db.compileStatement(sql);
+			SQLiteStatement mystatement = db.compileStatement(sql);
 			mystatement.bindString(1,name);
 			value = mystatement.simpleQueryForString();
 			mystatement.close();
@@ -71,7 +75,6 @@ public class localDB{
 */
 	public void saveLabTrans(labtrans _labtrans) {
 		if(_labtrans.getTransId()==0 && _labtrans.getRegularHrs()==0) return;
-		MyDateFormat mDateFormat = WIFIApp.myDateFormat;
 		String mTable = "labtrans";
 		String mWhereArgs = "transid=?";
 		String mWhereVals[] = new String[]{Integer.toString(_labtrans.getTransId())};
@@ -251,6 +254,7 @@ public class localDB{
 	}
 	
 	public void updateStatus(workorder _order) {
+		
 		String mTable = "workorder";
 		String mWhereArgs = "wonum=?";
 		String mWhereVals[] = new String[] {_order.getOrderId()};
@@ -258,8 +262,8 @@ public class localDB{
 		if (_order.getStatus()!= null){
 			mValues.put("status", _order.getStatus());
 			if(_order.getStatus().equals("COMP")) {
-				if(_order.getActstart()==null) mValues.put("actstart", WIFIApp.myDateFormat.myFormat(new Date()));
-				if(_order.getActfinish()==null) mValues.put("actfinish", WIFIApp.myDateFormat.myFormat(new Date()));
+				if(_order.getActstart()==null) mValues.put("actstart", mDateFormat.myFormat(new Date()));
+				if(_order.getActfinish()==null) mValues.put("actfinish", mDateFormat.myFormat(new Date()));
 			}
 		}
 		try {
@@ -274,7 +278,7 @@ public class localDB{
 		String mWhereArgs = "wonum=?";
 		String mWhereVals[] = new String[] {_order.getOrderId()};
 		ContentValues mValues = new ContentValues();
-		if (_order.getActstart()!= null) mValues.put("actstart", WIFIApp.myDateFormat.myFormat(_order.getActstart()));
+		if (_order.getActstart()!= null) mValues.put("actstart", mDateFormat.myFormat(_order.getActstart()));
 		try {
 			db.update(mTable, mValues, mWhereArgs,mWhereVals );
 		} catch(SQLException ex) {
@@ -287,7 +291,7 @@ public class localDB{
 		String mWhereArgs = "wonum=?";
 		String mWhereVals[] = new String[] {_order.getOrderId()};
 		ContentValues mValues = new ContentValues();
-		if (_order.getActfinish()!= null) mValues.put("actfinish", WIFIApp.myDateFormat.myFormat(_order.getActfinish()));
+		if (_order.getActfinish()!= null) mValues.put("actfinish", mDateFormat.myFormat(_order.getActfinish()));
 		try {
 			db.update(mTable, mValues, mWhereArgs,mWhereVals );
 		} catch(SQLException ex) {
@@ -313,7 +317,7 @@ public class localDB{
 		List<labtrans> mItems = _order.getTranslist();
 		for(int i=0;i<mItems.size();i++) {
 			labtrans mItem = mItems.get(i);
-			mItem.setEnterBy(WIFIApp.myConfig.getLabor_code());
+			mItem.setEnterBy(mParent.myConfig.getLabor_code());
 			mItem.setEnterDate(new Date());
 			mItem.setLocation(_order.getLocation());
 			mItem.setRefWo(_order.getOrderId());

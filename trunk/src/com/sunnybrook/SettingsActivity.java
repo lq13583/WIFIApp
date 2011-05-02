@@ -12,13 +12,16 @@ import android.widget.EditText;
 
 public class SettingsActivity extends Activity implements OnClickListener{
 	private sysconfig mSysconfig;
+	private WIFIApp mParent;
 
     public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
     	setContentView(R.layout.settingsactivity);
-    	mSysconfig = WIFIApp.myConfig;
+    	mParent = (WIFIApp) getParent();
+    	mSysconfig = mParent.myConfig;
     	initValues();
     	setEvents();
+    	
     }
 
     private void initValues() {
@@ -73,7 +76,6 @@ public class SettingsActivity extends Activity implements OnClickListener{
    				showMessage("Reset Ok!");
    				break;
    			case R.id.btnSync:
-   				WIFIApp mParent = (WIFIApp) getParent();
    				mParent.startSyncData();
    				break;
    		}
@@ -109,7 +111,7 @@ public class SettingsActivity extends Activity implements OnClickListener{
     	mCheckBox = (CheckBox) findViewById(R.id.debug_mode);
     	mSysconfig.setDebug_mode(mCheckBox.isChecked());
 
-		mSysconfig.saveAllToDB(WIFIApp.localdb);
+		mSysconfig.saveAllToDB(mParent.localdb);
     }
     
     private void showMessage(String txtMsg) {

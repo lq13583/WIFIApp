@@ -29,12 +29,14 @@ public class SuperordersActivity  extends ListActivity  implements OnItemClickLi
 	static private RefreshOrderListThread mRefreshOrderListThread;
 	static private String mLaborCode = "";
 	static private String mOrderby = "wonum";
-//	static private String mWonum = "";
+	private WIFIApp mParent;
 	
     public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
     	
-		mProgressDialog  = new ProgressDialog(this);
+    	mParent = (WIFIApp) getParent();
+
+    	mProgressDialog  = new ProgressDialog(this);
 		
     	setContentView(R.layout.superorderactivity);
     	
@@ -55,7 +57,7 @@ public class SuperordersActivity  extends ListActivity  implements OnItemClickLi
     	setListAdapter(mOrderAdapter);
 //    	getListView().setOnItemSelectedListener(this);
     	getListView().setOnItemClickListener(this);
-    	refreshLaborList(WIFIApp.localdb.getLaborList());
+    	refreshLaborList(mParent.localdb.getLaborList());
     	
 /*   	
 
@@ -117,7 +119,7 @@ public class SuperordersActivity  extends ListActivity  implements OnItemClickLi
 			Message msg = mHandler.obtainMessage();
 			msg.arg1 = 0;
 			mHandler.sendMessage(msg);
-	    	mItems = WIFIApp.localdb.getSuperOrderList(mLaborcode,mOrderby);
+	    	mItems = mParent.localdb.getSuperOrderList(mLaborcode,mOrderby);
 	    	msg = mHandler.obtainMessage();
 	    	msg.arg1 = 1;
 	    	msg.arg2 = mItems.size() - 1;

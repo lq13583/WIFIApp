@@ -165,11 +165,11 @@ public class remoteDB {
 		return orderList;
 	}
 	
-	public boolean saveOwnOrder(ownorder _order){
+	public boolean saveOwnOrder(ownorder _order, localDB _localdb){
 		List<labtrans> mLabTransList = _order.getTranslist();
 		if(mLabTransList!= null) {
 			for(int i=0; i<mLabTransList.size();i++) {
-					if(!saveLabTrans(mLabTransList.get(i))){
+					if(!saveLabTrans(mLabTransList.get(i),_localdb)){
 						SysLog.AppendLog("Info", "remoteDB-saveOwnOrder", "Save labtrans record error!");
 						return false;
 					}
@@ -191,7 +191,7 @@ public class remoteDB {
 			}
 //Clear local comments when it is uploaded.			
 			_order.setMyComments("");
-			WIFIApp.localdb.updateMyComment(_order);
+			_localdb.updateMyComment(_order);
 		}
 
 /* Update workorder status if it is not INPRG */
@@ -230,7 +230,7 @@ public class remoteDB {
 		return true;
 	}
 	
-	public boolean saveLabTrans(labtrans _labtrans) {
+	public boolean saveLabTrans(labtrans _labtrans, localDB _localdb) {
 		String sql;
 		if(_labtrans.getLabTransId()==0) {
 			if(_labtrans.getRegularHrs()==0) return true;
@@ -280,7 +280,7 @@ public class remoteDB {
 				mPs.setString(21,"N");
 				mPs.executeUpdate();
 				_labtrans.setLabTransId(mLabTransId);
-				if(!WIFIApp.localdb.updateLabTransId(_labtrans)) return false;
+				if(!_localdb.updateLabTransId(_labtrans)) return false;
 			} catch (SQLException e) {
 				SysLog.AppendLog("Info", "remoteDB(saveLabTrans)", e.getMessage());
 				return false;

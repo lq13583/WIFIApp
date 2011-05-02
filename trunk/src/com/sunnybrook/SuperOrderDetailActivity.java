@@ -13,12 +13,16 @@ public class SuperOrderDetailActivity extends Activity implements OnClickListene
 	private float mFontSize = 0;
 	private float mDescFontSize = 0;
 
+	private MainApp mApp;
+	private sysconfig myConfig;
 	public void onCreate(Bundle savedInstanceState) {
     	setTitle("Super Order Detail");
     	super.onCreate(savedInstanceState);
     	setContentView(R.layout.superorderdetailactivity);
-    	mFontSize = WIFIApp.myConfig.getFont_size();
-    	mDescFontSize = WIFIApp.myConfig.getDesc_font_size();
+    	mApp = (MainApp) getApplication();
+    	myConfig = mApp.getMySysConfig();
+    	mFontSize = myConfig.getFont_size();
+    	mDescFontSize = myConfig.getDesc_font_size();
     	mOrder = (superorder) getIntent().getSerializableExtra("superorder");
     	TextView mTextView = (TextView) findViewById(R.id.wonum);
     	mTextView.setText(mOrder.getOrderId());

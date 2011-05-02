@@ -31,6 +31,7 @@ public class OwnOrderDetailActivity extends Activity implements OnClickListener,
 	static final int DATE_FINISH_ID = 1;
 	static final int DATE_TRANS_ID = 2;
 	private MyDateFormat mDateFormat = new MyDateFormat("yyyy-MM-dd");
+	private MyDateFormat myDateFormat = new MyDateFormat();
 	private DatePickerDialog mDatePicker;
 	private ownorder mOrder;
 	private int mDateType = 0;
@@ -44,13 +45,20 @@ public class OwnOrderDetailActivity extends Activity implements OnClickListener,
 	private LabTransAdapter mLabTransAdapter;
 	private int mPos = -1;
 	
+	private MainApp mApp;
+	private sysconfig myConfig;
+	private localDB mLocalDB;
+	
 	public void onCreate(Bundle savedInstanceState) {
 		SyncDataTask.mEnabled = false;	//Disable the Sync Data Task;
     	setTitle("Own Order Detail");
     	super.onCreate(savedInstanceState);
     	
-    	mFontSize = WIFIApp.myConfig.getFont_size();
-    	mDescFontSize = WIFIApp.myConfig.getDesc_font_size();
+    	mApp = (MainApp) getApplication();
+    	myConfig = mApp.getMySysConfig();
+    	mLocalDB = mApp.getMyLocalDB(); 
+    	mFontSize = myConfig.getFont_size();
+    	mDescFontSize = myConfig.getDesc_font_size();
     	
     	setContentView(R.layout.ownorderdetailactivity);
     	mOrder = (ownorder) getIntent().getSerializableExtra("ownorder");
@@ -58,7 +66,7 @@ public class OwnOrderDetailActivity extends Activity implements OnClickListener,
     	mTextView.setText(mOrder.getOrderId());
     	mTextView.setTextSize(mFontSize);
     	mTextView = (TextView) findViewById(R.id.reportdate);
-    	mTextView.setText(WIFIApp.myDateFormat.myFormat(mOrder.getReportdate()));
+    	mTextView.setText(myDateFormat.myFormat(mOrder.getReportdate()));
     	mTextView.setTextSize(mFontSize);
     	mTextView = (TextView) findViewById(R.id.reportedby);
     	mTextView.setText(mOrder.getReportedby());
@@ -151,7 +159,7 @@ public class OwnOrderDetailActivity extends Activity implements OnClickListener,
     	EditText mEditText = (EditText) findViewById(R.id.mycomment);
     	mEditText.setText(mOrder.getMyComments());
     	mEditText = (EditText) findViewById(R.id.labor_code);
-    	mEditText.setText(WIFIApp.myConfig.getLabor_code());
+    	mEditText.setText(myConfig.getLabor_code());
 
     	Spinner mSpinner = (Spinner) findViewById(R.id.status);
     	ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
@@ -217,13 +225,13 @@ public class OwnOrderDetailActivity extends Activity implements OnClickListener,
     			mButton =(Button) findViewById(R.id.btnActstart);
     			mButton.setText("Start Date: " + mDateFormat.myFormat(mDate));
     			mOrder.setActstart(mDate);
-    			WIFIApp.localdb.updateActstart(mOrder);
+    			mLocalDB.updateActstart(mOrder);
     			break;
     		case DATE_FINISH_ID:
     			mButton =(Button) findViewById(R.id.btnActfinish);
     			mButton.setText("Complete Date: " + mDateFormat.myFormat(mDate));
     			mOrder.setActfinish(mDate);
-    			WIFIApp.localdb.updateActfinish(mOrder);
+    			mLocalDB.updateActfinish(mOrder);
     			break;
     		case DATE_TRANS_ID:
     			mButton =(Button) findViewById(R.id.btnTransdate);
@@ -250,7 +258,7 @@ public class OwnOrderDetailActivity extends Activity implements OnClickListener,
     			if(mPos < 0) return;
     			if(mLabTrans == null) return;
 				mOrder.getTranslist().remove(mPos);
-				WIFIApp.localdb.deleteLabTrans(mLabTrans);
+				mLocalDB.deleteLabTrans(mLabTrans);
 				mLabTrans = null;
 				refreshLabTransList();
     			break;
@@ -398,9 +406,9 @@ public class OwnOrderDetailActivity extends Activity implements OnClickListener,
     	EditText mText = (EditText) findViewById(R.id.mycomment);
     	if(!mOrder.getMyComments().equals(mText.getText().toString())) {
     		mOrder.setMyComments(mText.getText().toString());
-    		WIFIApp.localdb.updateMyComment(mOrder);
+    		mLocalDB.updateMyComment(mOrder);
     	}
-    	WIFIApp.localdb.updateLabTransList(mOrder);
+    	mLocalDB.updateLabTransList(mOrder);
     	Intent resultIntent = new Intent();
     	resultIntent.putExtra("ownorder", mOrder);
     	setResult(0,resultIntent);
@@ -413,11 +421,11 @@ public class OwnOrderDetailActivity extends Activity implements OnClickListener,
 		switch(_AdapterView.getId()) {
 			case R.id.status:
 				mOrder.setStatus(_AdapterView.getItemAtPosition(_pos).toString());
-				WIFIApp.localdb.updateStatus(mOrder);
+				mLocalDB.updateStatus(mOrder);
 				break;
 			case R.id.readstatus:				
 				mOrder.setReadStatus(_AdapterView.getItemAtPosition(_pos).toString());
-				WIFIApp.localdb.updateReadStatus(mOrder);
+				mLocalDB.updateReadStatus(mOrder);
 				break;
 			default:
 				break;
