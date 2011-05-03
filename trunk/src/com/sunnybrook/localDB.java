@@ -249,6 +249,30 @@ public class localDB{
 			SysLog.AppendLog("Info", "localDB", ex.getMessage());
 		}
 		
+		if(mOwnOrder.isNeedsupdate()) {
+			mTable = "wo_update";
+			mWhereArgs = "wonum=?";
+			String mVals[] = new String[] {mOwnOrder.getOrderId()};
+			mCur = db.query(mTable,null, mWhereArgs, mVals,null, null, null);
+			if(mCur.getCount() == 0) {
+				mValues = new ContentValues();
+				mValues.put("wonum", mOwnOrder.getOrderId());
+				try {
+					db.insertOrThrow(mTable,null,mValues);
+					mReturn = true;
+				} catch(SQLException ex) {
+					SysLog.AppendLog("Info", "localDB", ex.getMessage());
+				}
+			}
+			mCur.close();
+			mValues = new ContentValues();
+			mValues.put("existed", "true");
+			try {
+				db.update(mTable, mValues, mWhereArgs,mVals );
+			} catch(SQLException ex) {
+				SysLog.AppendLog("Info", "localDB", ex.getMessage());
+			}
+		}
 		return mReturn;
 		
 	}
@@ -429,6 +453,9 @@ public class localDB{
 		db.execSQL(sql);
 		sql = "delete from labtrans where not exists (select * from workorder where workorder.wonum=labtrans.refwo);";
 		db.execSQL(sql);
+		sql = "delete from wo_update where not existed;";
+		db.execSQL(sql);
+		
 		return true;
 	}
 	
@@ -634,7 +661,7 @@ public class localDB{
 			db.execSQL(sql);
 
 /* Create table wo_update */
-			sql = "CREATE TABLE wo_update (wonum varchar(10) not null, Reason_For_Delay varchar(40) null,"
+			sql = "CREATE TABLE wo_update (wonum varchar(10) not null PRIMARY KEY, Reason_For_Delay varchar(40) null,"
 				+ " RFD_Comments varchar(100) null, ED_Completion datetime null, existed bool default true);";
 			db.execSQL(sql);
 			
