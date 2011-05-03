@@ -106,6 +106,17 @@
 			</EditText>
 		</TableRow>
 		<TableRow>
+			<TextView android:text="outstanding_days:"
+			          android:padding="3dip" />
+			<EditText android:layout_height="fill_parent" 
+					  android:gravity="left" 
+					  android:layout_width="fill_parent" 
+					  android:id="@+id/outstanding_days"
+					  android:padding="3dip" 
+					  android:text="Font Size">
+			</EditText>
+		</TableRow>
+		<TableRow>
 			<TextView android:text="jdbc_url:" 
 			 		  android:padding="3dip">
 			</TextView>

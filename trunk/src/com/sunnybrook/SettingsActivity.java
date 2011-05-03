@@ -47,6 +47,8 @@ public class SettingsActivity extends Activity implements OnClickListener{
     	mEditText.setText(Integer.toString(mSysconfig.getFont_size()));
     	mEditText = (EditText) findViewById(R.id.desc_font_size);
     	mEditText.setText(Integer.toString(mSysconfig.getDesc_font_size()));
+    	mEditText = (EditText) findViewById(R.id.outstanding_days);
+    	mEditText.setText(Long.toString(mSysconfig.getOutstanding_days()));
 
     	CheckBox mCheckBox = (CheckBox) findViewById(R.id.is_super);
     	mCheckBox.setChecked(mSysconfig.is_super());
@@ -103,6 +105,8 @@ public class SettingsActivity extends Activity implements OnClickListener{
     	mSysconfig.setFont_size(Integer.parseInt(mEditText.getText().toString()));
     	mEditText = (EditText) findViewById(R.id.desc_font_size);
     	mSysconfig.setDesc_font_size(Integer.parseInt(mEditText.getText().toString()));
+    	mEditText = (EditText) findViewById(R.id.outstanding_days);
+    	mSysconfig.setOutstanding_days(Integer.parseInt(mEditText.getText().toString()));
 
     	CheckBox mCheckBox = (CheckBox) findViewById(R.id.is_super);
     	mSysconfig.set_super(mCheckBox.isChecked());
