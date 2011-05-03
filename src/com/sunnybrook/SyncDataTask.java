@@ -47,7 +47,7 @@ public class SyncDataTask extends TimerTask {
 			return;
 		}
 		
-//		if(!checkWifiStatus()) return;
+		if(!checkWifiStatus()) return;
 		
 		//Set the task running flag
 		is_running=true;
@@ -102,6 +102,7 @@ public class SyncDataTask extends TimerTask {
 		SysLog.AppendLog("Debug", "pullData", "Start pulling data......");
 		updateStatus("Pulling ownorders......");
 		localdb.clearExistedFlag("wo_labor");
+		localdb.clearExistedFlag("wo_update");
 		if (!pullOwnOrders(localdb,remotedb)) return false;
 		updateStatus("Pull own orders finished.");
 		if (myConfig.is_super()){
