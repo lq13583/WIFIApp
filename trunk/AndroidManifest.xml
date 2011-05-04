@@ -14,12 +14,15 @@
     	<activity android:name="OwnordersActivity"></activity>
     	<activity android:name="SuperordersActivity"></activity>
     	<activity android:name="CraftordersActivity"></activity>
+    	<activity android:name="UpdateordersActivity"></activity>
     	<activity android:name="SyslogActivity"></activity>
     	<activity android:name="SuperOrderDetailActivity"
     			  android:theme="@android:style/Theme.Dialog" />
     	<activity android:name="OwnOrderDetailActivity"
     			  android:theme="@android:style/Theme.Dialog" />
     	<activity android:name="CraftOrderDetailActivity"
+    			  android:theme="@android:style/Theme.Dialog" />
+    	<activity android:name="UpdateOrderDetailActivity"
     			  android:theme="@android:style/Theme.Dialog" />
 	</application>
     <uses-permission android:name="android.permission.VIBRATE"></uses-permission>

@@ -449,11 +449,16 @@ public class localDB{
 			SysLog.AppendLog("Info", "localDB", ex.getMessage());
 			return false;
 		}
+		mTable = "wo_update";
+		try {
+			db.delete(mTable,mWhereArgs,mWhereVals);
+		} catch(SQLException ex) {
+			SysLog.AppendLog("Info", "localDB", ex.getMessage());
+			return false;
+		}
 		String sql = "delete from workorder where not exists (select * from wo_labor where wo_labor.wonum=workorder.wonum);";
 		db.execSQL(sql);
 		sql = "delete from labtrans where not exists (select * from workorder where workorder.wonum=labtrans.refwo);";
-		db.execSQL(sql);
-		sql = "delete from wo_update where not existed;";
 		db.execSQL(sql);
 		
 		return true;
@@ -521,8 +526,10 @@ public class localDB{
 		String mWhereVals[] = new String[] {"O",_laborcode};
 		String mOrderby = " order by " + _orderby;
 		if(!_orderby.equals("wonum")) mOrderby += ",wonum";
-		String sql = "SELECT wo.*,wl.readstatus, wl.empcomments mycomments FROM workorder wo " 
+		String sql = "SELECT wo.*,wl.readstatus, wl.empcomments mycomments, wu.existed upexisted, wu.Reason_For_Delay, wu.RFD_Comments, wu.ED_Completion"
+				   + " FROM workorder wo " 
 				   + " JOIN wo_labor wl on wo.wonum=wl.wonum and wl.labortype=? and wl.laborcode=?"
+				   + " LEFT JOIN wo_update wu on wo.wonum= wu.wonum"
 				   + mOrderby + ";";
 		Cursor mCur = db.rawQuery(sql, mWhereVals);
 		if (mCur.moveToFirst())

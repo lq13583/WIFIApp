@@ -106,7 +106,7 @@ public class workorder implements Serializable{
 		try {
 			statusdate =  myDateFormat.myParse(_HashMap.get("statusdate"));
 		} catch (ParseException e) {
-//			SysLog.AppendLog("Debug", "workorder", "statusdate is null!");
+			SysLog.AppendLog("Debug", "workorder", e.getMessage());
 		}
 		description = _HashMap.get("description");
 		location = _HashMap.get("location");
@@ -124,17 +124,17 @@ public class workorder implements Serializable{
 		try {
 			reportdate = myDateFormat.myParse(_HashMap.get("reportdate"));
 		} catch (ParseException e) {
-//			SysLog.AppendLog("Debug", "workorder", "reportdate is null!");
+			SysLog.AppendLog("Debug", "workorder", e.getMessage());
 		}
 		try {
 			actstart = myDateFormat.myParse(_HashMap.get("actstart"));
 		} catch (ParseException e) {
-//			SysLog.AppendLog("Debug", "workorder", "actstart is null!");
+			SysLog.AppendLog("Debug", "workorder", e.getMessage());
 		}
 		try {
 			actfinish = myDateFormat.myParse(_HashMap.get("actfinish"));
 		} catch (ParseException e) {
-//			SysLog.AppendLog("Debug", "workorder", "actfinish is null!");
+			SysLog.AppendLog("Debug", "workorder", e.getMessage());
 		}
 		phone = _HashMap.get("phone");
 		locationdesc = _HashMap.get("locationdesc");
