@@ -31,7 +31,6 @@ public class WIFIApp extends TabActivity{
 	private Notification mNotification;
 	private String mAppVer;
 	private MainApp mApp;
-	private TabHost mTabHost;
 	Handler mHandler = new Handler() {
     	public void handleMessage(Message msg) {
     		switch(msg.arg1)
@@ -96,6 +95,11 @@ public class WIFIApp extends TabActivity{
         			  	.setContent(intent);
         	mTabHost.addTab(spec);
         }
+        intent = new Intent().setClass(this, UpdateordersActivity.class);
+        spec = mTabHost.newTabSpec("updateorders").setIndicator("Updateorders",
+        				res.getDrawable(R.drawable.ic_tab_ownorders))
+        			.setContent(intent);
+        mTabHost.addTab(spec);
 
         intent = new Intent().setClass(this, SettingsActivity.class);
         spec = mTabHost.newTabSpec("settings").setIndicator("Settings",
@@ -171,12 +175,15 @@ public class WIFIApp extends TabActivity{
     	}
     }
     
+/*    
     private void refreshOwnOrder() {
     	if(mTabHost.getCurrentTabTag().equals("ownorders")) {
     		OwnordersActivity mActivity = (OwnordersActivity) getLocalActivityManager().getActivity("ownorders"); 
     		mActivity.refreshOrderList();
     	}
     }
+*/
+    
     @Override
     public void onDestroy() {
     	super.onDestroy();

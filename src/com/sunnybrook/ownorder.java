@@ -2,6 +2,7 @@ package com.sunnybrook;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -24,8 +25,19 @@ public class ownorder extends workorder{
 
 	public ownorder(HashMap<String,String> _HashMap) {
 		super(_HashMap);
+		MyDateFormat myDateFormat = new MyDateFormat();
 		readstatus = _HashMap.get("readstatus");
 		mycomments = _HashMap.get("mycomments")==null?"":_HashMap.get("mycomments");
+		needsupdate = _HashMap.get("upexisted")!=null;
+		if(needsupdate) {
+			delayreason = _HashMap.get("Reason_For_Delay")==null?"":_HashMap.get("Reason_For_Delay");
+			rfdcomments = _HashMap.get("RFD_Comments")==null?"":_HashMap.get("RFD_Comments");
+			try {
+				edcompletion = myDateFormat.myParse(_HashMap.get("ED_Completion"));
+			} catch (ParseException e) {
+				SysLog.AppendLog("Debug", "ownorder", e.getMessage());
+			}
+		}
 	}
 
 	public ownorder(String wonum){
