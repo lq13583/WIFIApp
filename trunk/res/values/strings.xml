@@ -41,8 +41,8 @@
     	<item>COMP</item>
     </string-array>
     <string-array name="delay_reason_array">
+    	<item>Other</item>
     	<item>Waiting for Material</item>
     	<item>Waiting to Schedule</item>
-    	<item>Other</item>
     </string-array>
 </resources>

@@ -10,6 +10,7 @@ package com.sunnybrook;
 public final class R {
     public static final class array {
         public static final int craft_order_array=0x7f050002;
+        public static final int delay_reason_array=0x7f050005;
         public static final int order_readstatus_array=0x7f050003;
         public static final int order_status_array=0x7f050004;
         public static final int own_order_array=0x7f050001;
@@ -36,6 +37,7 @@ public final class R {
         public static final int btnClear=0x7f070057;
         public static final int btnClose=0x7f07002b;
         public static final int btnDel=0x7f070040;
+        public static final int btnEdComplete=0x7f070058;
         public static final int btnMod=0x7f070041;
         public static final int btnOpen=0x7f07002a;
         public static final int btnRefresh=0x7f070038;
@@ -102,6 +104,7 @@ public final class R {
         public static final int readstatus=0x7f070032;
         public static final int reportdate=0x7f070006;
         public static final int reportedby=0x7f070008;
+        public static final int spinRFD=0x7f070059;
         public static final int spinner=0x7f070001;
         public static final int spinner_sort=0x7f070002;
         public static final int ssid=0x7f070052;
@@ -126,24 +129,28 @@ public final class R {
         public static final int list_superlabors=0x7f030005;
         public static final int list_superorder=0x7f030006;
         public static final int list_syslog=0x7f030007;
-        public static final int list_workorder=0x7f030008;
-        public static final int main=0x7f030009;
-        public static final int ownorderactivity=0x7f03000a;
-        public static final int ownorderdetailactivity=0x7f03000b;
-        public static final int settingsactivity=0x7f03000c;
-        public static final int superorderactivity=0x7f03000d;
-        public static final int superorderdetailactivity=0x7f03000e;
-        public static final int syslogactivity=0x7f03000f;
+        public static final int list_updateorder=0x7f030008;
+        public static final int list_workorder=0x7f030009;
+        public static final int main=0x7f03000a;
+        public static final int ownorderactivity=0x7f03000b;
+        public static final int ownorderdetailactivity=0x7f03000c;
+        public static final int settingsactivity=0x7f03000d;
+        public static final int superorderactivity=0x7f03000e;
+        public static final int superorderdetailactivity=0x7f03000f;
+        public static final int syslogactivity=0x7f030010;
+        public static final int updateorderactivity=0x7f030011;
+        public static final int updateorderdetailactivity=0x7f030012;
     }
     public static final class string {
         public static final int app_name=0x7f040000;
         public static final int date_format=0x7f040001;
-        public static final int list_font_size=0x7f040007;
+        public static final int list_font_size=0x7f040008;
         public static final int select_craft=0x7f040003;
         public static final int select_labor=0x7f040002;
         public static final int select_order=0x7f040004;
         public static final int select_order_readstatus=0x7f040006;
         public static final int select_order_status=0x7f040005;
+        public static final int select_rfd=0x7f040007;
     }
     public static final class style {
         public static final int CodeFont=0x7f060000;
