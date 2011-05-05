@@ -44,5 +44,6 @@
     	<item>Other</item>
     	<item>Waiting for Material</item>
     	<item>Waiting to Schedule</item>
+    	<item>Contractor to complete work</item>
     </string-array>
 </resources>

@@ -34,7 +34,9 @@ public class UpdateOrderDetailActivity extends Activity implements OnClickListen
 	private MainApp mApp;
 	private sysconfig myConfig;
 	private localDB mLocalDB;
-	
+
+	private Spinner mSpinner;
+
 	public void onCreate(Bundle savedInstanceState) {
 		SyncDataTask.mEnabled = false;	//Disable the Sync Data Task;
     	setTitle("Update Outstanding Order Detail");
@@ -145,7 +147,7 @@ public class UpdateOrderDetailActivity extends Activity implements OnClickListen
     	EditText mEditText = (EditText) findViewById(R.id.mycomment);
     	mEditText.setText(mOrder.getRfdcomments());
 
-    	Spinner mSpinner = (Spinner) findViewById(R.id.spinRFD);
+    	mSpinner = (Spinner) findViewById(R.id.spinRFD);
     	ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
     			this, R.array.delay_reason_array, android.R.layout.simple_spinner_item);
     	adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -219,9 +221,8 @@ public class UpdateOrderDetailActivity extends Activity implements OnClickListen
     @Override
     public void finish() {
     	EditText mText = (EditText) findViewById(R.id.mycomment);
-    	if(!mOrder.getRfdcomments().equals(mText.getText().toString())) {
+    	if(!mOrder.getRfdcomments().equals(mText.getText().toString()))
     		mOrder.setRfdcomments(mText.getText().toString());
-    	}
     	
    		mLocalDB.updateRFDInfo(mOrder);
     	Intent resultIntent = new Intent();

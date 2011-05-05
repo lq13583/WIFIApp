@@ -218,8 +218,33 @@ public class remoteDB {
 			_localdb.updateMyComment(_order);
 		}
 
+/* Update Outstanding order status */
+		if(_order.isNeedsupdate()) {
+			if(_order.getEdcompletion()!=null) {
+				try {
+					PreparedStatement mPs = null;
+					String sql = "update WRM_Sunnybrook.dbo.ServiceCall set Reason_For_Delay = ?, RFD_Comments = ?, ED_Completion = ? where WorkOrder_No = ?;";
+					mPs = conn.prepareStatement(sql);
+					mPs.setString(1,_order.getDelayreason());
+					mPs.setString(2,_order.getRfdcomments());
+					mPs.setDate(3, Date2SQL(_order.getEdcompletion()));
+					mPs.setString(4,_order.getOrderId());
+					mPs.executeUpdate();
+					
+					sql = "Insert into WRM_Sunnybrook.dbo.TReason_For_Delay (TicketId,Updated_On,WorkOrder_No,Reason_For_Delay,RFD_Comments,ED_Completion) "
+						+ "Select TicketId,getDate(),WorkOrder_No,Reason_For_Delay,RFD_Comments,ED_Completion from WRM_Sunnybrook.dbo.ServiceCall where WorkOrder_No = ?;";
+					mPs = conn.prepareStatement(sql);
+					mPs.setString(1,_order.getOrderId());
+					mPs.executeUpdate();
+					
+				} catch (SQLException e) {
+					SysLog.AppendLog("Info", "remoteDB-saveOutstandingOrder", e.getMessage());
+					return false;
+				}
+			}
+		}
+		
 /* Update workorder status if it is not INPRG */
-
 		if(!_order.getStatus().equals("INPRG")) {
 			PreparedStatement mPs = null;
 			if(_order.getStatus().equals("COMP")) {
