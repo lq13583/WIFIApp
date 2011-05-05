@@ -157,7 +157,7 @@ public class UpdateOrderDetailActivity extends Activity implements OnClickListen
     	Button mButton = (Button) findViewById(R.id.btnClose);
     	mButton.setOnClickListener(this);
     	mButton = (Button) findViewById(R.id.btnEdComplete);
-    	mButton.setText("ED Completion: " + mDateFormat.myFormat(mOrder.getEdcompletion()));
+    	mButton.setText(mDateFormat.myFormat(mOrder.getEdcompletion()));
     	mButton.setOnClickListener(this);
     	
     }
@@ -179,7 +179,7 @@ public class UpdateOrderDetailActivity extends Activity implements OnClickListen
     	Button mButton;
     	Date mDate = new Date(mYear-1900,mMonth,mDay);
 		mButton =(Button) findViewById(R.id.btnEdComplete);
-		mButton.setText("Ed Complete: " + mDateFormat.myFormat(mDate));
+		mButton.setText(mDateFormat.myFormat(mDate));
 		mOrder.setEdcompletion(mDate);
     }
 
@@ -218,14 +218,12 @@ public class UpdateOrderDetailActivity extends Activity implements OnClickListen
 
     @Override
     public void finish() {
-    /*
     	EditText mText = (EditText) findViewById(R.id.mycomment);
-    	if(!mOrder.getMyComments().equals(mText.getText().toString())) {
-    		mOrder.setMyComments(mText.getText().toString());
-    		mLocalDB.updateMyComment(mOrder);
+    	if(!mOrder.getRfdcomments().equals(mText.getText().toString())) {
+    		mOrder.setRfdcomments(mText.getText().toString());
     	}
-    */
-    	mLocalDB.updateLabTransList(mOrder);
+    	
+   		mLocalDB.updateRFDInfo(mOrder);
     	Intent resultIntent = new Intent();
     	resultIntent.putExtra("ownorder", mOrder);
     	setResult(0,resultIntent);

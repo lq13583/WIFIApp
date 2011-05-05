@@ -363,6 +363,21 @@ public class localDB{
 		}
 	}
 
+	public void updateRFDInfo(ownorder _order) {
+		String mTable = "wo_update";
+		String mWhereArgs = "wonum=?";
+		String mWhereVals[] = new String[] {_order.getOrderId()};
+		ContentValues mValues = new ContentValues();
+		if (_order.getRfdcomments()!= null) mValues.put("RFD_Comments", _order.getRfdcomments());
+		if (_order.getDelayreason()!= null) mValues.put("Reason_For_Delay", _order.getDelayreason());
+		if (_order.getEdcompletion()!= null) mValues.put("ED_Completion", mDateFormat.myFormat(_order.getEdcompletion()));
+		try {
+			db.update(mTable, mValues, mWhereArgs,mWhereVals );
+		} catch(SQLException ex) {
+			SysLog.AppendLog("Info", "localDB", ex.getMessage());
+		}
+	}
+
 	public void saveSuperOrder(superorder _Order){
 		if(_Order.getOrderId().equals("00000")) return;
 		
