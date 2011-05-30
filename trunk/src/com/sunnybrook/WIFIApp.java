@@ -77,7 +77,7 @@ public class WIFIApp extends TabActivity{
         
         
         intent = new Intent().setClass(this, OwnordersActivity.class);
-        spec = mTabHost.newTabSpec("ownorders").setIndicator("Ownorders",
+        spec = mTabHost.newTabSpec("ownorders").setIndicator("WO's",
         				res.getDrawable(R.drawable.ic_tab_ownorders))
         			.setContent(intent);
         mTabHost.addTab(spec);

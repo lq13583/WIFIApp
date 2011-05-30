@@ -19,7 +19,9 @@ public class OwnorderComparator implements Comparator <ownorder> {
 		if(mCompareBy.equals("readstatus")) {
 			return(arg0.getReadStatus().compareToIgnoreCase(arg1.getReadStatus()));
 		}
-
+		if(mCompareBy.equals("location")) {
+			return(arg0.getLocation().compareToIgnoreCase(arg1.getLocation()));
+		}
 		if(mCompareBy.equals("wopriority")) {
 			return(arg0.getWopriority() - arg1.getWopriority());
 		}
