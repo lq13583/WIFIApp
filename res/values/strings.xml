@@ -18,9 +18,10 @@
     <string-array name="own_order_array">
     	<item>wonum</item>
     	<item>reportdate</item>
-    	<item>wopriority</item>
+    	<item>location</item>
     	<item>status</item>
     	<item>readstatus</item>
+<!--    	<item>wopriority</item>		-->
     </string-array>    
     <string-array name="craft_order_array">
     	<item>wonum</item>
@@ -32,7 +33,7 @@
     	<item>laborname</item>
     </string-array>
     <string-array name="order_readstatus_array">
-    	<item>UR</item>
+<!--    	<item>UR</item>		-->		
     	<item>RD</item>
     	<item>WM</item>
     </string-array>

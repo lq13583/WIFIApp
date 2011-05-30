@@ -390,7 +390,7 @@
 						  android:layout_weight="1"
 						  android:gravity="top|center">
 	  			<Button android:id="@+id/btnClose"
-		  				android:text="Close"
+		  				android:text="Completed"
 		  				android:layout_width="wrap_content"
 		  				android:layout_height="wrap_content"/>
 			</LinearLayout>

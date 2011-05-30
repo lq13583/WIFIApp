@@ -56,6 +56,8 @@ public class OwnordersActivity extends ListActivity  implements  OnClickListener
     	
     	Button mButton = (Button) findViewById(R.id.btnRefresh);
     	mButton.setOnClickListener(this);
+    	mButton = (Button) findViewById(R.id.btnSync);
+    	mButton.setOnClickListener(this);
     	
     	refreshOrderList(mLaborCode,mOrderby);
     }
@@ -106,7 +108,9 @@ public class OwnordersActivity extends ListActivity  implements  OnClickListener
     			case 1:
     				break;
     			case 2:
-    				mOrderAdapter.add((ownorder) msg.obj);
+    				ownorder tmpOrder = (ownorder) msg.obj;
+    				if(!tmpOrder.getStatus().equals("COMP"))
+    					mOrderAdapter.add(tmpOrder);
     	    		break;
     			default:
     				if(mProgressDialog.isShowing()){
@@ -228,7 +232,14 @@ public class OwnordersActivity extends ListActivity  implements  OnClickListener
 	
 	@Override
 	public void onClick(View arg0) {
-    	refreshOrderList(mLaborCode,mOrderby);
+		switch(arg0.getId()) {
+			case R.id.btnRefresh:
+		    	refreshOrderList(mLaborCode,mOrderby);
+				break;
+			case R.id.btnSync:
+				break;
+			default:	
+				break;
+		}
 	}
-
 }

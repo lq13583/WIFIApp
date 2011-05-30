@@ -166,6 +166,10 @@ public class OwnOrderDetailActivity extends Activity implements OnClickListener,
     			this, R.array.order_status_array, android.R.layout.simple_spinner_item);
     	adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     	mSpinner.setAdapter(adapter);
+    	if(mOrder.getStatus().equals("UR")) {
+    		mOrder.setReadStatus("RD");
+    		mLocalDB.updateReadStatus(mOrder);
+    	}
     	mSpinner.setSelection(adapter.getPosition(mOrder.getStatus()));
     	mSpinner.setOnItemSelectedListener(this);
 
