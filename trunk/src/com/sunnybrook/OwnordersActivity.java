@@ -2,10 +2,13 @@ package com.sunnybrook;
 
 import java.util.List;
 
+import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -98,11 +101,13 @@ public class OwnordersActivity extends ListActivity  implements  OnClickListener
 
 	final Handler mHandler = new Handler() {
     	public void handleMessage(Message msg) {
+    		String tmpMsg;
     		switch(msg.arg1)
     		{
     			case 0:
     				mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-    				mProgressDialog.setMessage("Loading data ........");
+    				tmpMsg = (String) msg.obj;
+    				mProgressDialog.setMessage(tmpMsg);
     				mProgressDialog.show();
     				break;
     			case 1:
@@ -112,6 +117,25 @@ public class OwnordersActivity extends ListActivity  implements  OnClickListener
     				if(!tmpOrder.getStatus().equals("COMP"))
     					mOrderAdapter.add(tmpOrder);
     	    		break;
+    			case datasync.DATASYNC_RUNNING:
+    				tmpMsg = (String) msg.obj;
+    				mProgressDialog.setMessage(tmpMsg);
+    				if(!mProgressDialog.isShowing()) {
+        				mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        				mProgressDialog.show();
+    				}
+    				break;
+    			case datasync.DATASYNC_FINISHED:
+    				if(mProgressDialog.isShowing())
+    					mProgressDialog.dismiss();
+    				if(msg.arg2> 0) {
+    					refreshOrderList(mLaborCode,mOrderby);
+    				}
+    				else {
+        				tmpMsg = (String) msg.obj;
+        				showMessage(tmpMsg);
+    				}
+    				break;
     			default:
     				if(mProgressDialog.isShowing()){
     					mProgressDialog.dismiss();
@@ -132,6 +156,7 @@ public class OwnordersActivity extends ListActivity  implements  OnClickListener
     		}
     	}
     }
+    
 	private class RefreshOrderListThread extends Thread {
 		private Handler mHandler;
 		private String mLaborcode;
@@ -147,6 +172,7 @@ public class OwnordersActivity extends ListActivity  implements  OnClickListener
 		public void run() {
 			Message msg = mHandler.obtainMessage();
 			msg.arg1 = 0;
+			msg.obj = "Loading data ........";
 			mHandler.sendMessage(msg);
 	    	mItems = mParent.localdb.getOwnOrderList(mLaborcode,mOrderby);
 	    	msg = mHandler.obtainMessage();
@@ -237,9 +263,25 @@ public class OwnordersActivity extends ListActivity  implements  OnClickListener
 		    	refreshOrderList(mLaborCode,mOrderby);
 				break;
 			case R.id.btnSync:
+				WifiManager mWifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+				new datasync(mHandler,mParent.myConfig,mParent.localdb,mWifi).start();
 				break;
 			default:	
 				break;
 		}
 	}
+
+	private void showMessage(String txtMsg) {
+    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    	
+   		builder.setTitle(R.string.app_name)
+   			   .setCancelable(false)
+   			   .setMessage(txtMsg)
+   			   .setPositiveButton("Close", new DialogInterface.OnClickListener() {
+   				   public void onClick(DialogInterface dlg, int sumthin) {
+   					   dlg.cancel();
+   				   }
+   			   })
+			   .show();
+    }
 }

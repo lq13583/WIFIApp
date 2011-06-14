@@ -31,17 +31,32 @@ public class WIFIApp extends TabActivity{
 	private Notification mNotification;
 	private String mAppVer;
 	private MainApp mApp;
-	Handler mHandler = new Handler() {
+	final Handler mHandler = new Handler() {
     	public void handleMessage(Message msg) {
     		switch(msg.arg1)
     		{
-    			case 0:
+    			case datasync.DATASYNC_RUNNING:
     				updateStatus((String) msg.obj);
     				break;
-    			case 1:
-    				notifyNewOrders((String) msg.obj);
-    				mRefreshOwnOrder=true;
-//    				refreshOwnOrder();
+    			case datasync.DATASYNC_FINISHED:
+    				updateStatus((String) msg.obj);
+    				if(msg.arg2> 0) {
+    					notifyNewOrders(Integer.toString(msg.arg2) + " new orders received!");
+    					String tabTag = getTabHost().getCurrentTabTag();
+    					if(tabTag.equals("ownorders")) {
+    						OwnordersActivity mActivity=(OwnordersActivity) getLocalActivityManager().getActivity(tabTag);
+    						if (mActivity!= null)
+    							if(mActivity.mHandler!=null) {
+    								Message mMsg = mActivity.mHandler.obtainMessage();
+    								if(mMsg != null) {
+    									mMsg.arg1 = msg.arg1;
+    									mMsg.arg2 = msg.arg2;
+    									mMsg.obj = msg.obj;
+    									mActivity.mHandler.sendMessage(mMsg);
+    								}
+    						}
+    					}
+    				}
     				break;
     			case 2:
     				mySyncDataTask.run();
@@ -117,6 +132,7 @@ public class WIFIApp extends TabActivity{
         mStatusBar = (TextView) findViewById(R.id.txtStatus);
         updateStatus("Ready");
         if(mySyncDataTask == null) {
+        	
         	mySyncDataTask = new SyncDataTask(mHandler, myConfig, localdb, mWifi);
         	myTimer.schedule(mySyncDataTask, 1000, myConfig.getUpdate_int());
         }
@@ -164,25 +180,6 @@ public class WIFIApp extends TabActivity{
     	return mReturn;
     }
     
-    public void startSyncData() {
-    	if(mySyncDataTask != null){
-    		if(mySyncDataTask.isRunning()) return;
-    		mySyncDataTask.cancel();
-    		myTimer.cancel();
-    		myTimer = new Timer();
-        	mySyncDataTask = new SyncDataTask(mHandler, myConfig, localdb, mWifi);
-        	myTimer.schedule(mySyncDataTask, 0, myConfig.getUpdate_int());
-    	}
-    }
-    
-/*    
-    private void refreshOwnOrder() {
-    	if(mTabHost.getCurrentTabTag().equals("ownorders")) {
-    		OwnordersActivity mActivity = (OwnordersActivity) getLocalActivityManager().getActivity("ownorders"); 
-    		mActivity.refreshOrderList();
-    	}
-    }
-*/
     
     @Override
     public void onDestroy() {

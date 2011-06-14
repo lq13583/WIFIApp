@@ -16,12 +16,11 @@ public class SettingsActivity extends Activity implements OnClickListener{
 
     public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
-    	setContentView(R.layout.settingsactivity);
-    	mParent = (WIFIApp) getParent();
-    	mSysconfig = mParent.myConfig;
-    	initValues();
-    	setEvents();
-    	
+		mParent = (WIFIApp) getParent();
+		mSysconfig = mParent.myConfig;
+   		setContentView(R.layout.ui_auth);
+       	Button btn = (Button) findViewById(R.id.btnAuth);
+       	btn.setOnClickListener(this);
     }
 
     private void initValues() {
@@ -63,8 +62,6 @@ public class SettingsActivity extends Activity implements OnClickListener{
     	btn.setOnClickListener(this);
     	btn = (Button) findViewById(R.id.btnReset);
     	btn.setOnClickListener(this);
-    	btn = (Button) findViewById(R.id.btnSync);
-    	btn.setOnClickListener(this);
     }
     
    	public void onClick(View v) {
@@ -77,8 +74,15 @@ public class SettingsActivity extends Activity implements OnClickListener{
    				initValues();
    				showMessage("Reset Ok!");
    				break;
-   			case R.id.btnSync:
-   				mParent.startSyncData();
+   			case R.id.btnAuth:
+   				EditText mEditText = (EditText) findViewById(R.id.password);
+   				if(mEditText.getText().toString().equals("Maximo")){
+   					setContentView(R.layout.settingsactivity);
+   					initValues();
+   					setEvents();
+   				}
+   				else
+   					showMessage("Invalid password!");
    				break;
    		}
     };

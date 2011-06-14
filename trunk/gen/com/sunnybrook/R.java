@@ -36,10 +36,11 @@ public final class R {
         public static final int btnActfinish=0x7f070047;
         public static final int btnActstart=0x7f070046;
         public static final int btnAdd=0x7f070040;
+        public static final int btnAuth=0x7f070059;
         public static final int btnClear=0x7f070057;
         public static final int btnClose=0x7f07002b;
         public static final int btnDel=0x7f070041;
-        public static final int btnEdComplete=0x7f070058;
+        public static final int btnEdComplete=0x7f07005a;
         public static final int btnMod=0x7f070042;
         public static final int btnOpen=0x7f07002a;
         public static final int btnRefresh=0x7f070038;
@@ -102,11 +103,12 @@ public final class R {
         public static final int mycomment=0x7f070045;
         public static final int net_key=0x7f070054;
         public static final int outstanding_days=0x7f070051;
+        public static final int password=0x7f070058;
         public static final int phone=0x7f07000b;
         public static final int readstatus=0x7f070032;
         public static final int reportdate=0x7f070006;
         public static final int reportedby=0x7f070008;
-        public static final int spinRFD=0x7f070059;
+        public static final int spinRFD=0x7f07005b;
         public static final int spinner=0x7f070001;
         public static final int spinner_sort=0x7f070002;
         public static final int ssid=0x7f070053;
@@ -140,8 +142,9 @@ public final class R {
         public static final int superorderactivity=0x7f03000e;
         public static final int superorderdetailactivity=0x7f03000f;
         public static final int syslogactivity=0x7f030010;
-        public static final int updateorderactivity=0x7f030011;
-        public static final int updateorderdetailactivity=0x7f030012;
+        public static final int ui_auth=0x7f030011;
+        public static final int updateorderactivity=0x7f030012;
+        public static final int updateorderdetailactivity=0x7f030013;
     }
     public static final class string {
         public static final int app_name=0x7f040000;
