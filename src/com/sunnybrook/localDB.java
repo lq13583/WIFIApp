@@ -593,7 +593,7 @@ public class localDB{
 	
 	public List<craftorder> getCraftOrderList(String _craft, String _orderby) {
 		List<craftorder> mList = new ArrayList<craftorder>();
-		String mWhereVals[] = new String[] {"C",_craft};
+		String mWhereVals[] = new String[] {"C",_craft.toUpperCase()};
 		String mOrderby = " order by " + _orderby;
 		if(!_orderby.equals("wonum")) mOrderby += ",wonum";
 		String sql = "SELECT wo.*,wl.laborcode,wl.laborname,wl.craft FROM workorder wo " 
