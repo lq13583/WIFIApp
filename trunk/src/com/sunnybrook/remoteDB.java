@@ -158,7 +158,7 @@ public class remoteDB {
 		String mCrafts = "";
 		Iterator<String> itr = _craftlist.iterator();
 		while (itr.hasNext()) {
-			mCrafts += "'" + itr.next() + "',";
+			mCrafts += "'" + itr.next().toUpperCase() + "',";
 		}
 		mCrafts = mCrafts.substring(0,mCrafts.length()-1);
 		String sql = "select wo.wonum,wo.status,wo.statusdate,wo.description,wo.location,"
@@ -171,7 +171,7 @@ public class remoteDB {
 				   + " left join longdescription des on des.ldkey = wo.ldkey"
 				   + " left join locations loc on loc.location = wo.location and loc.siteid = wo.siteid"
 				   + " join assignment ass on ass.wonum = wo.wonum "
-				   + " join labor on labor.laborcode = ass.craft and labor.craft in ( " + mCrafts + ") "
+				   + " join labor on labor.laborcode = ass.craft and upper(labor.craft) in ( " + mCrafts + ") "
 				   + " where wo.siteid = 'MAXSITE' and wo.status in ('INPRG','WMATL') and (wo.worktype like 'C-%' or wo.worktype is null)"
 				   + " order by wo.wonum";
  
