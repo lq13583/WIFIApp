@@ -23,9 +23,10 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 
-public class OwnordersActivity extends ListActivity  implements  OnClickListener,OnItemClickListener,OnItemSelectedListener{
+public class OwnordersActivity extends ListActivity  implements  OnClickListener,OnItemClickListener,OnItemSelectedListener,OnItemLongClickListener{
 	static final int OWNORDER_ACTIVITY_ID = 1;
 	static private ownOrdersAdapter mOrderAdapter;
 	static private ProgressDialog mProgressDialog;
@@ -56,6 +57,7 @@ public class OwnordersActivity extends ListActivity  implements  OnClickListener
     	mSpinner.setAdapter(adapter);
     	mSpinner.setOnItemSelectedListener(this);
     	getListView().setOnItemClickListener(this);
+    	getListView().setOnItemLongClickListener(this);
     	
     	Button mButton = (Button) findViewById(R.id.btnRefresh);
     	mButton.setOnClickListener(this);
@@ -284,4 +286,17 @@ public class OwnordersActivity extends ListActivity  implements  OnClickListener
    			   })
 			   .show();
     }
+
+	@Override
+	public boolean onItemLongClick(AdapterView<?> _AdapterView, View arg1, int _pos,long arg3) {
+		switch(_AdapterView.getId()) {
+		case android.R.id.list:
+			ownorder mItem = (ownorder) _AdapterView.getItemAtPosition(_pos);
+			showMessage(mItem.getComments());
+			break;
+		default:
+			break;
+		}
+		return true;
+	}
 }
