@@ -62,6 +62,7 @@ public class datasync extends Thread{
 							}
 						}
 					}
+					if(myRemoteDB.isConnected()) myRemoteDB.close();
 				}
 			}
 			is_running=false;

@@ -22,6 +22,15 @@ public class remoteDB {
 		}
 	}
 
+	public void close() {
+		try {
+			if(conn!= null && !conn.isClosed()) conn.close();
+		} catch (SQLException e) {
+			SysLog.AppendLog("Info", "remoteDB", e.getMessage());
+		}
+	}
+	
+/*
 	protected void finalize(){
 		try {
 			if(conn!= null && !conn.isClosed()) conn.close();
@@ -29,6 +38,7 @@ public class remoteDB {
 			SysLog.AppendLog("Info", "remoteDB", e.getMessage());
 		}
 	}
+*/
 
 	public boolean isConnected(){
 		if (conn==null) return false;

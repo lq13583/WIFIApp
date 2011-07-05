@@ -638,7 +638,7 @@ public class localDB{
 				put("labor_name","");
 				put("is_super","no");
 				put("update_key","yes");
-				put("update_int", "60000");
+				put("update_int", "300000");
 				put("update_int_max","600000");
 				put("font_size","15");
 				put("desc_font_size","16");
