@@ -3,9 +3,11 @@ package com.sunnybrook;
 import java.util.Iterator;
 import java.util.List;
 
+import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,9 +20,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 
-public class CraftordersActivity extends ListActivity  implements OnItemClickListener,OnItemSelectedListener{
+public class CraftordersActivity extends ListActivity  implements OnItemClickListener,OnItemSelectedListener,OnItemLongClickListener{
 	static final int OWNORDER_ACTIVITY_ID = 1;
 	static final int CRAFTORDER_ACTIVITY_ID = 2;
 	final static int RESULT_CLOSE_ID = 0;
@@ -65,7 +68,7 @@ public class CraftordersActivity extends ListActivity  implements OnItemClickLis
     	mOrderAdapter = new craftOrdersAdapter(this,R.layout.list_craftorder);
     	setListAdapter(mOrderAdapter);
     	getListView().setOnItemClickListener(this);
-    	
+    	getListView().setOnItemLongClickListener(this);    	
     	
     }
 
@@ -169,6 +172,20 @@ public class CraftordersActivity extends ListActivity  implements OnItemClickLis
 		mRefreshOrderListThread.start();
 	}
 	
+	private void showMessage(String txtMsg) {
+    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    	
+   		builder.setTitle(R.string.app_name)
+   			   .setCancelable(false)
+   			   .setMessage(txtMsg)
+   			   .setPositiveButton("Close", new DialogInterface.OnClickListener() {
+   				   public void onClick(DialogInterface dlg, int sumthin) {
+   					   dlg.cancel();
+   				   }
+   			   })
+			   .show();
+    }
+
 	@Override
 	public void onItemClick(AdapterView<?> _AdapterView, View arg1, int _pos, long arg3) {
 		switch(_AdapterView.getId()) {
@@ -183,6 +200,19 @@ public class CraftordersActivity extends ListActivity  implements OnItemClickLis
 		default:
 			break;
 		}
+	}
+
+	@Override
+	public boolean onItemLongClick(AdapterView<?> _AdapterView, View arg1, int _pos,long arg3) {
+		switch(_AdapterView.getId()) {
+		case android.R.id.list:
+			craftorder mItem = (craftorder) _AdapterView.getItemAtPosition(_pos);
+			showMessage(mItem.getComments());
+			break;
+		default:
+			break;
+		}
+		return true;
 	}
 
 	@Override

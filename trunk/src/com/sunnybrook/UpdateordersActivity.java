@@ -2,9 +2,11 @@ package com.sunnybrook;
 
 import java.util.List;
 
+import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -20,9 +22,10 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 
-public class UpdateordersActivity extends ListActivity  implements  OnClickListener,OnItemClickListener,OnItemSelectedListener{
+public class UpdateordersActivity extends ListActivity  implements  OnClickListener,OnItemClickListener,OnItemSelectedListener,OnItemLongClickListener{
 	static final int UPDATEORDER_ACTIVITY_ID = 2;
 	static private ownOrdersAdapter mOrderAdapter;
 	static private ProgressDialog mProgressDialog;
@@ -53,6 +56,7 @@ public class UpdateordersActivity extends ListActivity  implements  OnClickListe
     	mSpinner.setAdapter(adapter);
     	mSpinner.setOnItemSelectedListener(this);
     	getListView().setOnItemClickListener(this);
+    	getListView().setOnItemLongClickListener(this);
     	
     	Button mButton = (Button) findViewById(R.id.btnRefresh);
     	mButton.setOnClickListener(this);
@@ -128,6 +132,21 @@ public class UpdateordersActivity extends ListActivity  implements  OnClickListe
     		}
     	}
     }
+
+	private void showMessage(String txtMsg) {
+    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    	
+   		builder.setTitle(R.string.app_name)
+   			   .setCancelable(false)
+   			   .setMessage(txtMsg)
+   			   .setPositiveButton("Close", new DialogInterface.OnClickListener() {
+   				   public void onClick(DialogInterface dlg, int sumthin) {
+   					   dlg.cancel();
+   				   }
+   			   })
+			   .show();
+    }
+	
 	private class RefreshOrderListThread extends Thread {
 		private Handler mHandler;
 		private String mLaborcode;
@@ -233,4 +252,16 @@ public class UpdateordersActivity extends ListActivity  implements  OnClickListe
     	refreshOrderList(mLaborCode,mOrderby);
 	}
 
+	@Override
+	public boolean onItemLongClick(AdapterView<?> _AdapterView, View arg1, int _pos,long arg3) {
+		switch(_AdapterView.getId()) {
+		case android.R.id.list:
+			ownorder mItem = (ownorder) _AdapterView.getItemAtPosition(_pos);
+			showMessage(mItem.getComments());
+			break;
+		default:
+			break;
+		}
+		return true;
+	}
 }
