@@ -4,9 +4,11 @@ import java.util.List;
 
 //import android.app.AlertDialog;
 //import android.app.Dialog;
+import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 //import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,12 +19,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-public class SuperordersActivity  extends ListActivity  implements OnItemClickListener,OnItemSelectedListener{
+public class SuperordersActivity  extends ListActivity  implements OnItemClickListener,OnItemSelectedListener,OnItemLongClickListener{
 	static private superLaborsAdapter mLaborAdapter;
 	static private superOrdersAdapter mOrderAdapter;
 	static private ProgressDialog mProgressDialog;
@@ -57,6 +60,7 @@ public class SuperordersActivity  extends ListActivity  implements OnItemClickLi
     	setListAdapter(mOrderAdapter);
 //    	getListView().setOnItemSelectedListener(this);
     	getListView().setOnItemClickListener(this);
+    	getListView().setOnItemLongClickListener(this);
     	refreshLaborList(mParent.localdb.getLaborList());
     	
 /*   	
@@ -103,6 +107,20 @@ public class SuperordersActivity  extends ListActivity  implements OnItemClickLi
 		mRefreshOrderListThread.start();
 	}
 
+	private void showMessage(String txtMsg) {
+    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    	
+   		builder.setTitle(R.string.app_name)
+   			   .setCancelable(false)
+   			   .setMessage(txtMsg)
+   			   .setPositiveButton("Close", new DialogInterface.OnClickListener() {
+   				   public void onClick(DialogInterface dlg, int sumthin) {
+   					   dlg.cancel();
+   				   }
+   			   })
+			   .show();
+    }
+	
 	private class RefreshOrderListThread extends Thread {
 		private Handler mHandler;
 		private String mLaborcode;
@@ -261,5 +279,19 @@ public class SuperordersActivity  extends ListActivity  implements OnItemClickLi
 			break;
 		}
 	}
+
+	@Override
+	public boolean onItemLongClick(AdapterView<?> _AdapterView, View arg1, int _pos,long arg3) {
+		switch(_AdapterView.getId()) {
+		case android.R.id.list:
+			superorder mItem = (superorder) _AdapterView.getItemAtPosition(_pos);
+			showMessage(mItem.getComments());
+			break;
+		default:
+			break;
+		}
+		return true;
+	}
+	
 }
 
