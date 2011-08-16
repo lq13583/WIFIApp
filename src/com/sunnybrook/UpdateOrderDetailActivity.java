@@ -21,6 +21,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 
 public class UpdateOrderDetailActivity extends Activity implements OnClickListener,OnItemSelectedListener{
 	static final int DATE_EDCOMPLETE_ID = 0;
+	static final int OWNORDER_ACTIVITY_ID = 1;
 	private MyDateFormat mDateFormat = new MyDateFormat("yyyy-MM-dd");
 	private MyDateFormat myDateFormat = new MyDateFormat();
 	private DatePickerDialog mDatePicker;
@@ -161,7 +162,8 @@ public class UpdateOrderDetailActivity extends Activity implements OnClickListen
     	mButton = (Button) findViewById(R.id.btnEdComplete);
     	mButton.setText(mDateFormat.myFormat(mOrder.getEdcompletion()));
     	mButton.setOnClickListener(this);
-    	
+    	mButton = (Button) findViewById(R.id.btnOpen);
+    	mButton.setOnClickListener(this);
     }
 
     private DatePickerDialog.OnDateSetListener mDateSetListener =
@@ -213,6 +215,11 @@ public class UpdateOrderDetailActivity extends Activity implements OnClickListen
     				mDatePicker.updateDate(mYear, mMonth, mDay);
     			mDatePicker.show();
     			break;
+    		case R.id.btnOpen:
+    			Intent mIntent = new Intent(this,OwnOrderDetailActivity.class);
+    			mIntent.putExtra("ownorder", mOrder);
+    			this.startActivityForResult(mIntent, OWNORDER_ACTIVITY_ID);
+
     		default:
     			break;
     	}

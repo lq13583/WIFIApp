@@ -239,8 +239,8 @@
 					     android:layout_height="wrap_content"
 					     android:stretchColumns="1">
 				<TableRow android:paddingTop="2dp">
-					<TextView android:text="ED Completion:" />
-					<Button android:text="ED Complete"
+					<TextView android:text="E.C. Date:" />
+					<Button android:text="E.C. Date"
 				   		 	android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
 							android:id="@+id/btnEdComplete" />
@@ -271,9 +271,13 @@
  	  				  android:layout_alignParentBottom="true"
  	  				  android:gravity="center">
   			<Button android:id="@+id/btnClose"
-		  			android:text="Close"
+		  			android:text="Save Changes"
 		  			android:layout_width="wrap_content"
 		  			android:layout_height="wrap_content"/>
-		</LinearLayout>
+	  		<Button android:id="@+id/btnOpen"
+		  			android:text="Open"
+	  				android:layout_width="wrap_content"
+	  				android:layout_height="wrap_content"/>
+	  	</LinearLayout>
 	</LinearLayout>
 </LinearLayout>

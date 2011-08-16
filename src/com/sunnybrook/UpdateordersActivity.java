@@ -1,5 +1,6 @@
 package com.sunnybrook;
 
+import java.util.Date;
 import java.util.List;
 
 import android.app.AlertDialog;
@@ -171,11 +172,13 @@ public class UpdateordersActivity extends ListActivity  implements  OnClickListe
 
 	    	for(int i=0;i<mItems.size();i++) {
 				if(mItems.get(i).isNeedsupdate()) {
-					msg = mHandler.obtainMessage();
-					msg.arg1 = 2;
-					msg.arg2 = i;
-					msg.obj = mItems.get(i);
-					mHandler.sendMessage(msg);
+					if ((mItems.get(i).getEdcompletion()== null) || mItems.get(i).getEdcompletion().before(new Date())){
+						msg = mHandler.obtainMessage();
+						msg.arg1 = 2;
+						msg.arg2 = i;
+						msg.obj = mItems.get(i);
+						mHandler.sendMessage(msg);
+					}
 				}
 	    	}
 	    	msg = mHandler.obtainMessage();	    	
