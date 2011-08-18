@@ -6,8 +6,10 @@ import java.util.Date;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 
 import android.os.Bundle;
@@ -166,13 +168,14 @@ public class OwnOrderDetailActivity extends Activity implements OnClickListener,
     			this, R.array.order_status_array, android.R.layout.simple_spinner_item);
     	adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     	mSpinner.setAdapter(adapter);
-    	if(mOrder.getStatus().equals("UR")) {
-    		mOrder.setReadStatus("RD");
-    		mLocalDB.updateReadStatus(mOrder);
-    	}
     	mSpinner.setSelection(adapter.getPosition(mOrder.getStatus()));
     	mSpinner.setOnItemSelectedListener(this);
 
+    	if(mOrder.getReadStatus().equals("UR")) {
+    		mOrder.setReadStatus("RD");
+    		mLocalDB.updateReadStatus(mOrder);
+    	}
+    	
     	mSpinner = (Spinner) findViewById(R.id.readstatus);
     	adapter = ArrayAdapter.createFromResource(
     			this, R.array.order_readstatus_array, android.R.layout.simple_spinner_item);
@@ -424,6 +427,24 @@ public class OwnOrderDetailActivity extends Activity implements OnClickListener,
 	public void onItemSelected(AdapterView<?> _AdapterView, View _View, int _pos, long _row) {
 		switch(_AdapterView.getId()) {
 			case R.id.status:
+				String sStatus = _AdapterView.getItemAtPosition(_pos).toString();
+				if (sStatus.equals("COMP")) {
+					String errMsg = null;
+					if(mOrder.getActstart() == null) {
+						errMsg = "Please choose Start_Date before complete the work order!";
+					}
+					else if(mOrder.getActfinish() == null) {
+						errMsg = "Please choose Complete_Date before complete the work order!";
+					}
+					else if(mOrder.getActfinish().before(mOrder.getActstart())) {
+						errMsg = "Complete_Date can not before Start_Date, please correct it before complete the work order!";
+					}
+					if(errMsg != null ) {
+						showMessage(errMsg);
+						_AdapterView.setSelection(_pos-1);
+						return;
+					}
+				}
 				mOrder.setStatus(_AdapterView.getItemAtPosition(_pos).toString());
 				mLocalDB.updateStatus(mOrder);
 				break;
@@ -500,4 +521,19 @@ public class OwnOrderDetailActivity extends Activity implements OnClickListener,
 		// TODO Auto-generated method stub
 		
 	}
+
+	private void showMessage(String txtMsg) {
+    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    	
+   		builder.setTitle(R.string.app_name)
+   			   .setCancelable(false)
+   			   .setMessage(txtMsg)
+   			   .setPositiveButton("Close", new DialogInterface.OnClickListener() {
+   				   public void onClick(DialogInterface dlg, int sumthin) {
+   					   dlg.cancel();
+   				   }
+   			   })
+			   .show();
+    }
+
 }
