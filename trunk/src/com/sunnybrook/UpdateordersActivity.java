@@ -259,7 +259,11 @@ public class UpdateordersActivity extends ListActivity  implements  OnClickListe
 	public boolean onItemLongClick(AdapterView<?> _AdapterView, View arg1, int _pos,long arg3) {
 		switch(_AdapterView.getId()) {
 		case android.R.id.list:
+			ListView lv = (ListView) _AdapterView;
+			lv.requestFocusFromTouch();
+			lv.setSelection(_pos);
 			ownorder mItem = (ownorder) _AdapterView.getItemAtPosition(_pos);
+			mOrderId = mItem.getOrderId();
 			showMessage(mItem.getComments());
 			break;
 		default:
