@@ -218,8 +218,7 @@ public class UpdateOrderDetailActivity extends Activity implements OnClickListen
     		case R.id.btnOpen:
     			Intent mIntent = new Intent(this,OwnOrderDetailActivity.class);
     			mIntent.putExtra("ownorder", mOrder);
-    			this.startActivityForResult(mIntent, OWNORDER_ACTIVITY_ID);
-
+    			this.startActivity(mIntent);
     		default:
     			break;
     	}

@@ -3,11 +3,9 @@ package com.sunnybrook;
 import java.util.Iterator;
 import java.util.List;
 
-import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,15 +13,18 @@ import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 
-public class CraftordersActivity extends ListActivity  implements OnItemClickListener,OnItemSelectedListener,OnItemLongClickListener{
+public class CraftordersActivity extends ListActivity  implements OnClickListener,OnItemClickListener,OnItemSelectedListener,OnItemLongClickListener{
 	static final int OWNORDER_ACTIVITY_ID = 1;
 	static final int CRAFTORDER_ACTIVITY_ID = 2;
 	final static int RESULT_CLOSE_ID = 0;
@@ -34,7 +35,8 @@ public class CraftordersActivity extends ListActivity  implements OnItemClickLis
 	static private RefreshOrderListThread mRefreshOrderListThread;
 	static private String mCraft = "";
 	static private String mOrderby = "wonum";
-	
+
+	private craftorder mOrder = null;
 	private WIFIApp mParent;
 	
     public void onCreate(Bundle savedInstanceState) {
@@ -68,8 +70,11 @@ public class CraftordersActivity extends ListActivity  implements OnItemClickLis
     	mOrderAdapter = new craftOrdersAdapter(this,R.layout.list_craftorder);
     	setListAdapter(mOrderAdapter);
     	getListView().setOnItemClickListener(this);
+    	getListView().setOnItemSelectedListener(this);
     	getListView().setOnItemLongClickListener(this);    	
-    	
+
+    	Button mButton = (Button) findViewById(R.id.btnOpen);
+    	mButton.setOnClickListener(this);    	
     }
 
 	private class RefreshOrderListThread extends Thread {
@@ -172,30 +177,14 @@ public class CraftordersActivity extends ListActivity  implements OnItemClickLis
 		mRefreshOrderListThread.start();
 	}
 	
-	private void showMessage(String txtMsg) {
-    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
-    	
-   		builder.setTitle(R.string.app_name)
-   			   .setCancelable(false)
-   			   .setMessage(txtMsg)
-   			   .setPositiveButton("Close", new DialogInterface.OnClickListener() {
-   				   public void onClick(DialogInterface dlg, int sumthin) {
-   					   dlg.cancel();
-   				   }
-   			   })
-			   .show();
-    }
-
 	@Override
 	public void onItemClick(AdapterView<?> _AdapterView, View arg1, int _pos, long arg3) {
 		switch(_AdapterView.getId()) {
 		case android.R.id.list:
-			craftorder mItem = (craftorder) _AdapterView.getItemAtPosition(_pos);
-			Intent mIntent = new Intent(this,CraftOrderDetailActivity.class);
-			mIntent.putExtra("craftorder", mItem);
-			mIntent.putExtra("fontsize", mParent.myConfig.getFont_size());
-			mIntent.putExtra("descfontsize", mParent.myConfig.getDesc_font_size());
-			this.startActivityForResult(mIntent,CRAFTORDER_ACTIVITY_ID);
+			ListView lv = (ListView) _AdapterView;
+			lv.requestFocusFromTouch();
+			lv.setSelection(_pos);
+			mOrder = (craftorder) _AdapterView.getItemAtPosition(_pos);
 			break;
 		default:
 			break;
@@ -206,8 +195,11 @@ public class CraftordersActivity extends ListActivity  implements OnItemClickLis
 	public boolean onItemLongClick(AdapterView<?> _AdapterView, View arg1, int _pos,long arg3) {
 		switch(_AdapterView.getId()) {
 		case android.R.id.list:
-			craftorder mItem = (craftorder) _AdapterView.getItemAtPosition(_pos);
-			showMessage(mItem.getComments());
+			ListView lv = (ListView) _AdapterView;
+			lv.requestFocusFromTouch();
+			lv.setSelection(_pos);
+			mOrder = (craftorder) _AdapterView.getItemAtPosition(_pos);
+			openOrder();
 			break;
 		default:
 			break;
@@ -228,6 +220,9 @@ public class CraftordersActivity extends ListActivity  implements OnItemClickLis
 				mOrderAdapter.sort(mComparator);
 				break;
 			case android.R.id.list:
+				mOrder = (craftorder) _AdapterView.getItemAtPosition(_pos);
+				TextView mText = (TextView) findViewById(R.id.txtDescription);
+				mText.setText(mOrder.getComments());
 				break;
 			default:
 				break;
@@ -260,5 +255,26 @@ public class CraftordersActivity extends ListActivity  implements OnItemClickLis
 	public void onNothingSelected(AdapterView<?> arg0) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void onClick(View arg0) {
+		switch(arg0.getId()) {
+			case R.id.btnOpen:
+				if(mOrder==null) return;
+				openOrder();
+				break;
+			default:	
+				break;
+		}
+	}
+	
+	private void openOrder() {
+		if(mOrder == null) return;
+		Intent mIntent = new Intent(this,CraftOrderDetailActivity.class);
+		mIntent.putExtra("craftorder", mOrder);
+		mIntent.putExtra("fontsize", mParent.myConfig.getFont_size());
+		mIntent.putExtra("descfontsize", mParent.myConfig.getDesc_font_size());
+		this.startActivityForResult(mIntent,CRAFTORDER_ACTIVITY_ID);
 	}
 }

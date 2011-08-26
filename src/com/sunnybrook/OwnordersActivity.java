@@ -34,6 +34,7 @@ public class OwnordersActivity extends ListActivity  implements  OnClickListener
 	static private String mLaborCode;
 	static private String mOrderby = "wonum";
 	private String mOrderId = "";
+	private ownorder mOrder = null;
 	private WIFIApp mParent;
 	public void onCreate(Bundle savedInstanceState) {
 
@@ -57,6 +58,7 @@ public class OwnordersActivity extends ListActivity  implements  OnClickListener
     	mSpinner.setOnItemSelectedListener(this);
     	getListView().setOnItemClickListener(this);
     	getListView().setOnItemLongClickListener(this);
+    	getListView().setOnItemSelectedListener(this);
     	
     	Button mButton = (Button) findViewById(R.id.btnRefresh);
     	mButton.setOnClickListener(this);
@@ -151,6 +153,7 @@ public class OwnordersActivity extends ListActivity  implements  OnClickListener
     private void locateOrder() {
     	if(mOrderId.length() == 0) return;
 		ListView lv = (ListView) findViewById(android.R.id.list);
+		mOrder = null;
     	for (int i=0; i< lv.getCount(); i++) {
     		if(((ownorder) lv.getItemAtPosition(i)).getOrderId().equals(mOrderId)) {
     			lv.requestFocusFromTouch();
@@ -213,9 +216,6 @@ public class OwnordersActivity extends ListActivity  implements  OnClickListener
 			ListView lv = (ListView) _AdapterView;
 			lv.requestFocusFromTouch();
 			lv.setSelection(_pos);
-			ownorder mItem = (ownorder) _AdapterView.getItemAtPosition(_pos);
-			mOrderId = mItem.getOrderId();
-			showMessage(mItem.getComments());
 			break;
 		default:
 			break;
@@ -241,6 +241,10 @@ public class OwnordersActivity extends ListActivity  implements  OnClickListener
 				locateOrder();
 				break;
 			case android.R.id.list:
+				mOrder = (ownorder) _AdapterView.getItemAtPosition(_pos);
+				mOrderId = mOrder.getOrderId();
+				TextView mText = (TextView) findViewById(R.id.txtDescription);
+				mText.setText(mOrder.getComments());
 				break;
 			default:
 				break;
@@ -268,18 +272,11 @@ public class OwnordersActivity extends ListActivity  implements  OnClickListener
 				new datasync(mHandler,mParent.myConfig,mParent.localdb,mWifi).start();
 				break;
 			case R.id.btnOpen:
-				if(mOrderId.length() == 0) return;
-				ListView lv = (ListView) findViewById(android.R.id.list);
-		    	for (int i=0; i< lv.getCount(); i++) {
-		    		ownorder mItem =(ownorder) lv.getItemAtPosition(i); 
-		    		if(mItem.getOrderId().equals(mOrderId)) {
-		    			Intent mIntent = new Intent(this,OwnOrderDetailActivity.class);
-		    			mIntent.putExtra("ownorder", mItem);
-		    			this.startActivityForResult(mIntent, OWNORDER_ACTIVITY_ID);
-		    			break;
-		    		}
-		    	}
-				break;
+				if(mOrder==null) return;
+    			Intent mIntent = new Intent(this,OwnOrderDetailActivity.class);
+    			mIntent.putExtra("ownorder", mOrder);
+    			this.startActivityForResult(mIntent, OWNORDER_ACTIVITY_ID);
+    			break;
 			default:	
 				break;
 		}
@@ -306,10 +303,9 @@ public class OwnordersActivity extends ListActivity  implements  OnClickListener
 			ListView lv = (ListView) _AdapterView;
 			lv.requestFocusFromTouch();
 			lv.setSelection(_pos);
-			ownorder mItem = (ownorder) _AdapterView.getItemAtPosition(_pos);
-			mOrderId = mItem.getOrderId();
+			mOrder = (ownorder) _AdapterView.getItemAtPosition(_pos);
 			Intent mIntent = new Intent(this,OwnOrderDetailActivity.class);
-			mIntent.putExtra("ownorder", mItem);
+			mIntent.putExtra("ownorder", mOrder);
 			this.startActivityForResult(mIntent, OWNORDER_ACTIVITY_ID);
 			break;
 		default:

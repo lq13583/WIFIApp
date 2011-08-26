@@ -2,13 +2,9 @@ package com.sunnybrook;
 
 import java.util.List;
 
-//import android.app.AlertDialog;
-//import android.app.Dialog;
-import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 //import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,21 +13,25 @@ import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-public class SuperordersActivity  extends ListActivity  implements OnItemClickListener,OnItemSelectedListener,OnItemLongClickListener{
+public class SuperordersActivity  extends ListActivity  implements OnClickListener,OnItemClickListener,OnItemSelectedListener,OnItemLongClickListener{
 	static private superLaborsAdapter mLaborAdapter;
 	static private superOrdersAdapter mOrderAdapter;
 	static private ProgressDialog mProgressDialog;
 	static private RefreshOrderListThread mRefreshOrderListThread;
 	static private String mLaborCode = "";
 	static private String mOrderby = "wonum";
+	private superorder mOrder = null;
 	private WIFIApp mParent;
 	
     public void onCreate(Bundle savedInstanceState) {
@@ -58,18 +58,14 @@ public class SuperordersActivity  extends ListActivity  implements OnItemClickLi
     	
     	mOrderAdapter = new superOrdersAdapter(this,R.layout.list_superorder);
     	setListAdapter(mOrderAdapter);
-//    	getListView().setOnItemSelectedListener(this);
     	getListView().setOnItemClickListener(this);
+    	getListView().setOnItemSelectedListener(this);
     	getListView().setOnItemLongClickListener(this);
     	refreshLaborList(mParent.localdb.getLaborList());
-    	
-/*   	
 
-    	Button mBtn=(Button) findViewById(R.id.btnClear);
-    	mBtn.setOnClickListener(this);
-    	mBtn=(Button) findViewById(R.id.btnRefresh);
-    	mBtn.setOnClickListener(this);
-*/
+    	Button mButton = (Button) findViewById(R.id.btnOpen);
+    	mButton.setOnClickListener(this);
+    	
     	}
 
 	private void refreshLaborList(List<labor> _Items) {
@@ -107,20 +103,6 @@ public class SuperordersActivity  extends ListActivity  implements OnItemClickLi
 		mRefreshOrderListThread.start();
 	}
 
-	private void showMessage(String txtMsg) {
-    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
-    	
-   		builder.setTitle(R.string.app_name)
-   			   .setCancelable(false)
-   			   .setMessage(txtMsg)
-   			   .setPositiveButton("Close", new DialogInterface.OnClickListener() {
-   				   public void onClick(DialogInterface dlg, int sumthin) {
-   					   dlg.cancel();
-   				   }
-   			   })
-			   .show();
-    }
-	
 	private class RefreshOrderListThread extends Thread {
 		private Handler mHandler;
 		private String mLaborcode;
@@ -236,9 +218,11 @@ public class SuperordersActivity  extends ListActivity  implements OnItemClickLi
 				mOrderby = _AdapterView.getItemAtPosition(_pos).toString();
 				WorkorderComparator mComparator = new WorkorderComparator(mOrderby);
 				mOrderAdapter.sort(mComparator);
-//				if(!mLaborCode.equals("")) refreshOrderList(mLaborCode,mOrderby);
 				break;
 			case android.R.id.list:
+				mOrder = (superorder) _AdapterView.getItemAtPosition(_pos);
+				TextView mText = (TextView) findViewById(R.id.txtDescription);
+				mText.setText(mOrder.getComments());
 				break;
 			default:
 				break;
@@ -250,30 +234,15 @@ public class SuperordersActivity  extends ListActivity  implements OnItemClickLi
 		// TODO Auto-generated method stub
 		
 	}
-/*	
-    private void showMessage(String txtMsg) {
-    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
-    	
-   		builder.setTitle(R.string.app_name)
-   			   .setCancelable(false)
-   			   .setMessage(txtMsg)
-   			   .setPositiveButton("Close", new DialogInterface.OnClickListener() {
-   				   public void onClick(DialogInterface dlg, int sumthin) {
-   					   dlg.cancel();
-   				   }
-   			   })
-			   .show();
-    }
-*/
-
+	
 	@Override
 	public void onItemClick(AdapterView<?> _AdapterView, View arg1, int _pos, long arg3) {
 		switch(_AdapterView.getId()) {
 		case android.R.id.list:
-			superorder mItem = (superorder) _AdapterView.getItemAtPosition(_pos);
-			Intent mIntent = new Intent(this,SuperOrderDetailActivity.class);
-			mIntent.putExtra("superorder", mItem);
-			this.startActivity(mIntent);
+			ListView lv = (ListView) _AdapterView;
+			lv.requestFocusFromTouch();
+			lv.setSelection(_pos);
+			mOrder = (superorder) _AdapterView.getItemAtPosition(_pos);
 			break;
 		default:
 			break;
@@ -284,13 +253,32 @@ public class SuperordersActivity  extends ListActivity  implements OnItemClickLi
 	public boolean onItemLongClick(AdapterView<?> _AdapterView, View arg1, int _pos,long arg3) {
 		switch(_AdapterView.getId()) {
 		case android.R.id.list:
-			superorder mItem = (superorder) _AdapterView.getItemAtPosition(_pos);
-			showMessage(mItem.getComments());
+			ListView lv = (ListView) _AdapterView;
+			lv.requestFocusFromTouch();
+			lv.setSelection(_pos);
+			mOrder = (superorder) _AdapterView.getItemAtPosition(_pos);
+			Intent mIntent = new Intent(this,SuperOrderDetailActivity.class);
+			mIntent.putExtra("superorder", mOrder);
+			this.startActivity(mIntent);
 			break;
 		default:
 			break;
 		}
 		return true;
+	}
+
+	@Override
+	public void onClick(View arg0) {
+		switch(arg0.getId()) {
+			case R.id.btnOpen:
+				if(mOrder==null) return;
+				Intent mIntent = new Intent(this,SuperOrderDetailActivity.class);
+				mIntent.putExtra("superorder", mOrder);
+				this.startActivity(mIntent);
+				break;
+			default:	
+				break;
+		}
 	}
 	
 }

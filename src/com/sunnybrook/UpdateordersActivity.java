@@ -3,11 +3,9 @@ package com.sunnybrook;
 import java.util.Date;
 import java.util.List;
 
-import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -34,6 +32,7 @@ public class UpdateordersActivity extends ListActivity  implements  OnClickListe
 	static private String mLaborCode;
 	static private String mOrderby = "wonum";
 	private String mOrderId = "";
+	private ownorder mOrder = null;
 	private WIFIApp mParent;
 	public void onCreate(Bundle savedInstanceState) {
 
@@ -57,9 +56,12 @@ public class UpdateordersActivity extends ListActivity  implements  OnClickListe
     	mSpinner.setAdapter(adapter);
     	mSpinner.setOnItemSelectedListener(this);
     	getListView().setOnItemClickListener(this);
+    	getListView().setOnItemSelectedListener(this);
     	getListView().setOnItemLongClickListener(this);
     	
     	Button mButton = (Button) findViewById(R.id.btnRefresh);
+    	mButton.setOnClickListener(this);
+    	mButton = (Button) findViewById(R.id.btnOpen);
     	mButton.setOnClickListener(this);
     	
     	refreshOrderList(mLaborCode,mOrderby);
@@ -133,20 +135,6 @@ public class UpdateordersActivity extends ListActivity  implements  OnClickListe
     		}
     	}
     }
-
-	private void showMessage(String txtMsg) {
-    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
-    	
-   		builder.setTitle(R.string.app_name)
-   			   .setCancelable(false)
-   			   .setMessage(txtMsg)
-   			   .setPositiveButton("Close", new DialogInterface.OnClickListener() {
-   				   public void onClick(DialogInterface dlg, int sumthin) {
-   					   dlg.cancel();
-   				   }
-   			   })
-			   .show();
-    }
 	
 	private class RefreshOrderListThread extends Thread {
 		private Handler mHandler;
@@ -171,7 +159,7 @@ public class UpdateordersActivity extends ListActivity  implements  OnClickListe
 	    	mHandler.sendMessage(msg);
 
 	    	for(int i=0;i<mItems.size();i++) {
-				if(mItems.get(i).isNeedsupdate()) {
+				if(mItems.get(i).isNeedsupdate() && !mItems.get(i).getStatus().equals("COMP")) {
 					if ((mItems.get(i).getEdcompletion()== null) || mItems.get(i).getEdcompletion().before(new Date())){
 						msg = mHandler.obtainMessage();
 						msg.arg1 = 2;
@@ -204,11 +192,8 @@ public class UpdateordersActivity extends ListActivity  implements  OnClickListe
 			ListView lv = (ListView) _AdapterView;
 			lv.requestFocusFromTouch();
 			lv.setSelection(_pos);
-			ownorder mItem = (ownorder) _AdapterView.getItemAtPosition(_pos);
-			mOrderId = mItem.getOrderId();
-			Intent mIntent = new Intent(this,UpdateOrderDetailActivity.class);
-			mIntent.putExtra("ownorder", mItem);
-			this.startActivityForResult(mIntent, UPDATEORDER_ACTIVITY_ID);
+			mOrder = (ownorder) _AdapterView.getItemAtPosition(_pos);
+			mOrderId = mOrder.getOrderId();
 			break;
 		default:
 			break;
@@ -234,6 +219,10 @@ public class UpdateordersActivity extends ListActivity  implements  OnClickListe
 				locateOrder();
 				break;
 			case android.R.id.list:
+				mOrder = (ownorder) _AdapterView.getItemAtPosition(_pos);
+				mOrderId = mOrder.getOrderId();
+				TextView mText = (TextView) findViewById(R.id.txtDescription);
+				mText.setText(mOrder.getComments());
 				break;
 			default:
 				break;
@@ -245,14 +234,29 @@ public class UpdateordersActivity extends ListActivity  implements  OnClickListe
 		// TODO Auto-generated method stub
 		
 	}
-	
+
+	private void openOrder(){
+		if(mOrder==null) return;
+		Intent mIntent = new Intent(this,UpdateOrderDetailActivity.class);
+		mIntent.putExtra("ownorder", mOrder);
+		this.startActivityForResult(mIntent, UPDATEORDER_ACTIVITY_ID);
+	}
 	public void refreshOrderList() {
     	refreshOrderList(mLaborCode,mOrderby);
 	}
 	
 	@Override
 	public void onClick(View arg0) {
-    	refreshOrderList(mLaborCode,mOrderby);
+		switch(arg0.getId()){
+			case R.id.btnRefresh:
+				refreshOrderList(mLaborCode,mOrderby);
+				break;
+			case R.id.btnOpen:
+				openOrder();
+				break;
+			default:
+				break;
+		}
 	}
 
 	@Override
@@ -262,9 +266,9 @@ public class UpdateordersActivity extends ListActivity  implements  OnClickListe
 			ListView lv = (ListView) _AdapterView;
 			lv.requestFocusFromTouch();
 			lv.setSelection(_pos);
-			ownorder mItem = (ownorder) _AdapterView.getItemAtPosition(_pos);
-			mOrderId = mItem.getOrderId();
-			showMessage(mItem.getComments());
+			mOrder = (ownorder) _AdapterView.getItemAtPosition(_pos);
+			mOrderId = mOrder.getOrderId();
+			openOrder();
 			break;
 		default:
 			break;
