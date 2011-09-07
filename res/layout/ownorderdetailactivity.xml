@@ -343,6 +343,16 @@
 					 android:layout_height="wrap_content"
 					 android:stretchColumns="*"> 
 			<TableRow android:paddingTop="2dp">
+				<Button android:text="Start Date"
+						  android:layout_width="wrap_content"
+						  android:layout_height="wrap_content"
+						  android:id="@+id/btnActstart" />
+				<Button android:text="Complete Date"
+						  android:layout_width="wrap_content"
+						  android:layout_height="wrap_content"
+						  android:id="@+id/btnActfinish" />
+			</TableRow>
+			<TableRow android:paddingTop="2dp">
 				<TextView android:text="Status:"
 						  android:layout_width="wrap_content"
 						  android:layout_height="match_parent" />
@@ -362,16 +372,6 @@
 						  android:textSize="8pt"
 						  android:prompt="@string/select_order_readstatus" />
 			</TableRow>
-			<TableRow android:paddingTop="2dp">
-				<Button android:text="Start Date"
-						  android:layout_width="wrap_content"
-						  android:layout_height="wrap_content"
-						  android:id="@+id/btnActstart" />
-				<Button android:text="Complete Date"
-						  android:layout_width="wrap_content"
-						  android:layout_height="wrap_content"
-						  android:id="@+id/btnActfinish" />
-			</TableRow>
 		</TableLayout>		  
 <!-- 
 		<LinearLayout android:layout_width="match_parent"
@@ -390,7 +390,7 @@
 						  android:layout_weight="1"
 						  android:gravity="top|center">
 	  			<Button android:id="@+id/btnClose"
-		  				android:text="Completed"
+		  				android:text="Return"
 		  				android:layout_width="wrap_content"
 		  				android:layout_height="wrap_content"/>
 			</LinearLayout>

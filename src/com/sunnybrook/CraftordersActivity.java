@@ -177,6 +177,11 @@ public class CraftordersActivity extends ListActivity  implements OnClickListene
 		mRefreshOrderListThread.start();
 	}
 	
+    public void refreshOrderList(){
+    	if(mCraft.equals("")) return;
+    	refreshOrderList(mCraft,mOrderby);
+    }
+    
 	@Override
 	public void onItemClick(AdapterView<?> _AdapterView, View arg1, int _pos, long arg3) {
 		switch(_AdapterView.getId()) {

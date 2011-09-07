@@ -94,6 +94,11 @@ public class SuperordersActivity  extends ListActivity  implements OnClickListen
     	}
     };
 
+    public void refreshOrderList() {
+    	if(mLaborCode.equals("")) return;
+    	refreshOrderList(mLaborCode,mOrderby);
+    }
+    
     private void refreshOrderList(String _laborcode,String _orderby) {
     	if (mRefreshOrderListThread != null)
     		if(mRefreshOrderListThread.isAlive())

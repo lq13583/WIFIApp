@@ -16,9 +16,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.widget.TabHost;
+import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TextView;
 
-public class WIFIApp extends TabActivity{
+public class WIFIApp extends TabActivity implements OnTabChangeListener{
 	public sysconfig myConfig;
 	public localDB localdb;
     private Timer myTimer = new Timer();
@@ -40,22 +41,22 @@ public class WIFIApp extends TabActivity{
     				break;
     			case datasync.DATASYNC_FINISHED:
     				updateStatus((String) msg.obj);
-    				if(msg.arg2> 0) {
-    					notifyNewOrders(Integer.toString(msg.arg2) + " new orders received!");
-    					String tabTag = getTabHost().getCurrentTabTag();
-    					if(tabTag.equals("ownorders")) {
-    						OwnordersActivity mActivity=(OwnordersActivity) getLocalActivityManager().getActivity(tabTag);
-    						if (mActivity!= null)
-    							if(mActivity.mHandler!=null) {
-    								Message mMsg = mActivity.mHandler.obtainMessage();
-    								if(mMsg != null) {
-    									mMsg.arg1 = msg.arg1;
-    									mMsg.arg2 = msg.arg2;
-    									mMsg.obj = msg.obj;
-    									mActivity.mHandler.sendMessage(mMsg);
-    								}
-    						}
-    					}
+   					String tabTag = getTabHost().getCurrentTabTag();
+   					if(tabTag.equals("ownorders")) {
+  						OwnordersActivity mActivity=(OwnordersActivity) getLocalActivityManager().getActivity(tabTag);
+   						if (mActivity!= null)
+   							if(mActivity.mHandler!=null) {
+   								Message mMsg = mActivity.mHandler.obtainMessage();
+   								if(mMsg != null) {
+   									mMsg.arg1 = msg.arg1;
+   									mMsg.arg2 = msg.arg2;
+   									mMsg.obj = msg.obj;
+  									mActivity.mHandler.sendMessage(mMsg);
+   								}
+   						}
+   					}
+   					else if(msg.arg2> 0) {
+        				notifyNewOrders(Integer.toString(msg.arg2) + " new orders received!");
     				}
     				break;
     			case 2:
@@ -86,6 +87,8 @@ public class WIFIApp extends TabActivity{
         Resources res = getResources();	// Resource object to get Drawables
         
         TabHost mTabHost = getTabHost();  // The activity TabHost
+        mTabHost.setOnTabChangedListener(this);
+        
         TabHost.TabSpec spec;  // Resusable TabSpec for each tab
 
         Intent intent;  // Reusable Intent for each tab
@@ -186,5 +189,33 @@ public class WIFIApp extends TabActivity{
     	super.onDestroy();
     	SysLog.AppendLog("Info", "WIFIApp", "Application Closed.");
     }
+
+	@Override
+	public void onTabChanged(String _TabId) {
+		if(_TabId.equals("updateorders")) {
+			UpdateordersActivity mActivity=(UpdateordersActivity) getLocalActivityManager().getActivity(_TabId);
+			if (mActivity!=null)
+				mActivity.refreshOrderList();
+		}
+		else if(_TabId.equals("ownorders")) {
+			OwnordersActivity mActivity=(OwnordersActivity) getLocalActivityManager().getActivity(_TabId);
+			if (mActivity!=null)
+				mActivity.refreshOrderList();
+		}
+		else if(_TabId.equals("craftorder")) {
+			CraftordersActivity mActivity=(CraftordersActivity) getLocalActivityManager().getActivity(_TabId);
+			if (mActivity!=null)
+				mActivity.refreshOrderList();
+		}
+		else if(_TabId.equals("superorder")) {
+			SuperordersActivity mActivity=(SuperordersActivity) getLocalActivityManager().getActivity(_TabId);
+			if (mActivity!=null)
+				mActivity.refreshOrderList();
+			
+		}
+//		updateStatus(arg0);
+		// TODO Auto-generated method stub
+		
+	}
     
 }
