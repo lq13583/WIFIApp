@@ -62,17 +62,6 @@ public class localDB{
 		mStatement.close();
 	}
 
-/*	
-	public workorder getWorkOrder(String wonum) {
-		workorder mWorkOrder = null;
-		String sql="select * from workorder where wonum=?";
-		SQLiteStatement mStatement = db.compileStatement(sql);
-		mStatement.bindString(1,wonum);
-		mStatement.execute();
-		
-		return mWorkOrder;
-	}
-*/
 	public void saveLabTrans(labtrans _labtrans) {
 		if(_labtrans.getTransId()==0 && _labtrans.getRegularHrs()==0) return;
 		String mTable = "labtrans";
@@ -164,8 +153,11 @@ public class localDB{
 		}
 		mCur.close();
 		ContentValues mValues = new ContentValues();
-		if (mWorkOrder.getStatus()!= null) mValues.put("status", mWorkOrder.getStatus());
+/* 	Avoid to overwriting local order status.
+  		if (mWorkOrder.getStatus()!= null) mValues.put("status", mWorkOrder.getStatus());
 		if (mWorkOrder.getStatusdate()!= null) mValues.put("statusdate",df.format(mWorkOrder.getStatusdate()));
+*/
+
 		if (mWorkOrder.getDescription()!= null) mValues.put("description", mWorkOrder.getDescription());
 		if (mWorkOrder.getLocation()!= null) mValues.put("location", mWorkOrder.getLocation());
 		if (mWorkOrder.getLocationdesc()!= null) mValues.put("locationdesc", mWorkOrder.getLocationdesc());
