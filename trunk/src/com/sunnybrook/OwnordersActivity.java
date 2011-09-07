@@ -4,6 +4,9 @@ import java.util.List;
 
 import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -134,12 +137,13 @@ public class OwnordersActivity extends ListActivity  implements  OnClickListener
     				if(mProgressDialog.isShowing())
     					mProgressDialog.dismiss();
     				if(msg.arg2> 0) {
-    					refreshOrderList(mLaborCode,mOrderby);
+    					notifyNewOrders(Integer.toString(msg.arg2) + " new orders received!");
     				}
     				else {
         				tmpMsg = (String) msg.obj;
-        				showMessage(tmpMsg);
+//        				showMessage(tmpMsg);
     				}
+					refreshOrderList(mLaborCode,mOrderby);
     				break;
     			default:
     				if(mProgressDialog.isShowing()){
@@ -282,20 +286,6 @@ public class OwnordersActivity extends ListActivity  implements  OnClickListener
 		}
 	}
 
-	private void showMessage(String txtMsg) {
-    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
-    	
-   		builder.setTitle(R.string.app_name)
-   			   .setCancelable(false)
-   			   .setMessage(txtMsg)
-   			   .setPositiveButton("Close", new DialogInterface.OnClickListener() {
-   				   public void onClick(DialogInterface dlg, int sumthin) {
-   					   dlg.cancel();
-   				   }
-   			   })
-			   .show();
-    }
-
 	@Override
 	public boolean onItemLongClick(AdapterView<?> _AdapterView, View arg1, int _pos,long arg3) {
 		switch(_AdapterView.getId()) {
@@ -313,4 +303,19 @@ public class OwnordersActivity extends ListActivity  implements  OnClickListener
 		}
 		return true;
 	}
+
+	private void notifyNewOrders(String _msg) {
+		NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+		Notification mNotification = new Notification();
+    	Context context = getApplicationContext();
+    	CharSequence contentTitle = "My notification";
+    	CharSequence contentText = _msg;
+    	Intent notificationIntent = new Intent(this, WIFIApp.class);
+    	PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+    	mNotification.defaults = Notification.DEFAULT_ALL;
+    	mNotification.setLatestEventInfo(context, contentTitle, contentText, contentIntent);
+    	mNotificationManager.notify(1,mNotification);
+    }
+    
+	
 }
