@@ -9,6 +9,8 @@
     <string name="select_order_readstatus">Read Status:</string>
     <string name="select_rfd">Reason For Delay:</string>
     <string name="list_font_size">9</string>
+    <string name="cnt_updates">updates are required!</string>
+    <string name="cnt_outstanding">outstanding Workorders!</string>
     <string-array name="super_order_array">
     	<item>wonum</item>
     	<item>reportdate</item>

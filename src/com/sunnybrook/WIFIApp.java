@@ -24,7 +24,7 @@ public class WIFIApp extends TabActivity implements OnTabChangeListener{
 	public localDB localdb;
     private Timer myTimer = new Timer();
 	private SyncDataTask mySyncDataTask;
-	private TextView mStatusBar;
+	private TextView mStatusBar,mCountsUpdates,mCountsOutstanding;
 	public  MyDateFormat myDateFormat = new MyDateFormat();
 	public  WifiManager mWifi;
 	public  boolean mRefreshOwnOrder = false;
@@ -41,7 +41,9 @@ public class WIFIApp extends TabActivity implements OnTabChangeListener{
     				break;
     			case datasync.DATASYNC_FINISHED:
     				updateStatus((String) msg.obj);
-   					String tabTag = getTabHost().getCurrentTabTag();
+    		        updateCountsUpdates();
+    		        updateCountsOutstanding();
+    				String tabTag = getTabHost().getCurrentTabTag();
    					if(tabTag.equals("ownorders")) {
   						OwnordersActivity mActivity=(OwnordersActivity) getLocalActivityManager().getActivity(tabTag);
    						if (mActivity!= null)
@@ -134,6 +136,9 @@ public class WIFIApp extends TabActivity implements OnTabChangeListener{
         mTabHost.setCurrentTab(0);        
         mStatusBar = (TextView) findViewById(R.id.txtStatus);
         updateStatus("Ready");
+        mCountsUpdates = (TextView) findViewById(R.id.txtUpdateCnt);
+        mCountsOutstanding = (TextView) findViewById(R.id.txtOutstandingCnt);
+        
         if(mySyncDataTask == null) {
         	
         	mySyncDataTask = new SyncDataTask(mHandler, myConfig, localdb, mWifi);
@@ -146,8 +151,22 @@ public class WIFIApp extends TabActivity implements OnTabChangeListener{
 		}
         setTitle("WIFIApp V" + mAppVer + " (" + myConfig.getLabor_code() + " - " + myConfig.getLabor_name() + ")");
 
+        updateCountsUpdates();
+        updateCountsOutstanding();
 	}
 
+	public void updateCountsUpdates() {
+		Long lCounts = localdb.getUpdatesCnt(myConfig.getLabor_code());
+		String strText = Long.toString(lCounts) + " " + getString(R.string.cnt_updates);
+		mCountsUpdates.setText(strText);
+	}
+	
+	public void updateCountsOutstanding() {
+		Long lCounts = localdb.getOwnOrderCnt(myConfig.getLabor_code());
+		String strText = Long.toString(lCounts) + " " + getString(R.string.cnt_outstanding);
+		mCountsOutstanding.setText(strText);
+	}
+	
     private void updateStatus(String _msg) {
     	String mStatusMsg;
         mWifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
@@ -194,13 +213,15 @@ public class WIFIApp extends TabActivity implements OnTabChangeListener{
 	public void onTabChanged(String _TabId) {
 		if(_TabId.equals("updateorders")) {
 			UpdateordersActivity mActivity=(UpdateordersActivity) getLocalActivityManager().getActivity(_TabId);
-			if (mActivity!=null)
+			if (mActivity!=null) 
 				mActivity.refreshOrderList();
+			
 		}
 		else if(_TabId.equals("ownorders")) {
 			OwnordersActivity mActivity=(OwnordersActivity) getLocalActivityManager().getActivity(_TabId);
-			if (mActivity!=null)
+			if (mActivity!=null) 
 				mActivity.refreshOrderList();
+			
 		}
 		else if(_TabId.equals("craftorder")) {
 			CraftordersActivity mActivity=(CraftordersActivity) getLocalActivityManager().getActivity(_TabId);
@@ -211,7 +232,6 @@ public class WIFIApp extends TabActivity implements OnTabChangeListener{
 			SuperordersActivity mActivity=(SuperordersActivity) getLocalActivityManager().getActivity(_TabId);
 			if (mActivity!=null)
 				mActivity.refreshOrderList();
-			
 		}
 //		updateStatus(arg0);
 		// TODO Auto-generated method stub

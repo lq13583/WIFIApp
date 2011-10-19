@@ -120,6 +120,8 @@ public class UpdateordersActivity extends ListActivity  implements  OnClickListe
     					mProgressDialog.dismiss();
         				locateOrder();
     				}
+    				mParent.updateCountsOutstanding();
+    				mParent.updateCountsUpdates();    				
     		}
     	}
     };

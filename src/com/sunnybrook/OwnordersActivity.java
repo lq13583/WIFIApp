@@ -2,14 +2,12 @@ package com.sunnybrook;
 
 import java.util.List;
 
-import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
@@ -150,6 +148,8 @@ public class OwnordersActivity extends ListActivity  implements  OnClickListener
     					mProgressDialog.dismiss();
         				locateOrder();
     				}
+    				mParent.updateCountsOutstanding();
+    				mParent.updateCountsUpdates();
     		}
     	}
     };
