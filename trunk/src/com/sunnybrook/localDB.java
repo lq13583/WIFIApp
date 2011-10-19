@@ -557,7 +557,34 @@ public class localDB{
 		mCur.close();
 		return mList;
 	}
+	
+	public long getOwnOrderCnt(String _laborcode) {
+		long iCnt=0;
+		String strSQL = "SELECT count(wo.wonum) FROM workorder wo "
+			   + " JOIN wo_labor wl on wo.wonum=wl.wonum and wl.labortype=? and wl.laborcode=? "
+			   + " where wo.status != 'COMP';" ;
+		SQLiteStatement stmtTemp =db.compileStatement(strSQL);
+		stmtTemp.bindString(1,"O");
+		stmtTemp.bindString(2,_laborcode);
+		iCnt = stmtTemp.simpleQueryForLong();
+		stmtTemp.close();
+		return iCnt;
+	}
 
+	public long getUpdatesCnt(String _laborcode) {
+		long iCnt=0;
+		String strSQL = "SELECT count(wo.wonum) FROM workorder wo "
+			   + " JOIN wo_labor wl on wo.wonum=wl.wonum and wl.labortype=? and wl.laborcode=?"
+			   + " JOIN wo_update wu on wo.wonum= wu.wonum and (ED_Completion is null or ED_Completion < date('now')) "
+			   + " where wo.status != 'COMP';" ;
+		SQLiteStatement stmtTemp =db.compileStatement(strSQL);
+		stmtTemp.bindString(1,"O");
+		stmtTemp.bindString(2,_laborcode);
+		iCnt = stmtTemp.simpleQueryForLong();
+		stmtTemp.close();
+		return iCnt;
+	}
+	
 	public ownorder Craft2Own(craftorder _order, String _laborcode) {
 		ownorder mReturn = null;
 		String mTable = "wo_labor";
