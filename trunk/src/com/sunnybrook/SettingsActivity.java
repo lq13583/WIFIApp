@@ -1,9 +1,15 @@
 package com.sunnybrook;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.nio.channels.FileChannel;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -62,6 +68,8 @@ public class SettingsActivity extends Activity implements OnClickListener{
     	btn.setOnClickListener(this);
     	btn = (Button) findViewById(R.id.btnReset);
     	btn.setOnClickListener(this);
+    	btn = (Button) findViewById(R.id.btnBackup);
+    	btn.setOnClickListener(this);
     }
     
    	public void onClick(View v) {
@@ -73,6 +81,9 @@ public class SettingsActivity extends Activity implements OnClickListener{
    			case R.id.btnReset:
    				initValues();
    				showMessage("Reset Ok!");
+   				break;
+   			case R.id.btnBackup:
+   				backupDB();
    				break;
    			case R.id.btnAuth:
    				EditText mEditText = (EditText) findViewById(R.id.password);
@@ -134,5 +145,22 @@ public class SettingsActivity extends Activity implements OnClickListener{
    				   }
    			   })
 			   .show();
+    }
+    
+    private void backupDB() {
+    	try {
+    		File currentDB = this.getDatabasePath("maximo.sqlite");
+    		File extPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+    		File backupDB = new File(extPath,"maximo.sqlite");
+    		if (currentDB.exists()) {
+    			FileChannel src = new FileInputStream(currentDB).getChannel();
+    			FileChannel dst = new FileOutputStream(backupDB).getChannel();
+    			dst.transferFrom(src, 0, src.size());
+    			src.close();
+    			dst.close();
+    		}
+    	}catch(Exception e) {
+    		showMessage(e.toString());
+    	}
     }
 }
