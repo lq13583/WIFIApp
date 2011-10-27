@@ -158,6 +158,7 @@ public class SettingsActivity extends Activity implements OnClickListener{
     			dst.transferFrom(src, 0, src.size());
     			src.close();
     			dst.close();
+    			showMessage("Finish Backup to:" + backupDB.getAbsolutePath());
     		}
     	}catch(Exception e) {
     		showMessage(e.toString());
