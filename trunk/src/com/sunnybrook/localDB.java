@@ -278,8 +278,14 @@ public class localDB{
 		if (_order.getStatus()!= null){
 			mValues.put("status", _order.getStatus());
 			if(_order.getStatus().equals("COMP")) {
-				if(_order.getActstart()==null) mValues.put("actstart", mDateFormat.myFormat(new Date()));
-				if(_order.getActfinish()==null) mValues.put("actfinish", mDateFormat.myFormat(new Date()));
+				if(_order.getActstart()==null)
+					mValues.put("actstart", mDateFormat.myFormat(new Date()));
+				else
+					mValues.put("actstart", mDateFormat.myFormat(_order.getActstart()));
+				if(_order.getActfinish()==null)
+					mValues.put("actfinish", mDateFormat.myFormat(new Date()));
+				else
+					mValues.put("actfinish", mDateFormat.myFormat(_order.getActfinish()));
 			}
 		}
 		try {

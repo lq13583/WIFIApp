@@ -258,6 +258,16 @@ public class remoteDB {
 		if(!_order.getStatus().equals("INPRG")) {
 			PreparedStatement mPs = null;
 			if(_order.getStatus().equals("COMP")) {
+
+/* Avoid null date values	*/			
+				if(_order.getActstart()==null) {
+					if(_order.getActfinish()==null)
+						_order.setActfinish(new java.util.Date());
+					_order.setActstart(_order.getActfinish());
+				}
+				if(_order.getActfinish()==null)
+					_order.setActfinish(_order.getActstart());
+
 /* Update actstart and actfinish if the order is completed */
 				String sql = "update workorder set status = ?, actstart = ?, actfinish = ?  where wonum = ?;";
 				try {
