@@ -106,22 +106,26 @@ public class remoteDB {
 	
 	private boolean isUpdating(String _wonum, int _days) {
 		boolean mReturn = false;
-		String sql = "Select * from [WRM_Sunnybrook].dbo.ServiceCall "
-				   + " where WorkOrder_No = ? and isnull(ED_Completion,DateAdd(day,?,Ticket_DateTime)) < getdate()";
-		PreparedStatement mPs = null;
-		ResultSet mRs = null;
-		try {
-			mPs = conn.prepareStatement(sql);
-			mPs.setString(1,_wonum);
-			mPs.setInt(2,_days);
-			mRs = mPs.executeQuery();
-			if (mRs.next()){
-				mReturn = true;
+
+//Only update outstanding orders when _days > 0. 
+		if(_days > 0) {		
+			String sql = "Select * from [WRM_Sunnybrook].dbo.ServiceCall "
+				   	+ " where WorkOrder_No = ? and isnull(ED_Completion,DateAdd(day,?,Ticket_DateTime)) < getdate()";
+			PreparedStatement mPs = null;
+			ResultSet mRs = null;
+			try {
+				mPs = conn.prepareStatement(sql);
+				mPs.setString(1,_wonum);
+				mPs.setInt(2,_days);
+				mRs = mPs.executeQuery();
+				if (mRs.next()){
+					mReturn = true;
+				}
+				mRs.close();
+			} catch (SQLException e) {
+				//TODO Auto-generated catch block
+				SysLog.AppendLog("Info", "remoteDB", e.getMessage());
 			}
-			mRs.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			SysLog.AppendLog("Info", "remoteDB", e.getMessage());
 		}
 		
 		return mReturn;
@@ -230,7 +234,7 @@ public class remoteDB {
 
 /* Update Outstanding order status */
 		if(_order.isNeedsupdate()) {
-			if(_order.getEdcompletion()!=null) {
+			if(_order.getEdcompletion()!=null && _order.getEdcompletion().after(new java.util.Date())) {
 				try {
 					PreparedStatement mPs = null;
 					String sql = "update WRM_Sunnybrook.dbo.ServiceCall set Reason_For_Delay = ?, RFD_Comments = ?, ED_Completion = ? where WorkOrder_No = ?;";

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
       package="com.sunnybrook"
-      android:installLocation="auto" android:versionName="2.11" android:versionCode="12">
+      android:installLocation="auto" android:versionName="2.12" android:versionCode="12">
     <application android:name ="MainApp" android:icon="@drawable/icon" android:label="@string/app_name">
     	<activity android:name="WIFIApp" android:label="@string/app_name" android:icon="@drawable/icon">
             <intent-filter>
