@@ -182,5 +182,4 @@ public class sysconfig {
 	public int getOutstanding_days() {
 		return outstanding_days;
 	}
-
 }
