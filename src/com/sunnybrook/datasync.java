@@ -71,14 +71,18 @@ public class datasync extends Thread{
 	}
 	
 	private boolean checkWifiStatus() {
+		boolean is_Emulator="generic".equals(android.os.Build.BRAND); 
 		updateStatus("Checking WIFI connection......");
+		WifiInfo mWifiInfo = mWifi.getConnectionInfo();
+
+		if(is_Emulator) return true;
+		
 		if(!mWifi.isWifiEnabled()) {
 			mWifi.setWifiEnabled(true);
 			errMsg = "WIFI Connection is enabled.";
 			return false;
 		}
 
-		WifiInfo mWifiInfo = mWifi.getConnectionInfo();
 		if((mWifiInfo.getSSID() == null) || !mWifiInfo.getSSID().equals(myConfig.getSsid())) {
 			List<WifiConfiguration> mWifiConfList = mWifi.getConfiguredNetworks();
 			WifiConfiguration mWifiConfig = null;
@@ -91,30 +95,31 @@ public class datasync extends Thread{
 					updateStatus("WIFI Configuration is found.");
 					break;
 				}
-			if(mWifiConfig == null){
-				mWifiConfig = new WifiConfiguration();
-				mWifiConfig.SSID = "\"" + myConfig.getSsid() + "\"";
-				mWifiConfig.allowedAuthAlgorithms.set(WifiConfiguration.AuthAlgorithm.SHARED);
-				mWifiConfig.allowedAuthAlgorithms.set(WifiConfiguration.AuthAlgorithm.OPEN);
-				mWifiConfig.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
-				mWifiConfig.wepKeys[0] = myConfig.getNetwork_key();
-				mWifiConfig.wepTxKeyIndex = 0;
-				mWifiConfig.priority = 1;
-				mWifiConfig.status = WifiConfiguration.Status.ENABLED;
-				mNetId = mWifi.addNetwork(mWifiConfig);
-				if(mNetId >= 0) {
-					mWifiConfig.networkId = mNetId;
-					updateStatus("WIFI Configuration is added.");
+				if(mWifiConfig == null){
+					mWifiConfig = new WifiConfiguration();
+					mWifiConfig.SSID = "\"" + myConfig.getSsid() + "\"";
+					mWifiConfig.allowedAuthAlgorithms.set(WifiConfiguration.AuthAlgorithm.SHARED);
+					mWifiConfig.allowedAuthAlgorithms.set(WifiConfiguration.AuthAlgorithm.OPEN);
+					mWifiConfig.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
+					mWifiConfig.wepKeys[0] = myConfig.getNetwork_key();
+					mWifiConfig.wepTxKeyIndex = 0;
+					mWifiConfig.priority = 1;
+					mWifiConfig.status = WifiConfiguration.Status.ENABLED;
+					mNetId = mWifi.addNetwork(mWifiConfig);
+					if(mNetId >= 0) {
+						mWifiConfig.networkId = mNetId;
+						updateStatus("WIFI Configuration is added.");
+					}
+					else {
+						errMsg = "Faild to add WIFI Configuration!";
+						return false;
+					}
 				}
-				else {
-					errMsg = "Faild to add WIFI Configuration!";
-					return false;
-				}
-			}
-			mWifi.enableNetwork(mNetId, true);
-			errMsg = "WIFI Configuration is enabled.";
-			return false;
+				mWifi.enableNetwork(mNetId, true);
+				errMsg = "WIFI Configuration is enabled.";
+				return false;
 		}
+	
 		if(mWifiInfo.getIpAddress()==0) {
 			errMsg = "Waiting for WIFI connection......";
 			return false;
