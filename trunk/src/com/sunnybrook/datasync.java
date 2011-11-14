@@ -16,7 +16,7 @@ public class datasync extends Thread{
 	private WifiManager mWifi;
 	private localDB myLocalDB;
 	private remoteDB myRemoteDB;
-	private static boolean is_running = false;
+	public static boolean is_running = false;
 	private int mNewOrders = 0;
 	private String errMsg;
 	
