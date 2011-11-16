@@ -151,7 +151,9 @@ public class SettingsActivity extends Activity implements OnClickListener{
     	try {
     		File currentDB = this.getDatabasePath("maximo.sqlite");
     		File extPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+    		if(!extPath.exists()) extPath.mkdirs();
     		File backupDB = new File(extPath,"maximo.sqlite");
+    		
     		if (currentDB.exists()) {
     			FileChannel src = new FileInputStream(currentDB).getChannel();
     			FileChannel dst = new FileOutputStream(backupDB).getChannel();
