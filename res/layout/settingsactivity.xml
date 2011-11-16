@@ -14,6 +14,7 @@
 		 		  	  android:layout_width="fill_parent" 
 					  android:id="@+id/labor_code" 
 					  android:padding="3dip" 
+					  android:singleLine="true"
 					  android:text="laborcode">
 			</EditText>
 		</TableRow>
@@ -25,6 +26,7 @@
 					  android:layout_width="fill_parent" 
 					  android:id="@+id/labor_name" 
 					  android:padding="3dip" 
+					  android:singleLine="true"
 					  android:text="laborname">
 			</EditText>
 		</TableRow>
@@ -36,6 +38,7 @@
 					  android:layout_width="fill_parent" 
 					  android:id="@+id/crafts" 
 					  android:padding="3dip" 
+					  android:singleLine="true"
 					  android:text="Craft List">
 			</EditText>
 		</TableRow>
@@ -69,6 +72,7 @@
 					  android:layout_width="fill_parent" 
 					  android:id="@+id/update_int" 
 					  android:padding="3dip" 
+					  android:singleLine="true"
 					  android:text="Font Size">
 			</EditText>
 		</TableRow>
@@ -80,6 +84,7 @@
 					  android:layout_width="fill_parent" 
 					  android:id="@+id/update_int_max" 
 					  android:padding="3dip" 
+					  android:singleLine="true"
 					  android:text="Description Font Size">
 			</EditText>
 		</TableRow>
@@ -91,6 +96,7 @@
 					  android:layout_width="fill_parent" 
 					  android:id="@+id/font_size" 
 					  android:padding="3dip" 
+					  android:singleLine="true"
 					  android:text="Font Size">
 			</EditText>
 		</TableRow>
@@ -102,6 +108,7 @@
 					  android:layout_width="fill_parent" 
 					  android:id="@+id/desc_font_size" 
 					  android:padding="3dip" 
+					  android:singleLine="true"
 					  android:text="Description Font Size">
 			</EditText>
 		</TableRow>
@@ -113,6 +120,7 @@
 					  android:layout_width="fill_parent" 
 					  android:id="@+id/outstanding_days"
 					  android:padding="3dip" 
+					  android:singleLine="true"
 					  android:text="Font Size">
 			</EditText>
 		</TableRow>
@@ -132,6 +140,7 @@
 					  android:scrollHorizontally="true" 
 					  android:scrollbars="horizontal" 
 					  android:gravity="left"
+					  android:singleLine="true"
 					  android:layout_span="2">
 			</EditText>
 		</TableRow>
@@ -155,6 +164,7 @@
 					  android:layout_width="fill_parent" 
 					  android:id="@+id/net_key" 
 					  android:padding="3dip" 
+					  android:singleLine="true"
 					  android:text="network key">
 			</EditText>
 		</TableRow>

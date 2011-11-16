@@ -69,7 +69,8 @@ public class sysconfig {
 		return mCrafts;
 	}
 	
-	public void setCrafts(String mCrafts) {
+	public void setCrafts(String _Crafts) {
+		String mCrafts=_Crafts.replace("\n","");
 		StringTokenizer st = new StringTokenizer(mCrafts,";");
 		craft_list.removeAll(craft_list);
 		while(st.hasMoreTokens()){
