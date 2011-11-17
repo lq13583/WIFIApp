@@ -168,7 +168,7 @@ public class localDB{
 		if (mWorkOrder.getWo3()!= null) mValues.put("wo3", mWorkOrder.getWo3());
 		if (mWorkOrder.getComments()!= null) mValues.put("comments", mWorkOrder.getComments());
 		if (mWorkOrder.getReportedby()!= null) mValues.put("reportedby", mWorkOrder.getReportedby());
-		if (mWorkOrder.getReportdate().toLocaleString()!= null) mValues.put("reportdate", df.format(mWorkOrder.getReportdate()));
+		if (mWorkOrder.getReportdate()!= null) mValues.put("reportdate", df.format(mWorkOrder.getReportdate()));
 		if (mWorkOrder.getPhone()!= null) mValues.put("phone", mWorkOrder.getPhone());
 		if (mWorkOrder.getActstart()!= null) mValues.put("actstart", df.format(mWorkOrder.getActstart()));
 		if (mWorkOrder.getActfinish()!= null) mValues.put("actfinish", df.format(mWorkOrder.getActfinish()));
