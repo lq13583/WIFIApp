@@ -3,11 +3,9 @@ package com.sunnybrook;
 import java.util.Date;
 import java.util.List;
 
-import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -241,10 +239,12 @@ public class UpdateordersActivity extends ListActivity  implements  OnClickListe
 
 	private void openOrder(){
 		if(mOrder==null) return;
+/*		
 		if(datasync.is_running) {
 			showMessage("Data Sync is currently running, please wait until it is finished!");
 			return;
 		}
+*/
 		Intent mIntent = new Intent(this,UpdateOrderDetailActivity.class);
 		mIntent.putExtra("ownorder", mOrder);
 		this.startActivityForResult(mIntent, UPDATEORDER_ACTIVITY_ID);
@@ -284,7 +284,7 @@ public class UpdateordersActivity extends ListActivity  implements  OnClickListe
 		}
 		return true;
 	}
-
+/*
 	private void showMessage(String txtMsg) {
     	AlertDialog.Builder builder = new AlertDialog.Builder(this);
     	
@@ -298,4 +298,5 @@ public class UpdateordersActivity extends ListActivity  implements  OnClickListe
    			   })
 			   .show();
     }
+*/
 }
