@@ -50,6 +50,7 @@ public class CraftOrderDetailActivity extends Activity implements OnClickListene
     	mTextView = (TextView) findViewById(R.id.comments);
     	mTextView.setText(mOrder.getComments());
     	mTextView.setTextSize(mDescFontSize);
+/*
     	mTextView = (TextView) findViewById(R.id.khname);
     	mTextView.setText(mOrder.getKhname());
     	mTextView.setTextSize(mFontSize);
@@ -116,7 +117,7 @@ public class CraftOrderDetailActivity extends Activity implements OnClickListene
     	mTextView = (TextView) findViewById(R.id.kcom);
     	mTextView.setText(mOrder.getKcom());
     	mTextView.setTextSize(mFontSize);
-
+*/
     	Button mButton = (Button) findViewById(R.id.btnClose);
     	mButton.setOnClickListener(this);
     	mButton = (Button) findViewById(R.id.btnOpen);
