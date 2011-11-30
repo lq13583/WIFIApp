@@ -118,6 +118,7 @@
 				  android:layout_height="wrap_content"
   				  android:background="#707070"
 				  android:text="Comments" />
+<!--
 		<TableLayout android:layout_width="fill_parent"
 				     android:layout_height="wrap_content"
 				     android:stretchColumns="1">
@@ -224,7 +225,8 @@
 				  android:layout_height="wrap_content"
 	   					  android:background="#707070"
 				  android:text="kcom" />
-	</LinearLayout>
+-->
+		</LinearLayout>
 	</LinearLayout>
 	</ScrollView>
   	<LinearLayout android:id="@+id/bottom_control_bar"
