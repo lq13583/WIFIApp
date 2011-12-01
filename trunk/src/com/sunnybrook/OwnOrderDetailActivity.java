@@ -62,7 +62,10 @@ public class OwnOrderDetailActivity extends Activity implements OnClickListener,
     	mFontSize = myConfig.getFont_size();
     	mDescFontSize = myConfig.getDesc_font_size();
     	
-    	setContentView(R.layout.ownorderdetailactivity);
+    	if(myConfig.isUpdate_key())
+    		setContentView(R.layout.ownorderdetailactivity);
+    	else
+    		setContentView(R.layout.ownorderdetailnokeyactivity);
     	mOrder = (ownorder) getIntent().getSerializableExtra("ownorder");
     	TextView mTextView = (TextView) findViewById(R.id.wonum);
     	mTextView.setText(mOrder.getOrderId());
