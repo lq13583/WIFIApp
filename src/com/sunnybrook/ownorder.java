@@ -6,6 +6,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 public class ownorder extends workorder{
@@ -99,5 +100,17 @@ public class ownorder extends workorder{
 
 	public Date getEdcompletion() {
 		return edcompletion;
+	}
+	
+	public float getTotalHrs() {
+		float mTotal = 0;
+		if(translist != null) {
+			Iterator<labtrans> mIt = translist.iterator();
+			while(mIt.hasNext()) {
+				labtrans mLabtrans = (labtrans) mIt.next();
+				mTotal += mLabtrans.getRegularHrs();
+			}
+		}
+		return mTotal;
 	}
 }

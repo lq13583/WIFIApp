@@ -443,6 +443,9 @@ public class OwnOrderDetailActivity extends Activity implements OnClickListener,
 					else if(mOrder.getActfinish().before(mOrder.getActstart())) {
 						errMsg = "Complete_Date can not before Start_Date, please correct it before complete the work order!";
 					}
+					else if(mOrder.getTotalHrs()<=0) {
+						errMsg = "Please enter your working hours before complete the work order!";
+					}
 					if(errMsg != null ) {
 						showMessage(errMsg);
 						_AdapterView.setSelection(_pos-1);
