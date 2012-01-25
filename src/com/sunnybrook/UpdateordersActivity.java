@@ -224,6 +224,7 @@ public class UpdateordersActivity extends ListActivity  implements  OnClickListe
 				mOrder = (ownorder) _AdapterView.getItemAtPosition(_pos);
 				mOrderId = mOrder.getOrderId();
 				TextView mText = (TextView) findViewById(R.id.txtDescription);
+				mText.setTextSize(android.util.TypedValue.COMPLEX_UNIT_DIP,mParent.myConfig.getDesc_font_size());
 				mText.setText(mOrder.getComments());
 				break;
 			default:

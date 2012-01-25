@@ -1,7 +1,6 @@
 package com.sunnybrook;
 
 import java.util.List;
-
 import android.app.ListActivity;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -248,6 +247,7 @@ public class OwnordersActivity extends ListActivity  implements  OnClickListener
 				mOrder = (ownorder) _AdapterView.getItemAtPosition(_pos);
 				mOrderId = mOrder.getOrderId();
 				TextView mText = (TextView) findViewById(R.id.txtDescription);
+				mText.setTextSize(android.util.TypedValue.COMPLEX_UNIT_DIP,mParent.myConfig.getDesc_font_size());
 				mText.setText(mOrder.getComments());
 				break;
 			default:

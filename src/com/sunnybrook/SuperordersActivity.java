@@ -227,6 +227,7 @@ public class SuperordersActivity  extends ListActivity  implements OnClickListen
 			case android.R.id.list:
 				mOrder = (superorder) _AdapterView.getItemAtPosition(_pos);
 				TextView mText = (TextView) findViewById(R.id.txtDescription);
+				mText.setTextSize(android.util.TypedValue.COMPLEX_UNIT_DIP,mParent.myConfig.getDesc_font_size());
 				mText.setText(mOrder.getComments());
 				break;
 			default:
