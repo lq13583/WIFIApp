@@ -665,9 +665,9 @@ public class localDB{
 				put("update_key","yes");
 				put("update_int", "300000");
 				put("update_int_max","600000");
-				put("font_size","15");
-				put("desc_font_size","16");
-				put("list_font_size","16");
+				put("font_size","25");
+				put("desc_font_size","25");
+				put("list_font_size","25");
 				put("crafts","");
 /* My Dev SQL Server
 				put("jdbc_url","jdbc:jtds:sqlserver://172.16.145.35:1433/maximo;user=sa;password=maximo;");
