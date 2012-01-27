@@ -129,20 +129,40 @@ public class CraftordersActivity extends ListActivity  implements OnClickListene
 			craftorder mS = getItem(position);
 			if(mS != null) {
 				TextView t = (TextView) v.findViewById(R.id.wonum);
-				if(t!= null) t.setText(mS.getOrderId());
+				if(t!= null){
+					t.setText(mS.getOrderId());
+					t.setTextSize(android.util.TypedValue.COMPLEX_UNIT_DIP,mParent.myConfig.getList_font_size());
+				}
 				t = (TextView) v.findViewById(R.id.reportdate);
-				if(t!=null)
+				if(t!=null) {
 					t.setText(new MyDateFormat().myFormat(mS.getReportdate()));
+					t.setTextSize(android.util.TypedValue.COMPLEX_UNIT_DIP,mParent.myConfig.getList_font_size());
+				}
 				t = (TextView) v.findViewById(R.id.location);
-				if(t!=null) t.setText(mS.getLocation());
+				if(t!=null) {
+					t.setText(mS.getLocation());
+					t.setTextSize(android.util.TypedValue.COMPLEX_UNIT_DIP,mParent.myConfig.getList_font_size());
+				}
 				t = (TextView) v.findViewById(R.id.wopriority);
-				if(t!=null) t.setText(Integer.toString(mS.getWopriority()));
+				if(t!=null) {
+					t.setText(Integer.toString(mS.getWopriority()));
+					t.setTextSize(android.util.TypedValue.COMPLEX_UNIT_DIP,mParent.myConfig.getList_font_size());
+				}
 				t = (TextView) v.findViewById(R.id.status);
-				if(t!=null) t.setText(mS.getStatus());
+				if(t!=null) {
+					t.setText(mS.getStatus());
+					t.setTextSize(android.util.TypedValue.COMPLEX_UNIT_DIP,mParent.myConfig.getList_font_size());
+				}
 				t = (TextView) v.findViewById(R.id.laborcode);
-				if(t!=null) t.setText(mS.getLaborCode());
+				if(t!=null) {
+					t.setText(mS.getLaborCode());
+					t.setTextSize(android.util.TypedValue.COMPLEX_UNIT_DIP,mParent.myConfig.getList_font_size());
+				}
 				t = (TextView) v.findViewById(R.id.laborname);
-				if(t!=null) t.setText(mS.getLaborName());
+				if(t!=null) {
+					t.setText(mS.getLaborName());
+					t.setTextSize(android.util.TypedValue.COMPLEX_UNIT_DIP,mParent.myConfig.getList_font_size());
+				}
 			}
 			return v;
 		}

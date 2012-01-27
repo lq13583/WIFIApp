@@ -113,6 +113,18 @@
 			</EditText>
 		</TableRow>
 		<TableRow>
+			<TextView android:text="list_font_size:"
+			          android:padding="3dip" />
+			<EditText android:layout_height="fill_parent" 
+					  android:gravity="left" 
+					  android:layout_width="fill_parent" 
+					  android:id="@+id/list_font_size" 
+					  android:padding="3dip" 
+					  android:singleLine="true"
+					  android:text="Description Font Size">
+			</EditText>
+		</TableRow>
+		    		<TableRow>
 			<TextView android:text="outstanding_days:"
 			          android:padding="3dip" />
 			<EditText android:layout_height="fill_parent" 
