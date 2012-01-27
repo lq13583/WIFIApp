@@ -13,6 +13,7 @@ public class sysconfig {
 	private boolean update_key;
 	private int font_size;
 	private int desc_font_size;
+	private int list_font_size;
 	private long update_int;
 	private long update_int_max;
 	private String jdbc_url;
@@ -31,10 +32,16 @@ public class sysconfig {
     	update_key = (mRet == null)?false:mRet.equals("yes");
     	mRet = localdb.getSysConfig("debug_mode");
     	debug_mode = (mRet == null)?false:mRet.equals("yes");
-    	update_int = Long.parseLong(localdb.getSysConfig("update_int"));
-    	update_int_max = Long.parseLong(localdb.getSysConfig("update_int_max"));
-    	font_size = Integer.parseInt(localdb.getSysConfig("font_size"));
-    	desc_font_size = Integer.parseInt(localdb.getSysConfig("desc_font_size"));
+    	mRet = localdb.getSysConfig("update_int");
+    	update_int = (mRet == null)?300000:Long.parseLong(mRet);
+    	mRet = localdb.getSysConfig("update_int_max");
+    	update_int_max = (mRet == null)?600000:Long.parseLong(mRet);
+    	mRet = localdb.getSysConfig("font_size");
+    	font_size = (mRet == null)?15:Integer.parseInt(mRet);
+    	mRet = localdb.getSysConfig("desc_font_size");
+    	desc_font_size = (mRet == null)?16:Integer.parseInt(mRet);
+    	mRet = localdb.getSysConfig("list_font_size");
+    	list_font_size = (mRet == null)?16:Integer.parseInt(mRet);
         jdbc_url = localdb.getSysConfig("jdbc_url");
         ssid = localdb.getSysConfig("ssid");
         network_key = localdb.getSysConfig("network_key");
@@ -53,6 +60,7 @@ public class sysconfig {
 		localdb.saveSysConfig("update_int_max",Long.toString(update_int_max));
 		localdb.saveSysConfig("font_size", Integer.toString(font_size));
 		localdb.saveSysConfig("desc_font_size", Integer.toString(desc_font_size));
+		localdb.saveSysConfig("list_font_size", Integer.toString(list_font_size));
 		localdb.saveSysConfig("jdbc_url", jdbc_url);
 		localdb.saveSysConfig("ssid", ssid);
 		localdb.saveSysConfig("network_key", network_key);
@@ -82,6 +90,7 @@ public class sysconfig {
 	public void saveFontToDB(localDB localdb){
 		localdb.saveSysConfig("font_size", Integer.toString(font_size));
 		localdb.saveSysConfig("desc_font_size", Integer.toString(desc_font_size));
+		localdb.saveSysConfig("list_font_size", Integer.toString(list_font_size));
 	}
 	
 	public void saveUpdateIntToDB(localDB localdb){
@@ -129,6 +138,14 @@ public class sysconfig {
 	public int getDesc_font_size() {
 		return desc_font_size;
 	}
+
+	public void setList_font_size(int font_size) {
+		this.list_font_size = font_size;
+	}
+	public int getList_font_size() {
+		return list_font_size;
+	}
+
 	public void setJdbc_url(String jdbc_url) {
 		this.jdbc_url = jdbc_url;
 	}
