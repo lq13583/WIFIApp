@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"               
+              android:orientation="vertical" >
+	<TextView android:text="Enter password to change system settings"
+          	  android:padding="3dip" 
+          	  android:layout_width="fill_parent"
+          	  android:layout_height="wrap_content" />
+	<EditText android:layout_width="fill_parent" 
+			  android:layout_height="wrap_content" 
+			  android:gravity="left" 
+		 	  android:id="@+id/password" 
+			  android:padding="3dip" 
+			  android:text=""
+			  android:password="true">
+	</EditText>
+	<Button android:id="@+id/btnAuth"
+   			android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	       	android:text="OK" />
+</LinearLayout>
