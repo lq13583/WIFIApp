@@ -42,7 +42,8 @@ public class OwnordersActivity extends ListActivity  implements  OnClickListener
     	mParent = (WIFIApp) getParent();
     	mLaborCode = mParent.myConfig.getLabor_code();
     	mProgressDialog  = new ProgressDialog(this);
-
+    	mOrderby = mParent.myConfig.getOrder_own();
+    	
     	setContentView(R.layout.ownorderactivity);
 
 /* Initialise the OrdersAdapter */
@@ -256,6 +257,8 @@ public class OwnordersActivity extends ListActivity  implements  OnClickListener
 		switch(_AdapterView.getId()) {
 			case R.id.spinner_sort:				
 				mOrderby = _AdapterView.getItemAtPosition(_pos).toString();
+				mParent.myConfig.setOrder_own(mOrderby);
+				mParent.myConfig.saveOrderOwnToDB(mParent.localdb);
 				OwnorderComparator mComparator = new OwnorderComparator(mOrderby);
 				mOrderAdapter.sort(mComparator);
 				locateOrder();
