@@ -1,6 +1,6 @@
 package com.sunnybrook;
 
-import java.util.Timer;
+//import java.util.Timer;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -22,8 +22,8 @@ import android.widget.TextView;
 public class WIFIApp extends TabActivity implements OnTabChangeListener{
 	public sysconfig myConfig;
 	public localDB localdb;
-    private Timer myTimer = new Timer();
-	private SyncDataTask mySyncDataTask;
+//	private Timer myTimer = new Timer();
+//	private SyncDataTask mySyncDataTask;
 	private TextView mStatusBar,mCountsUpdates,mCountsOutstanding;
 	public  MyDateFormat myDateFormat = new MyDateFormat();
 	public  WifiManager mWifi;
@@ -61,9 +61,9 @@ public class WIFIApp extends TabActivity implements OnTabChangeListener{
         				notifyNewOrders(Integer.toString(msg.arg2) + " new orders received!");
     				}
     				break;
-    			case 2:
-    				mySyncDataTask.run();
-    				break;
+//    			case 2:
+//    				mySyncDataTask.run();
+//    				break;
     			default:
     				break;
     		}
@@ -138,12 +138,14 @@ public class WIFIApp extends TabActivity implements OnTabChangeListener{
         updateStatus("Ready");
         mCountsUpdates = (TextView) findViewById(R.id.txtUpdateCnt);
         mCountsOutstanding = (TextView) findViewById(R.id.txtOutstandingCnt);
-        
+
+/*        
         if(mySyncDataTask == null) {
         	
         	mySyncDataTask = new SyncDataTask(mHandler, myConfig, localdb, mWifi);
         	myTimer.schedule(mySyncDataTask, 1000, myConfig.getUpdate_int());
         }
+*/
         try {
 			mAppVer = getPackageManager().getPackageInfo(getPackageName(),0).versionName;
 		} catch (NameNotFoundException e) {
