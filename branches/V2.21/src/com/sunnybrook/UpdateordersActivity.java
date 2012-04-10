@@ -38,6 +38,8 @@ public class UpdateordersActivity extends ListActivity  implements  OnClickListe
 
     	super.onCreate(savedInstanceState);
     	mParent = (WIFIApp) getParent();
+    	mOrderby = mParent.myConfig.getOrder_update();
+    	
     	mLaborCode = mParent.myConfig.getLabor_code();
     	mProgressDialog  = new ProgressDialog(this);
 
@@ -54,6 +56,10 @@ public class UpdateordersActivity extends ListActivity  implements  OnClickListe
     			this, R.array.own_order_array, android.R.layout.simple_spinner_item);
     	adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     	mSpinner.setAdapter(adapter);
+    	for(int i = 0; i< adapter.getCount(); i++) {
+    		if(adapter.getItem(i).toString().equals(mOrderby))
+    			mSpinner.setSelection(i);
+    	}
     	mSpinner.setOnItemSelectedListener(this);
     	getListView().setOnItemClickListener(this);
     	getListView().setOnItemSelectedListener(this);
@@ -233,6 +239,8 @@ public class UpdateordersActivity extends ListActivity  implements  OnClickListe
 		switch(_AdapterView.getId()) {
 			case R.id.spinner_sort:				
 				mOrderby = _AdapterView.getItemAtPosition(_pos).toString();
+				mParent.myConfig.setOrder_update(mOrderby);
+				mParent.myConfig.saveOrderUpdateToDB(mParent.localdb);
 				OwnorderComparator mComparator = new OwnorderComparator(mOrderby);
 				mOrderAdapter.sort(mComparator);
 				locateOrder();
