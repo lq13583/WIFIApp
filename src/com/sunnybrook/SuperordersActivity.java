@@ -38,6 +38,7 @@ public class SuperordersActivity  extends ListActivity  implements OnClickListen
     	super.onCreate(savedInstanceState);
     	
     	mParent = (WIFIApp) getParent();
+    	mOrderby = mParent.myConfig.getOrder_super();
 
     	mProgressDialog  = new ProgressDialog(this);
 		
@@ -54,6 +55,10 @@ public class SuperordersActivity  extends ListActivity  implements OnClickListen
     			this, R.array.super_order_array, android.R.layout.simple_spinner_item);
     	adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     	mSpinner.setAdapter(adapter);
+    	for(int i = 0; i< adapter.getCount(); i++) {
+    		if(adapter.getItem(i).toString().equals(mOrderby))
+    			mSpinner.setSelection(i);
+    	}
     	mSpinner.setOnItemSelectedListener(this);
     	
     	mOrderAdapter = new superOrdersAdapter(this,R.layout.list_superorder);
@@ -224,7 +229,6 @@ public class SuperordersActivity  extends ListActivity  implements OnClickListen
 		}
 	}
 
-	
 	@Override
 	public void onItemSelected(AdapterView<?> _AdapterView, View _View, int _pos, long _row) {
 		switch(_AdapterView.getId()) {
@@ -235,6 +239,8 @@ public class SuperordersActivity  extends ListActivity  implements OnClickListen
 				break;
 			case R.id.spinner_sort:				
 				mOrderby = _AdapterView.getItemAtPosition(_pos).toString();
+				mParent.myConfig.setOrder_super(mOrderby);
+				mParent.myConfig.saveOrderSuperToDB(mParent.localdb);
 				WorkorderComparator mComparator = new WorkorderComparator(mOrderby);
 				mOrderAdapter.sort(mComparator);
 				break;

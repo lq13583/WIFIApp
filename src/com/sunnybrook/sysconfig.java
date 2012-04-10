@@ -21,6 +21,10 @@ public class sysconfig {
 	private String network_key;
 	private boolean debug_mode;
 	private int outstanding_days;
+	private String order_own;
+	private String order_craft;
+	private String order_super;
+	private String order_update;
 
 	public sysconfig(localDB localdb){
 		String mRet;
@@ -48,6 +52,14 @@ public class sysconfig {
         craft_list = new ArrayList<String>();
 		setCrafts(localdb.getSysConfig("crafts"));
     	outstanding_days = Integer.parseInt(localdb.getSysConfig("outstanding_days"));
+    	order_own = localdb.getSysConfig("order_own");
+    	if(order_own == null) order_own = "wonum";
+    	order_craft = localdb.getSysConfig("order_craft");
+    	if(order_craft == null) order_craft = "wonum";
+    	order_super = localdb.getSysConfig("order_super");
+    	if(order_super == null) order_super = "wonum";
+    	order_update = localdb.getSysConfig("order_update");
+    	if(order_update == null) order_update = "wonum";
 	}
 	
 	public void saveAllToDB(localDB localdb){
@@ -200,4 +212,53 @@ public class sysconfig {
 	public int getOutstanding_days() {
 		return outstanding_days;
 	}
+
+	public String getOrder_own() {
+		return order_own;
+	}
+
+	public void setOrder_own(String order_own) {
+		this.order_own = order_own;
+	}
+
+	public void saveOrderOwnToDB(localDB localdb){
+		localdb.saveSysConfig("order_own",order_own );
+	}
+
+	public String getOrder_craft() {
+		return order_craft;
+	}
+
+	public void setOrder_craft(String order_craft) {
+		this.order_craft = order_craft;
+	}
+
+	public void saveOrderCraftToDB(localDB localdb){
+		localdb.saveSysConfig("order_craft",order_craft );
+	}
+
+	public String getOrder_super() {
+		return order_super;
+	}
+
+	public void setOrder_super(String order_super) {
+		this.order_super = order_super;
+	}
+
+	public void saveOrderSuperToDB(localDB localdb){
+		localdb.saveSysConfig("order_super",order_super );
+	}
+	
+	public String getOrder_update() {
+		return order_update;
+	}
+
+	public void setOrder_update(String order_update) {
+		this.order_update = order_update;
+	}
+
+	public void saveOrderUpdateToDB(localDB localdb){
+		localdb.saveSysConfig("order_update",order_update );
+	}
+	
 }
