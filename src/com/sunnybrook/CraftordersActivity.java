@@ -42,6 +42,7 @@ public class CraftordersActivity extends ListActivity  implements OnClickListene
     public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
     	mParent = (WIFIApp) getParent();
+    	mOrderby = mParent.myConfig.getOrder_craft();
 
     	mProgressDialog  = new ProgressDialog(this);
 
@@ -65,6 +66,10 @@ public class CraftordersActivity extends ListActivity  implements OnClickListene
     			this, R.array.craft_order_array, android.R.layout.simple_spinner_item);
     	adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     	mSpinner.setAdapter(adapter);
+    	for(int i = 0; i< adapter.getCount(); i++) {
+    		if(adapter.getItem(i).toString().equals(mOrderby))
+    			mSpinner.setSelection(i);
+    	}
     	mSpinner.setOnItemSelectedListener(this);
 
     	mOrderAdapter = new craftOrdersAdapter(this,R.layout.list_craftorder);
@@ -241,6 +246,8 @@ public class CraftordersActivity extends ListActivity  implements OnClickListene
 				break;
 			case R.id.spinner_sort:				
 				mOrderby = _AdapterView.getItemAtPosition(_pos).toString();
+				mParent.myConfig.setOrder_craft(mOrderby);
+				mParent.myConfig.saveOrderCraftToDB(mParent.localdb);
 				CraftorderComparator mComparator = new CraftorderComparator(mOrderby);
 				mOrderAdapter.sort(mComparator);
 				break;

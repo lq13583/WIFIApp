@@ -56,6 +56,10 @@ public class OwnordersActivity extends ListActivity  implements  OnClickListener
     			this, R.array.own_order_array, android.R.layout.simple_spinner_item);
     	adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     	mSpinner.setAdapter(adapter);
+    	for(int i = 0; i< adapter.getCount(); i++) {
+    		if(adapter.getItem(i).toString().equals(mOrderby))
+    			mSpinner.setSelection(i);
+    	}
     	mSpinner.setOnItemSelectedListener(this);
     	getListView().setOnItemClickListener(this);
     	getListView().setOnItemLongClickListener(this);
