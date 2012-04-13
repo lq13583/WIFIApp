@@ -16,15 +16,17 @@ public class localDB{
 
 	private SQLiteDatabase db;
 	private Context mContext;
-	private WIFIApp mParent;
+
 	private MyDateFormat mDateFormat = new MyDateFormat();
+
+	private String TAG = localDB.class.getSimpleName();
 	
 	public localDB(Context _context){
 		mContext = _context;
-		mParent = (WIFIApp) mContext;
+		TAG = localDB.class.getSimpleName() + "(" + mContext.getClass().getSimpleName() + ")";
 		OpenHelper openHelper = new OpenHelper(mContext);
 		db = openHelper.getWritableDatabase();
-		mDateFormat = mParent.myDateFormat;
+		SysLog.appendLog("INFO", TAG, "Open DB");
 	}
 	
 	public String getSysConfig(String name){
@@ -81,7 +83,7 @@ public class localDB{
 			try {
 				db.insertOrThrow(mTable,null,mValues);
 			} catch(SQLException ex) {
-				SysLog.AppendLog("Info", "localDB", ex.getMessage());
+				SysLog.appendLog("INFO", TAG, ex.getMessage());
 			}
 		}
 		mCur.close();
@@ -97,7 +99,7 @@ public class localDB{
 		try {
 			db.update(mTable, mValues, mWhereArgs, mWhereVals);
 		} catch(SQLException ex) {
-			SysLog.AppendLog("Info", "localDB", ex.getMessage());
+			SysLog.appendLog("INFO", TAG, ex.getMessage());
 		}
 	}
 	
@@ -108,7 +110,7 @@ public class localDB{
 		try {
 			db.delete(mTable,mWhereArgs, mWhereVals);
 		} catch(SQLException ex) {
-			SysLog.AppendLog("Info", "localDB-deleteLabTrans", ex.getMessage());
+			SysLog.appendLog("INFO", "localDB-deleteLabTrans", ex.getMessage());
 			return false;
 		}
 		return true;
@@ -123,7 +125,7 @@ public class localDB{
 		try {
 			db.update(mTable, mValues, mWhereArgs, mWhereVals);
 		} catch(SQLException ex) {
-			SysLog.AppendLog("Info", "localDB-updateLabTransId", ex.getMessage());
+			SysLog.appendLog("INFO", "localDB-updateLabTransId", ex.getMessage());
 			return false;
 		}
 		return true;
@@ -148,7 +150,7 @@ public class localDB{
 			try {
 				db.insertOrThrow(mTable,null,mValues);
 			} catch(SQLException ex) {
-				SysLog.AppendLog("Info", "localDB", ex.getMessage());
+				SysLog.appendLog("INFO", TAG, ex.getMessage());
 			}
 		}
 		mCur.close();
@@ -202,7 +204,7 @@ public class localDB{
 		try {
 			db.update(mTable, mValues, mWhereArgs, mWhereVals);
 		} catch(SQLException ex) {
-			SysLog.AppendLog("Info", "localDB", ex.getMessage());
+			SysLog.appendLog("INFO", TAG, ex.getMessage());
 		}
 	}
 
@@ -228,7 +230,7 @@ public class localDB{
 				db.insertOrThrow(mTable,null,mValues);
 				mReturn = true;
 			} catch(SQLException ex) {
-				SysLog.AppendLog("Info", "localDB", ex.getMessage());
+				SysLog.appendLog("INFO", TAG, ex.getMessage());
 			}
 		}
 		mCur.close();
@@ -238,7 +240,7 @@ public class localDB{
 		try {
 			db.update(mTable, mValues, mWhereArgs,mWhereVals );
 		} catch(SQLException ex) {
-			SysLog.AppendLog("Info", "localDB", ex.getMessage());
+			SysLog.appendLog("INFO", TAG, ex.getMessage());
 		}
 		
 		if(mOwnOrder.isNeedsupdate()) {
@@ -253,7 +255,7 @@ public class localDB{
 					db.insertOrThrow(mTable,null,mValues);
 					mReturn = true;
 				} catch(SQLException ex) {
-					SysLog.AppendLog("Info", "localDB", ex.getMessage());
+					SysLog.appendLog("INFO", TAG, ex.getMessage());
 				}
 			}
 			mCur.close();
@@ -262,7 +264,7 @@ public class localDB{
 			try {
 				db.update(mTable, mValues, mWhereArgs,mVals );
 			} catch(SQLException ex) {
-				SysLog.AppendLog("Info", "localDB", ex.getMessage());
+				SysLog.appendLog("INFO", TAG, ex.getMessage());
 			}
 		}
 		return mReturn;
@@ -291,7 +293,7 @@ public class localDB{
 		try {
 			db.update(mTable, mValues, mWhereArgs,mWhereVals );
 		} catch(SQLException ex) {
-			SysLog.AppendLog("Info", "localDB", ex.getMessage());
+			SysLog.appendLog("INFO", TAG, ex.getMessage());
 		}
 	}
 	
@@ -304,7 +306,7 @@ public class localDB{
 		try {
 			db.update(mTable, mValues, mWhereArgs,mWhereVals );
 		} catch(SQLException ex) {
-			SysLog.AppendLog("Info", "localDB", ex.getMessage());
+			SysLog.appendLog("INFO", TAG, ex.getMessage());
 		}
 	}
 	
@@ -317,7 +319,7 @@ public class localDB{
 		try {
 			db.update(mTable, mValues, mWhereArgs,mWhereVals );
 		} catch(SQLException ex) {
-			SysLog.AppendLog("Info", "localDB", ex.getMessage());
+			SysLog.appendLog("INFO", TAG, ex.getMessage());
 		}
 	}
 	
@@ -330,16 +332,16 @@ public class localDB{
 		try {
 			db.update(mTable, mValues, mWhereArgs,mWhereVals );
 		} catch(SQLException ex) {
-			SysLog.AppendLog("Info", "localDB", ex.getMessage());
+			SysLog.appendLog("INFO", TAG, ex.getMessage());
 		}
 	}
 
-	public void updateLabTransList(ownorder _order) {
+	public void updateLabTransList(ownorder _order,String _laborCode) {
 		if(_order.getTranslist() == null) return;
 		List<labtrans> mItems = _order.getTranslist();
 		for(int i=0;i<mItems.size();i++) {
 			labtrans mItem = mItems.get(i);
-			mItem.setEnterBy(mParent.myConfig.getLabor_code());
+			mItem.setEnterBy(_laborCode);
 			mItem.setEnterDate(new Date());
 			mItem.setLocation(_order.getLocation());
 			mItem.setRefWo(_order.getOrderId());
@@ -357,7 +359,7 @@ public class localDB{
 		try {
 			db.update(mTable, mValues, mWhereArgs,mWhereVals );
 		} catch(SQLException ex) {
-			SysLog.AppendLog("Info", "localDB", ex.getMessage());
+			SysLog.appendLog("INFO", TAG, ex.getMessage());
 		}
 	}
 
@@ -372,7 +374,7 @@ public class localDB{
 		try {
 			db.update(mTable, mValues, mWhereArgs,mWhereVals );
 		} catch(SQLException ex) {
-			SysLog.AppendLog("Info", "localDB", ex.getMessage());
+			SysLog.appendLog("INFO", TAG, ex.getMessage());
 		}
 	}
 
@@ -395,7 +397,7 @@ public class localDB{
 			try {
 				db.insertOrThrow(mTable,null,mValues);
 			} catch(SQLException ex) {
-				SysLog.AppendLog("Info", "localDB", ex.getMessage());
+				SysLog.appendLog("INFO", TAG, ex.getMessage());
 			}
 		}
 		mCur.close();
@@ -404,7 +406,7 @@ public class localDB{
 		try {
 			db.update(mTable, mValues, mWhereArgs,mWhereVals );
 		} catch(SQLException ex) {
-			SysLog.AppendLog("Info", "localDB", ex.getMessage());
+			SysLog.appendLog("INFO", TAG, ex.getMessage());
 		}
 	}
 
@@ -428,7 +430,7 @@ public class localDB{
 			try {
 				db.insertOrThrow(mTable,null,mValues);
 			} catch(SQLException ex) {
-				SysLog.AppendLog("Info", "localDB", ex.getMessage());
+				SysLog.appendLog("INFO", TAG, ex.getMessage());
 			}
 		}
 		mCur.close();
@@ -437,7 +439,7 @@ public class localDB{
 		try {
 			db.update(mTable, mValues, mWhereArgs,mWhereVals );
 		} catch(SQLException ex) {
-			SysLog.AppendLog("Info", "localDB", ex.getMessage());
+			SysLog.appendLog("INFO", TAG, ex.getMessage());
 		}
 	}
 
@@ -447,7 +449,7 @@ public class localDB{
 		try {
 			db.update(_table, mValues, null, null );
 		} catch(SQLException ex) {
-			SysLog.AppendLog("Info", "localDB", ex.getMessage());
+			SysLog.appendLog("INFO", TAG, ex.getMessage());
 		}
 		
 	}
@@ -459,14 +461,14 @@ public class localDB{
 		try {
 			db.delete(mTable,mWhereArgs,mWhereVals);
 		} catch(SQLException ex) {
-			SysLog.AppendLog("Info", "localDB", ex.getMessage());
+			SysLog.appendLog("INFO", TAG, ex.getMessage());
 			return false;
 		}
 		mTable = "wo_update";
 		try {
 			db.delete(mTable,mWhereArgs,mWhereVals);
 		} catch(SQLException ex) {
-			SysLog.AppendLog("Info", "localDB", ex.getMessage());
+			SysLog.appendLog("INFO", TAG, ex.getMessage());
 			return false;
 		}
 		String sql = "delete from workorder where not exists (select * from wo_labor where wo_labor.wonum=workorder.wonum);";
@@ -475,19 +477,6 @@ public class localDB{
 		db.execSQL(sql);
 		
 		return true;
-	}
-	
-	public void appendSyslog(String logAct,String logMsg ){
-		try {
-			SQLiteStatement mStatement = db.compileStatement("insert into syslog (logact,logdesc,logtime) values(?,?,?);");
-			mStatement.bindString(1,logAct);
-			mStatement.bindString(2, logMsg);
-			mStatement.bindString(3, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
-			mStatement.execute();
-			mStatement.close();
-		}
-		catch (SQLException ex){
-		}
 	}
 	
 	public void clearSyslog(){
@@ -603,7 +592,7 @@ public class localDB{
 		try {
 			db.update(mTable, mValues, mWhereArgs, mWhereVals);
 		} catch(SQLException ex) {
-			SysLog.AppendLog("Info", "localDB", ex.getMessage());
+			SysLog.appendLog("INFO", TAG, ex.getMessage());
 		}
 		String mSelectVals[] = new String[] {"O",_laborcode,_order.getOrderId()};
 		String sql = "SELECT wo.*,wl.readstatus, wl.empcomments mycomments FROM workorder wo " 
@@ -642,6 +631,7 @@ public class localDB{
 */
 	
 	public void finalize(){
+		SysLog.appendLog("INFO", TAG, "DB Closed");
 		if(db.isOpen()) db.close();
 	}
 	
@@ -686,6 +676,7 @@ public class localDB{
 
 		@Override
 		public void onCreate(SQLiteDatabase db) {
+			
 		// TODO Auto-generated method stub
 			String sql;
 
@@ -743,7 +734,7 @@ public class localDB{
 			}
 			mystatement.close();
 		}
-
+		
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		// TODO Auto-generated method stub

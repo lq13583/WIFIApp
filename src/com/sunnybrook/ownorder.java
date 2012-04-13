@@ -36,7 +36,7 @@ public class ownorder extends workorder{
 			try {
 				edcompletion = myDateFormat.myParse(_HashMap.get("ED_Completion"));
 			} catch (ParseException e) {
-				SysLog.AppendLog("Debug", "ownorder", e.getMessage());
+				SysLog.appendLog("ERROR", "ownorder", e.getMessage());
 			}
 		}
 	}

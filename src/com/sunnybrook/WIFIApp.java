@@ -1,7 +1,5 @@
 package com.sunnybrook;
 
-//import java.util.Timer;
-
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -22,16 +20,19 @@ import android.widget.TextView;
 public class WIFIApp extends TabActivity implements OnTabChangeListener{
 	public sysconfig myConfig;
 	public localDB localdb;
-//	private Timer myTimer = new Timer();
-//	private SyncDataTask mySyncDataTask;
+
 	private TextView mStatusBar,mCountsUpdates,mCountsOutstanding;
 	public  MyDateFormat myDateFormat = new MyDateFormat();
 	public  WifiManager mWifi;
 	public  boolean mRefreshOwnOrder = false;
-	private NotificationManager mNotificationManager;
-	private Notification mNotification;
+//	private NotificationManager mNotificationManager;
+//	private Notification mNotification;
 	private String mAppVer;
 	private MainApp mApp;
+
+	private String TAG = WIFIApp.class.getSimpleName();
+
+/*
 	final Handler mHandler = new Handler() {
     	public void handleMessage(Message msg) {
     		switch(msg.arg1)
@@ -69,22 +70,23 @@ public class WIFIApp extends TabActivity implements OnTabChangeListener{
     		}
     	}
     };
-
+*/
+	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mWifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-        mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        mNotification = new Notification();
+//        mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+//        mNotification = new Notification();
         setContentView(R.layout.main);
         if (localdb==null) localdb = new localDB(this);
         mApp = (MainApp)getApplication();
         mApp.setMyLocalDB(localdb);
         if (myConfig==null) myConfig = new sysconfig(localdb);
         mApp.setMySysConfig(myConfig);
-        SysLog.localdb = localdb;
+
         SysLog.debug_mode = myConfig.isDebug_mode();
-        SysLog.AppendLog("Info", "WIFIApp", "Application Launched.");
+        SysLog.appendLog("INFO", TAG, "Application Launched.");
         
         Resources res = getResources();	// Resource object to get Drawables
         
@@ -126,26 +128,19 @@ public class WIFIApp extends TabActivity implements OnTabChangeListener{
         				res.getDrawable(R.drawable.ic_tab_settings))
         			.setContent(intent);
         mTabHost.addTab(spec);
-        
+/*        
         intent = new Intent().setClass(this, SyslogActivity.class);
         spec = mTabHost.newTabSpec("syslog").setIndicator("Syslog",
 				res.getDrawable(R.drawable.ic_tab_syslog))
 			.setContent(intent);
         mTabHost.addTab(spec);
-        
+*/        
         mTabHost.setCurrentTab(0);        
         mStatusBar = (TextView) findViewById(R.id.txtStatus);
         updateStatus("Ready");
         mCountsUpdates = (TextView) findViewById(R.id.txtUpdateCnt);
         mCountsOutstanding = (TextView) findViewById(R.id.txtOutstandingCnt);
 
-/*        
-        if(mySyncDataTask == null) {
-        	
-        	mySyncDataTask = new SyncDataTask(mHandler, myConfig, localdb, mWifi);
-        	myTimer.schedule(mySyncDataTask, 1000, myConfig.getUpdate_int());
-        }
-*/
         try {
 			mAppVer = getPackageManager().getPackageInfo(getPackageName(),0).versionName;
 		} catch (NameNotFoundException e) {
@@ -155,6 +150,8 @@ public class WIFIApp extends TabActivity implements OnTabChangeListener{
 
         updateCountsUpdates();
         updateCountsOutstanding();
+        
+        startService(new Intent(WIFISyncService.class.getName()));
 	}
 
 	public void updateCountsUpdates() {
@@ -182,7 +179,8 @@ public class WIFIApp extends TabActivity implements OnTabChangeListener{
 		mStatusMsg = mStatusMsg + " Sync:" + _msg;
 		mStatusBar.setText(mStatusMsg);
     }
-    
+
+/*
     private void notifyNewOrders(String _msg) {
     	Context context = getApplicationContext();
     	CharSequence contentTitle = "My notification";
@@ -193,6 +191,7 @@ public class WIFIApp extends TabActivity implements OnTabChangeListener{
     	mNotification.setLatestEventInfo(context, contentTitle, contentText, contentIntent);
     	mNotificationManager.notify(1,mNotification);
     }
+*/
     
     private String getStringIp(int _ip) {
     	String mReturn = "";
@@ -204,11 +203,10 @@ public class WIFIApp extends TabActivity implements OnTabChangeListener{
     	return mReturn;
     }
     
-    
     @Override
     public void onDestroy() {
+    	SysLog.appendLog("INFO", TAG, "Application Closed.");
     	super.onDestroy();
-    	SysLog.AppendLog("Info", "WIFIApp", "Application Closed.");
     }
 
 	@Override

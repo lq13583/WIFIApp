@@ -2,6 +2,7 @@ package com.sunnybrook;
 
 import java.util.List;
 
+import android.content.Context;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
@@ -19,7 +20,8 @@ public class datasync extends Thread{
 	public static boolean is_running = false;
 	private int mNewOrders = 0;
 	private String errMsg;
-	
+
+	private String TAG = datasync.class.getSimpleName();
 	
 	private void updateStatus(String _msg) {
 		updateStatus(DATASYNC_RUNNING,_msg);
@@ -33,12 +35,12 @@ public class datasync extends Thread{
 		mHandler.sendMessage(msg);		
 	}
 	
-	public datasync(Handler _handler,sysconfig _config, localDB _localdb, WifiManager _wifi) {
+	public datasync(Handler _handler, localDB _localdb, WifiManager _wifi) {
 		super();
 		mHandler = _handler;
-		myConfig = _config;
 		mWifi = _wifi;
 		myLocalDB = _localdb;
+		myConfig = new sysconfig(myLocalDB);
 	}
 	
 	public boolean is_running() {
@@ -142,7 +144,7 @@ public class datasync extends Thread{
 	}
 	
 	private boolean pushData(localDB localdb, remoteDB remotedb){
-		SysLog.AppendLog("Debug", "pushData", "Start pushing own orders ......");
+		SysLog.appendLog("DEBUG", TAG +":pushData", "Start pushing own orders ......");
 		updateStatus("Pushing local data ......");
 		List<ownorder> mOwnOrderList = localdb.getOwnOrderList(myConfig.getLabor_code(), "wonum");
 		for(int i=0;i<mOwnOrderList.size();i++ ) {
@@ -152,12 +154,12 @@ public class datasync extends Thread{
 			}
 		}
 		updateStatus("Pushing local data finished.");
-		SysLog.AppendLog("Debug", "pushData", "Push own orders end.");
+		SysLog.appendLog("DEBUG", TAG +":pushData", "Push own orders end.");
 		return true;
 	}
 	
 	private boolean pullData(localDB localdb, remoteDB remotedb) {
-		SysLog.AppendLog("Debug", "pullData", "Start pulling data......");
+		SysLog.appendLog("DEBUG", TAG +":pullData", "Start pulling data......");
 		updateStatus("Pulling ownorders......");
 		localdb.clearExistedFlag("wo_labor");
 		localdb.clearExistedFlag("wo_update");
@@ -183,54 +185,54 @@ public class datasync extends Thread{
 			updateStatus("Pull craftorders finished.");
 		}
 
-		SysLog.AppendLog("Debug", "pullData", "End pulling data.");
+		SysLog.appendLog("DEBUG", TAG +":pullData", "End pulling data.");
 		return true;
 	}
 	
 	private boolean cleanData(localDB _localdb,remoteDB _remotedb) {
 		updateStatus("Start cleaning up data ......");
-		SysLog.AppendLog("Debug", "cleanData", "Start cleaning up data ......");
+		SysLog.appendLog("DEBUG", TAG + ":cleanData", "Start cleaning up data ......");
 		if(!_localdb.cleanData()) {
 			errMsg = "Failed to clean up data!";
 			return false;
 		}
-		SysLog.AppendLog("Debug", "cleanData", "End cleaning up data ......");
+		SysLog.appendLog("DEBUG", TAG + ":cleanData", "End cleaning up data ......");
 		updateStatus("End cleaning up data ......");
 		return true;
 	}
 
 	private boolean pullOwnOrders(localDB localdb, remoteDB remotedb) {
-		SysLog.AppendLog("Debug", "pullOwnOrder", "Start pulling remote own workorders......");
+		SysLog.appendLog("DEBUG", TAG +":pullOwnOrder", "Start pulling remote own workorders......");
 		List<ownorder> mList = remotedb.getOwnOrders(myConfig.getLabor_code(),myConfig.getOutstanding_days());
-		SysLog.AppendLog("Debug", "pullOwnOrder","Start writing local own workorders......");
+		SysLog.appendLog("DEBUG", TAG +":pullOwnOrder","Start writing local own workorders......");
 		mNewOrders = 0;
 		for(int i=0;i<mList.size();i++){
 			if(localdb.saveOwnOrder(mList.get(i),myConfig.getLabor_code()))
 				mNewOrders ++;
 		}
-		SysLog.AppendLog("Debug","pullOwnOrder", "End pull own workorders.");
+		SysLog.appendLog("DEBUG",TAG + ":pullOwnOrder", "End pull own workorders.");
 		return true;
 	}
 	
 	private boolean pullSuperOrders(localDB localdb, remoteDB remotedb) {
-		SysLog.AppendLog("Debug", "pullSuperOrder", "Start pulling remote super workorders......");
+		SysLog.appendLog("DEBUG", TAG + ":pullSuperOrder", "Start pulling remote super workorders......");
 		List<superorder> mList = remotedb.getSuperOrders(myConfig.getLabor_code());
-		SysLog.AppendLog("Debug", "pullSuperOrder", "Start writing local super workorders......");
+		SysLog.appendLog("DEBUG", TAG + ":pullSuperOrder", "Start writing local super workorders......");
 		for(int i=0;i<mList.size();i++){
 			localdb.saveSuperOrder(mList.get(i));
 		}
-		SysLog.AppendLog("Debug", "pullSuperOrder", "End pull super workorders.");
+		SysLog.appendLog("DEBUG", TAG +":pullSuperOrder", "End pull super workorders.");
 		return true;
 	}
 	
 	private boolean pullCraftOrders(localDB localdb, remoteDB remotedb) {
-		SysLog.AppendLog("Debug", "pullCraftOrder", "Start pulling remote craft workorders......");
+		SysLog.appendLog("DEBUG", TAG + ":pullCraftOrder", "Start pulling remote craft workorders......");
 		List<craftorder> mList = remotedb.getCraftOrders(myConfig.getCraft_list());
-		SysLog.AppendLog("Debug", "pullCraftOrder", "Start writing local craft workorders......");
+		SysLog.appendLog("DEBUG", TAG +":pullCraftOrder", "Start writing local craft workorders......");
 		for(int i=0;i<mList.size();i++){
 			localdb.saveCraftOrder(mList.get(i));
 		}
-		SysLog.AppendLog("Debug", "pullCraftOrder", "End pull craft workorders.");
+		SysLog.appendLog("DEBUG", TAG + ":pullCraftOrder", "End pull craft workorders.");
 		return true;
 	}
 	
