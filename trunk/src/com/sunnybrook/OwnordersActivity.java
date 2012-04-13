@@ -297,7 +297,7 @@ public class OwnordersActivity extends ListActivity  implements  OnClickListener
 				break;
 			case R.id.btnSync:
 				WifiManager mWifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-				new datasync(mHandler,mParent.myConfig,mParent.localdb,mWifi).start();
+				new datasync(mHandler,mParent.localdb,mWifi).start();
 				break;
 			case R.id.btnOpen:
 				if(mOrder==null) return;

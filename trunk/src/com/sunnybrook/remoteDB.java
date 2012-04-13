@@ -8,6 +8,7 @@ import java.util.List;
 public class remoteDB {
 	private String connStr;
 	private Connection conn;
+	private String TAG = remoteDB.class.getSimpleName();
 	
 	public remoteDB(String connectionString ){
 		connStr = connectionString;
@@ -16,9 +17,9 @@ public class remoteDB {
 			DriverManager.setLoginTimeout(120);
 			conn = DriverManager.getConnection(connStr);
 		} catch (ClassNotFoundException e) {
-			SysLog.AppendLog("Info", "remoteDB", e.getMessage());
+			SysLog.appendLog("ERROR", TAG, e.getMessage());
 		} catch (SQLException e) {
-			SysLog.AppendLog("Info", "remoteDB", e.getMessage());
+			SysLog.appendLog("ERROR", TAG, e.getMessage());
 		}
 	}
 
@@ -26,7 +27,7 @@ public class remoteDB {
 		try {
 			if(conn!= null && !conn.isClosed()) conn.close();
 		} catch (SQLException e) {
-			SysLog.AppendLog("Info", "remoteDB", e.getMessage());
+			SysLog.appendLog("ERROR", TAG, e.getMessage());
 		}
 	}
 	
@@ -35,7 +36,7 @@ public class remoteDB {
 		try {
 			if(conn!= null && !conn.isClosed()) conn.close();
 		} catch (SQLException e) {
-			SysLog.AppendLog("Info", "remoteDB", e.getMessage());
+			SysLog.appendLog("ERROR",TAG, e.getMessage());
 		}
 	}
 */
@@ -45,7 +46,7 @@ public class remoteDB {
 		try {
 			return(!conn.isClosed());
 		} catch (SQLException e) {
-			SysLog.AppendLog("Info", "remoteDB", e.getMessage());
+			SysLog.appendLog("ERROR", TAG, e.getMessage());
 			return false;
 		}
 	}
@@ -80,7 +81,7 @@ public class remoteDB {
 			mRs.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			SysLog.AppendLog("Info", "remoteDB", e.getMessage());
+			SysLog.appendLog("ERROR", TAG, e.getMessage());
 		}
 		return orderList;
 	}
@@ -99,7 +100,7 @@ public class remoteDB {
 			mRs.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			SysLog.AppendLog("Info", "remoteDB", e.getMessage());
+			SysLog.appendLog("ERROR", TAG, e.getMessage());
 		}
 		return mReturn;
 	}
@@ -124,7 +125,7 @@ public class remoteDB {
 				mRs.close();
 			} catch (SQLException e) {
 				//TODO Auto-generated catch block
-				SysLog.AppendLog("Info", "remoteDB", e.getMessage());
+				SysLog.appendLog("ERROR",TAG, e.getMessage());
 			}
 		}
 		
@@ -157,7 +158,7 @@ public class remoteDB {
 				orderList.add(mOrder);
 			}
 		} catch (SQLException e) {
-			SysLog.AppendLog("Info", "remoteDB", e.getMessage());
+			SysLog.appendLog("ERROR",TAG, e.getMessage());
 		}
 		
 		
@@ -197,7 +198,7 @@ public class remoteDB {
 				orderList.add(mOrder);
 			}
 		} catch (SQLException e) {
-			SysLog.AppendLog("Info", "remoteDB", e.getMessage());
+			SysLog.appendLog("ERROR",TAG, e.getMessage());
 		}
 		
 		return orderList;
@@ -208,7 +209,7 @@ public class remoteDB {
 		if(mLabTransList!= null) {
 			for(int i=0; i<mLabTransList.size();i++) {
 					if(!saveLabTrans(mLabTransList.get(i),_localdb)){
-						SysLog.AppendLog("Info", "remoteDB-saveOwnOrder", "Save labtrans record error!");
+						SysLog.appendLog("INFO", TAG + "(saveOwnOrder)", "Save labtrans record error!");
 						return false;
 					}
 			}
@@ -224,7 +225,7 @@ public class remoteDB {
 				mPs.setString(2,_order.getOrderId());
 				mPs.executeUpdate();
 			} catch (SQLException e) {
-				SysLog.AppendLog("Info", "remoteDB-saveOwnOrder", e.getMessage());
+				SysLog.appendLog("ERROR", TAG + "(saveOwnOrder)", e.getMessage());
 				return false;
 			}
 //Clear local comments when it is uploaded.			
@@ -252,7 +253,7 @@ public class remoteDB {
 					mPs.executeUpdate();
 					
 				} catch (SQLException e) {
-					SysLog.AppendLog("Info", "remoteDB-saveOutstandingOrder", e.getMessage());
+					SysLog.appendLog("ERROR", TAG + "(saveOutstandingOrder)", e.getMessage());
 					return false;
 				}
 			}
@@ -282,7 +283,7 @@ public class remoteDB {
 					mPs.setString(4,_order.getOrderId());
 					mPs.executeUpdate();
 				} catch (SQLException e) {
-					SysLog.AppendLog("Info", "remoteDB-saveOwnOrder", e.getMessage());
+					SysLog.appendLog("ERROR", TAG + "(saveOwnOrder)", e.getMessage());
 					return false;
 				}
 			}
@@ -295,7 +296,7 @@ public class remoteDB {
 					mPs.setString(3,"INPRG");
 					mPs.executeUpdate();
 				} catch (SQLException e) {
-					SysLog.AppendLog("Info", "remoteDB-saveOwnOrder", e.getMessage());
+					SysLog.appendLog("ERROR", TAG + "(saveOwnOrder)", e.getMessage());
 					return false;
 				}
 			}
@@ -318,7 +319,7 @@ public class remoteDB {
 					mLabTransId = mRs.getInt(1);
 	 			mRs.close();
  			} catch (SQLException e) {
-				SysLog.AppendLog("Info", "remoteDB(saveLabTrans)", e.getMessage());
+				SysLog.appendLog("ERROR", TAG + "(saveLabTrans)", e.getMessage());
 				return false;
 			}
 			mLabTransId++;
@@ -355,7 +356,7 @@ public class remoteDB {
 				_labtrans.setLabTransId(mLabTransId);
 				if(!_localdb.updateLabTransId(_labtrans)) return false;
 			} catch (SQLException e) {
-				SysLog.AppendLog("Info", "remoteDB(saveLabTrans)", e.getMessage());
+				SysLog.appendLog("ERROR", TAG + "(saveLabTrans)", e.getMessage());
 				return false;
 			}
 		}
@@ -372,7 +373,7 @@ public class remoteDB {
 				mPs.setInt(5,_labtrans.getLabTransId());
 				mPs.executeUpdate();
 			} catch (SQLException e) {
-				SysLog.AppendLog("Info", "remoteDB(saveLabTrans)", e.getMessage());
+				SysLog.appendLog("ERROR", TAG + "(saveLabTrans)", e.getMessage());
 				return false;
 			}
 		}

@@ -22,7 +22,7 @@ public class SyslogActivity extends ListActivity  implements OnClickListener{
     	setContentView(R.layout.syslogactivity);
     	mAdapter = new SyslogAdapter(this,R.layout.list_syslog);
     	setListAdapter(mAdapter);
-    	refreshList(SysLog.getLogList());
+//    	refreshList(SysLog.getLogList());
 
     	Button mBtn=(Button) findViewById(R.id.btnClear);
     	mBtn.setOnClickListener(this);
@@ -71,9 +71,9 @@ public class SyslogActivity extends ListActivity  implements OnClickListener{
 	public void onClick(View _view) {
 		switch(_view.getId()) {
 			case R.id.btnClear:
-				SysLog.ClearLog();
+//				SysLog.ClearLog();
 			case R.id.btnRefresh:
-		    	refreshList(SysLog.getLogList());
+//		    	refreshList(SysLog.getLogList());
 				break;
 		}
 		// TODO Auto-generated method stub

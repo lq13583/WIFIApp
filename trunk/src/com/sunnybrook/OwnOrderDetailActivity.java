@@ -419,7 +419,7 @@ public class OwnOrderDetailActivity extends Activity implements OnClickListener,
     		mOrder.setMyComments(mText.getText().toString());
     		mLocalDB.updateMyComment(mOrder);
     	}
-    	mLocalDB.updateLabTransList(mOrder);
+    	mLocalDB.updateLabTransList(mOrder,myConfig.getLabor_code());
     	Intent resultIntent = new Intent();
     	resultIntent.putExtra("ownorder", mOrder);
     	setResult(0,resultIntent);
