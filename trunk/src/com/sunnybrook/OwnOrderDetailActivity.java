@@ -52,7 +52,7 @@ public class OwnOrderDetailActivity extends Activity implements OnClickListener,
 	private localDB mLocalDB;
 	
 	public void onCreate(Bundle savedInstanceState) {
-		SyncDataTask.mEnabled = false;	//Disable the Sync Data Task;
+//		SyncDataTask.mEnabled = false;	//Disable the Sync Data Task;
     	setTitle("Own Order Detail");
     	super.onCreate(savedInstanceState);
     	
@@ -423,7 +423,7 @@ public class OwnOrderDetailActivity extends Activity implements OnClickListener,
     	Intent resultIntent = new Intent();
     	resultIntent.putExtra("ownorder", mOrder);
     	setResult(0,resultIntent);
-    	SyncDataTask.mEnabled = true;	//Re-enable the Sync Data Task
+//    	SyncDataTask.mEnabled = true;	//Re-enable the Sync Data Task
     	super.finish();
     }
     
