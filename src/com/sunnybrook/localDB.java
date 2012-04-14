@@ -32,15 +32,16 @@ public class localDB{
 	public String getSysConfig(String name){
 		String value = null;
 		String sql = "select conf_value from sysconfig where conf_name= ? ;";
+		SQLiteStatement mystatement = db.compileStatement(sql);
 		try {
-			SQLiteStatement mystatement = db.compileStatement(sql);
 			mystatement.bindString(1,name);
 			value = mystatement.simpleQueryForString();
-			mystatement.close();
 		}
 		catch (SQLiteDoneException ex){
 			value = null;
+			SysLog.appendLog("INFO", TAG, ex.toString());
 		}
+		mystatement.close();
 		return value;
 	}
 

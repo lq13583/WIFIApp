@@ -26,11 +26,11 @@ import android.widget.AdapterView.OnItemSelectedListener;
 
 public class UpdateordersActivity extends ListActivity  implements  OnClickListener,OnItemClickListener,OnItemSelectedListener,OnItemLongClickListener{
 	static final int UPDATEORDER_ACTIVITY_ID = 2;
-	static private ownOrdersAdapter mOrderAdapter;
-	static private ProgressDialog mProgressDialog;
-	static private RefreshOrderListThread mRefreshOrderListThread;
-	static private String mLaborCode;
-	static private String mOrderby = "wonum";
+	private ownOrdersAdapter mOrderAdapter;
+	private ProgressDialog mProgressDialog;
+	private RefreshOrderListThread mRefreshOrderListThread;
+	private String mLaborCode;
+	private String mOrderby = "wonum";
 	private String mOrderId = "";
 	private ownorder mOrder = null;
 	private WIFIApp mParent;

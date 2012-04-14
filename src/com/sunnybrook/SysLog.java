@@ -10,7 +10,7 @@ import android.util.Log;
 
 public class SysLog {
 
-	public static boolean debug_mode = false;
+	private static boolean debug_mode = false;
 
 	public static void appendLog(String logLevel, String logAct, String logMsg ){
 		if(logLevel.equals("INFO"))
@@ -48,6 +48,10 @@ public class SysLog {
 			// 	TODO Auto-generated catch block
 				Log.e("SysLog",e.toString());
 		}
+	}
+	
+	public static void setDebugMode(boolean _mode) {
+		debug_mode = _mode;
 	}
 	
 }

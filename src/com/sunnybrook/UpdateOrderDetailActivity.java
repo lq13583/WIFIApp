@@ -39,7 +39,7 @@ public class UpdateOrderDetailActivity extends Activity implements OnClickListen
 	private Spinner mSpinner;
 
 	public void onCreate(Bundle savedInstanceState) {
-		SyncDataTask.mEnabled = false;	//Disable the Sync Data Task;
+//		SyncDataTask.mEnabled = false;	//Disable the Sync Data Task;
     	setTitle("Update Outstanding Order Detail");
     	super.onCreate(savedInstanceState);
     	
@@ -234,7 +234,7 @@ public class UpdateOrderDetailActivity extends Activity implements OnClickListen
     	Intent resultIntent = new Intent();
     	resultIntent.putExtra("ownorder", mOrder);
     	setResult(0,resultIntent);
-    	SyncDataTask.mEnabled = true;	//Re-enable the Sync Data Task
+//    	SyncDataTask.mEnabled = true;	//Re-enable the Sync Data Task
     	super.finish();
     }
     

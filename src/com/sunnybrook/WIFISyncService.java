@@ -1,7 +1,6 @@
 package com.sunnybrook;
 
 import java.util.Timer;
-import java.util.TimerTask;
 
 import android.app.Service;
 import android.content.Context;
@@ -21,19 +20,6 @@ public class WIFISyncService extends Service {
 	
 	private SyncDataTask syncDataTask;
 
-/*
-	private TimerTask updateTask = new TimerTask() {
-		@Override
-		public void run() {
-			SysLog.appendLog("INFO",TAG, "Timer task doing work");
-			sysconfig myConfig = new sysconfig(localdb);
-			WifiManager mWifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-			new datasync(mHandler,myConfig,localdb,mWifi).start();
-			
-		}
-	};
-*/
-	
 	@Override
 	public IBinder onBind(Intent arg0) {
 		// TODO Auto-generated method stub

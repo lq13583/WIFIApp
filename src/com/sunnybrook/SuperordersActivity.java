@@ -25,12 +25,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 public class SuperordersActivity  extends ListActivity  implements OnClickListener,OnItemClickListener,OnItemSelectedListener,OnItemLongClickListener{
-	static private superLaborsAdapter mLaborAdapter;
-	static private superOrdersAdapter mOrderAdapter;
-	static private ProgressDialog mProgressDialog;
-	static private RefreshOrderListThread mRefreshOrderListThread;
-	static private String mLaborCode = "";
-	static private String mOrderby = "wonum";
+	private superLaborsAdapter mLaborAdapter;
+	private superOrdersAdapter mOrderAdapter;
+	private ProgressDialog mProgressDialog;
+	private RefreshOrderListThread mRefreshOrderListThread;
+	private String mLaborCode = "";
+	private String mOrderby = "wonum";
 	private superorder mOrder = null;
 	private WIFIApp mParent;
 	

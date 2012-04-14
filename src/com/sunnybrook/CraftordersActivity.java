@@ -30,11 +30,11 @@ public class CraftordersActivity extends ListActivity  implements OnClickListene
 	final static int RESULT_CLOSE_ID = 0;
 	final static int RESULT_OPEN_ID = 1;
 	
-	static private craftOrdersAdapter mOrderAdapter;
-	static private ProgressDialog mProgressDialog;
-	static private RefreshOrderListThread mRefreshOrderListThread;
-	static private String mCraft = "";
-	static private String mOrderby = "wonum";
+	private craftOrdersAdapter mOrderAdapter;
+	private ProgressDialog mProgressDialog;
+	private RefreshOrderListThread mRefreshOrderListThread;
+	private String mCraft = "";
+	private String mOrderby = "wonum";
 
 	private craftorder mOrder = null;
 	private WIFIApp mParent;

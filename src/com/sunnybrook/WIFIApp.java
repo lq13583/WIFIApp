@@ -1,8 +1,6 @@
 package com.sunnybrook;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
+
 import android.app.TabActivity;
 import android.content.Context;
 import android.content.Intent;
@@ -11,8 +9,6 @@ import android.content.res.Resources;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TextView;
@@ -85,7 +81,7 @@ public class WIFIApp extends TabActivity implements OnTabChangeListener{
         if (myConfig==null) myConfig = new sysconfig(localdb);
         mApp.setMySysConfig(myConfig);
 
-        SysLog.debug_mode = myConfig.isDebug_mode();
+        SysLog.setDebugMode(myConfig.isDebug_mode());
         SysLog.appendLog("INFO", TAG, "Application Launched.");
         
         Resources res = getResources();	// Resource object to get Drawables
