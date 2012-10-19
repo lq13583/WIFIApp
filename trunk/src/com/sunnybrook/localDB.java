@@ -1,5 +1,6 @@
 package com.sunnybrook;
 
+import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -39,7 +40,7 @@ public class localDB{
 		}
 		catch (SQLiteDoneException ex){
 			value = null;
-			SysLog.appendLog("INFO", TAG, ex.toString());
+			SysLog.appendLog("INFO", TAG, String.format("Configuration value[%s] is not set in DB.",name));
 		}
 		mystatement.close();
 		return value;
