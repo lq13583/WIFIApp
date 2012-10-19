@@ -228,8 +228,9 @@ public class datasync extends Thread{
 		SysLog.appendLog("DEBUG", TAG + ":pullCraftOrder", "Start pulling remote craft workorders......");
 		List<craftorder> mList = remotedb.getCraftOrders(myConfig.getCraft_list());
 		SysLog.appendLog("DEBUG", TAG +":pullCraftOrder", "Start writing local craft workorders......");
-		for(int i=0;i<mList.size();i++){
-			localdb.saveCraftOrder(mList.get(i));
+		for(craftorder tmpOrder:mList){
+			if(!tmpOrder.getLaborCode().equals(myConfig.getLabor_code()))	
+				localdb.saveCraftOrder(tmpOrder);
 		}
 		SysLog.appendLog("DEBUG", TAG + ":pullCraftOrder", "End pull craft workorders.");
 		return true;
