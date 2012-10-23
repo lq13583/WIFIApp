@@ -3,7 +3,9 @@
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"               
               android:orientation="vertical" >
-	<TableLayout android:layout_width="fill_parent"
+  	<ScrollView android:layout_width="fill_parent"
+  				android:layout_height="fill_parent" >
+    	<TableLayout android:layout_width="fill_parent"
 			     android:layout_height="fill_parent"
 			     android:stretchColumns="1">
 		<TableRow>
@@ -46,7 +48,7 @@
 			<LinearLayout android:layout_span="2"
 						  android:layout_height="fill_parent"
 						  android:layout_width="fill_parent"
-						  android:gravity="center_horizontal" >
+						  android:gravity="left" >
 				<CheckBox android:text="is_super" 
 					 	  android:id="@+id/is_super" 
 					  	  android:layout_width="wrap_content" 
@@ -57,7 +59,19 @@
 					 	  android:layout_width="wrap_content" 
 					 	  android:layout_height="fill_parent"
 					 	  android:gravity="center_vertical"/>
-				<CheckBox android:text="debug_mode" 
+			</LinearLayout>
+		</TableRow>
+		<TableRow>
+			<LinearLayout android:layout_span="2"
+						  android:layout_height="fill_parent"
+						  android:layout_width="fill_parent"
+						  android:gravity="left" >
+				<CheckBox android:text="daily_bypass" 
+					 	  android:id="@+id/daily_bypass" 
+					  	  android:layout_width="wrap_content" 
+					 	  android:layout_height="fill_parent"
+					 	  android:gravity="center_vertical"/>
+			    <CheckBox android:text="debug_mode" 
 				 	  	  android:id="@+id/debug_mode" 
 					 	  android:layout_width="wrap_content" 
 					 	  android:layout_height="fill_parent"
@@ -73,7 +87,7 @@
 					  android:id="@+id/update_int" 
 					  android:padding="3dip" 
 					  android:singleLine="true"
-					  android:text="Font Size">
+					  android:text="Update interval in milliseconds">
 			</EditText>
 		</TableRow>
 		<TableRow>
@@ -85,7 +99,7 @@
 					  android:id="@+id/update_int_max" 
 					  android:padding="3dip" 
 					  android:singleLine="true"
-					  android:text="Description Font Size">
+					  android:text="Maximum update interval in milliseconds">
 			</EditText>
 		</TableRow>
 		<TableRow>
@@ -124,7 +138,7 @@
 					  android:text="Description Font Size">
 			</EditText>
 		</TableRow>
-		    		<TableRow>
+		<TableRow>
 			<TextView android:text="outstanding_days:"
 			          android:padding="3dip" />
 			<EditText android:layout_height="fill_parent" 
@@ -134,6 +148,30 @@
 					  android:padding="3dip" 
 					  android:singleLine="true"
 					  android:text="Font Size">
+			</EditText>
+		</TableRow>
+		<TableRow>
+			<TextView android:text="daily_start_time:"
+			          android:padding="3dip" />
+			<EditText android:layout_height="fill_parent" 
+					  android:gravity="left" 
+					  android:layout_width="fill_parent" 
+					  android:id="@+id/daily_start_time" 
+					  android:padding="3dip" 
+					  android:singleLine="true"
+					  android:text="Daily start time.">
+			</EditText>
+		</TableRow>
+		<TableRow>
+			<TextView android:text="daily_update_min:"
+			          android:padding="3dip" />
+			<EditText android:layout_height="fill_parent" 
+					  android:gravity="left" 
+					  android:layout_width="fill_parent" 
+					  android:id="@+id/daily_update_min" 
+					  android:padding="3dip" 
+					  android:singleLine="true"
+					  android:text="Minimum daily outstanding workorder update number.">
 			</EditText>
 		</TableRow>
 		<TableRow>
@@ -200,4 +238,5 @@
 	       	</LinearLayout>
 		</TableRow>
 	</TableLayout>
+	</ScrollView>
 </LinearLayout>

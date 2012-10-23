@@ -231,6 +231,7 @@ public class UpdateOrderDetailActivity extends Activity implements OnClickListen
     		mOrder.setRfdcomments(mText.getText().toString());
     	
    		mLocalDB.updateRFDInfo(mOrder);
+   		if(mOrder.getEdcompletion().after(new Date())) mLocalDB.addDailyUpdateCounts();
     	Intent resultIntent = new Intent();
     	resultIntent.putExtra("ownorder", mOrder);
     	setResult(0,resultIntent);
