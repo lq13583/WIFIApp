@@ -25,17 +25,18 @@ public class sysconfig {
 	private String order_craft;
 	private String order_super;
 	private String order_update;
-
+	private boolean daily_bypass;	//If by pass the outstanding checking.
+	private String daily_start_time;	//The start time of every day checking.
+	private int daily_update_min;	//Minimum number of outstanding work orders to be filled.
+	
 	public sysconfig(localDB localdb){
 		String mRet;
     	labor_code = localdb.getSysConfig("labor_code");
     	labor_name = localdb.getSysConfig("labor_name");
-    	mRet = localdb.getSysConfig("is_super");
-    	is_super = (mRet == null)?false:mRet.equals("yes");
-    	mRet = localdb.getSysConfig("update_key");
-    	update_key = (mRet == null)?false:mRet.equals("yes");
-    	mRet = localdb.getSysConfig("debug_mode");
-    	debug_mode = (mRet == null)?false:mRet.equals("yes");
+    	is_super = localdb.getBooleanSysConfig("is_super");
+    	update_key = localdb.getBooleanSysConfig("update_key");
+    	debug_mode = localdb.getBooleanSysConfig("debug_mode");
+    	daily_bypass = localdb.getBooleanSysConfig("daily_bypass");
     	mRet = localdb.getSysConfig("update_int");
     	update_int = (mRet == null)?300000:Long.parseLong(mRet);
     	mRet = localdb.getSysConfig("update_int_max");
@@ -60,14 +61,20 @@ public class sysconfig {
     	if(order_super == null) order_super = "wonum";
     	order_update = localdb.getSysConfig("order_update");
     	if(order_update == null) order_update = "wonum";
+    	mRet=localdb.getSysConfig("daily_start_time");
+    	daily_start_time=(mRet == null)?"06:00":mRet;
+    	mRet=localdb.getSysConfig("daily_update_min");
+    	daily_update_min=(mRet==null)?99:Integer.parseInt(mRet);
 	}
 	
 	public void saveAllToDB(localDB localdb){
 		localdb.saveSysConfig("labor_code", labor_code);
 		localdb.saveSysConfig("labor_name", labor_name);
+		localdb.saveSysConfig("daily_start_time", daily_start_time);
 		localdb.saveSysConfig("is_super", is_super?"yes":"no");
 		localdb.saveSysConfig("update_key",update_key?"yes":"no");
 		localdb.saveSysConfig("debug_mode",debug_mode?"yes":"no");
+		localdb.saveSysConfig("daily_bypass",daily_bypass?"yes":"no");
 		localdb.saveSysConfig("update_int",Long.toString(update_int) );
 		localdb.saveSysConfig("update_int_max",Long.toString(update_int_max));
 		localdb.saveSysConfig("font_size", Integer.toString(font_size));
@@ -78,6 +85,7 @@ public class sysconfig {
 		localdb.saveSysConfig("network_key", network_key);
 		localdb.saveSysConfig("crafts", getCrafts());
 		localdb.saveSysConfig("outstanding_days", Integer.toString(outstanding_days));
+		localdb.saveSysConfig("daily_update_min", Integer.toString(daily_update_min));
 	}
 	
 	public String getCrafts() {
@@ -126,27 +134,35 @@ public class sysconfig {
 	public List<String> getCraft_list() {
 		return craft_list;
 	}
+	
 	public void set_super(boolean is_super) {
 		this.is_super = is_super;
 	}
+	
 	public boolean is_super() {
 		return is_super;
 	}
+	
 	public void setUpdate_key(boolean update_key) {
 		this.update_key = update_key;
 	}
+	
 	public boolean isUpdate_key() {
 		return update_key;
 	}
+	
 	public void setFont_size(int font_size) {
 		this.font_size = font_size;
 	}
+	
 	public int getFont_size() {
 		return font_size;
 	}
+	
 	public void setDesc_font_size(int desc_font_size) {
 		this.desc_font_size = desc_font_size;
 	}
+	
 	public int getDesc_font_size() {
 		return desc_font_size;
 	}
@@ -161,6 +177,7 @@ public class sysconfig {
 	public void setJdbc_url(String jdbc_url) {
 		this.jdbc_url = jdbc_url;
 	}
+	
 	public String getJdbc_url() {
 		return jdbc_url;
 	}
@@ -259,6 +276,30 @@ public class sysconfig {
 
 	public void saveOrderUpdateToDB(localDB localdb){
 		localdb.saveSysConfig("order_update",order_update );
+	}
+
+	public boolean isDaily_bypass() {
+		return daily_bypass;
+	}
+
+	public void setDaily_bypass(boolean daily_bypass) {
+		this.daily_bypass = daily_bypass;
+	}
+
+	public String getDaily_start_time() {
+		return daily_start_time;
+	}
+
+	public void setDaily_start_time(String daily_start_time) {
+		this.daily_start_time = daily_start_time;
+	}
+
+	public int getDaily_update_min() {
+		return daily_update_min;
+	}
+
+	public void setDaily_update_min(int daily_update_min) {
+		this.daily_update_min = daily_update_min;
 	}
 	
 }

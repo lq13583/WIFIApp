@@ -19,6 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TabWidget;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
@@ -144,7 +145,12 @@ public class UpdateordersActivity extends ListActivity  implements  OnClickListe
         				locateOrder();
     				}
     				mParent.updateCountsOutstanding();
-    				mParent.updateCountsUpdates();    				
+    				mParent.updateCountsUpdates();
+    				if(!mParent.localdb.isDailyUpdateRequired()) {
+    					TabWidget tabs = mParent.getTabWidget();
+    					for(int i=0; i<tabs.getChildCount(); i++)
+    						tabs.getChildAt(i).setEnabled(true);
+    				}
     		}
     	}
     };

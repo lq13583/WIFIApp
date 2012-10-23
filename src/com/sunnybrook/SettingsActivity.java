@@ -43,6 +43,8 @@ public class SettingsActivity extends Activity implements OnClickListener{
     	mEditText.setText(mSysconfig.getNetwork_key());
     	mEditText = (EditText) findViewById(R.id.crafts);
     	mEditText.setText(mSysconfig.getCrafts());
+    	mEditText = (EditText) findViewById(R.id.daily_start_time);
+    	mEditText.setText(mSysconfig.getDaily_start_time());
 
     	mEditText = (EditText) findViewById(R.id.update_int);
     	mEditText.setText(Long.toString(mSysconfig.getUpdate_int()));
@@ -56,6 +58,8 @@ public class SettingsActivity extends Activity implements OnClickListener{
     	mEditText.setText(Integer.toString(mSysconfig.getList_font_size()));
     	mEditText = (EditText) findViewById(R.id.outstanding_days);
     	mEditText.setText(Long.toString(mSysconfig.getOutstanding_days()));
+    	mEditText = (EditText) findViewById(R.id.daily_update_min);
+    	mEditText.setText(Integer.toString(mSysconfig.getDaily_update_min()));
 
     	CheckBox mCheckBox = (CheckBox) findViewById(R.id.is_super);
     	mCheckBox.setChecked(mSysconfig.is_super());
@@ -63,6 +67,9 @@ public class SettingsActivity extends Activity implements OnClickListener{
     	mCheckBox.setChecked(mSysconfig.isUpdate_key());
     	mCheckBox = (CheckBox) findViewById(R.id.debug_mode);
     	mCheckBox.setChecked(mSysconfig.isDebug_mode());
+    	mCheckBox = (CheckBox) findViewById(R.id.daily_bypass);
+    	mCheckBox.setChecked(mSysconfig.isDaily_bypass());
+    	
     }    
     
     private void setEvents() {
@@ -113,6 +120,8 @@ public class SettingsActivity extends Activity implements OnClickListener{
     	mSysconfig.setNetwork_key(mEditText.getText().toString());
     	mEditText = (EditText) findViewById(R.id.crafts);
     	mSysconfig.setCrafts(mEditText.getText().toString());
+    	mEditText = (EditText) findViewById(R.id.daily_start_time);
+    	mSysconfig.setDaily_start_time(mEditText.getText().toString());
  
     	mEditText = (EditText) findViewById(R.id.update_int);
     	mSysconfig.setUpdate_int(Long.parseLong(mEditText.getText().toString()));
@@ -126,6 +135,8 @@ public class SettingsActivity extends Activity implements OnClickListener{
     	mSysconfig.setList_font_size(Integer.parseInt(mEditText.getText().toString()));
     	mEditText = (EditText) findViewById(R.id.outstanding_days);
     	mSysconfig.setOutstanding_days(Integer.parseInt(mEditText.getText().toString()));
+    	mEditText = (EditText) findViewById(R.id.daily_update_min);
+    	mSysconfig.setDaily_update_min(Integer.parseInt(mEditText.getText().toString()));
 
     	CheckBox mCheckBox = (CheckBox) findViewById(R.id.is_super);
     	mSysconfig.set_super(mCheckBox.isChecked());
@@ -133,6 +144,8 @@ public class SettingsActivity extends Activity implements OnClickListener{
     	mSysconfig.setUpdate_key(mCheckBox.isChecked());
     	mCheckBox = (CheckBox) findViewById(R.id.debug_mode);
     	mSysconfig.setDebug_mode(mCheckBox.isChecked());
+    	mCheckBox = (CheckBox) findViewById(R.id.daily_bypass);
+    	mSysconfig.setDaily_bypass(mCheckBox.isChecked());
 
 		mSysconfig.saveAllToDB(mParent.localdb);
     }

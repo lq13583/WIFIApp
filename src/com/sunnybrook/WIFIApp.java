@@ -148,6 +148,13 @@ public class WIFIApp extends TabActivity implements OnTabChangeListener{
         updateCountsOutstanding();
         
         startService(new Intent(WIFISyncService.class.getName()));
+        
+        if(localdb.isDailyUpdateRequired()) {
+        	mTabHost.setCurrentTabByTag("updateorders");
+        	int curTab = mTabHost.getCurrentTab();
+        	for(int i=0; i<mTabHost.getTabWidget().getChildCount() - 1; i++)
+        		if(i!=curTab) mTabHost.getTabWidget().getChildAt(i).setEnabled(false);
+        }
 	}
 
 	public void updateCountsUpdates() {

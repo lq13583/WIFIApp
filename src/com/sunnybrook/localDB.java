@@ -1,8 +1,9 @@
 package com.sunnybrook;
 
-import java.text.Format;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -46,6 +47,20 @@ public class localDB{
 		return value;
 	}
 
+	public boolean getBooleanSysConfig(String _name) {
+		boolean bRet = false;
+    	String mRet = getSysConfig(_name);
+    	bRet = (mRet == null)?false:mRet.equals("yes");
+    	return bRet;
+	}
+	
+	public int getIntSysConfig(String _name) {
+		int iRet = 0;
+		String mRet = getSysConfig(_name);
+		iRet = (mRet == null)?0:Integer.parseInt(mRet);
+		return iRet;
+	}
+	
 	public void saveSysConfig(String name,String value){
 		String sql;
 		SQLiteStatement mStatement;
@@ -624,6 +639,60 @@ public class localDB{
 		return mList;
 	}
 	
+	public void resetDailyUpdateCounts(){
+		saveSysConfig("daily_update_count","0");
+	}
+	
+	public int getDailyUpdateCounts() {
+		int iRet = 0;
+		String sRet = getSysConfig("daily_update_count");
+		iRet = (sRet==null)?0:Integer.parseInt(sRet);
+		return iRet;
+	}
+	
+	public void addDailyUpdateCounts() {
+		saveSysConfig("daily_update_count",Integer.toString(getDailyUpdateCounts() + 1));
+	}
+	
+	public void resetDailyUpdateNextDate(){
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.DATE, 1);
+		String strTmp = mDateFormat.myDateFormat(cal.getTime());
+		saveSysConfig("daily_update_next_date",strTmp);
+	}
+
+	private Date getNextDailyUpdateDateTime() {
+		Date dRet = new Date();
+		String sDateTime;
+		String sRet = getSysConfig("daily_update_next_date");
+		sDateTime = (sRet == null)?mDateFormat.myDateFormat(new Date()):sRet;
+		sRet = getSysConfig("daily_start_time");
+		if(sRet == null) sRet = "06:00";
+		sDateTime = String.format("%s %s:00", sDateTime,sRet);
+		try {
+			dRet = mDateFormat.myParse(sDateTime);
+		} catch (ParseException ex) {
+			SysLog.appendLog("INFO", TAG, ex.getMessage());
+		}
+		return dRet;
+	}
+	
+	public boolean isDailyUpdateRequired() {
+		Date dToday = new Date();
+
+		if(getBooleanSysConfig("daily_bypass"))	return false;
+
+		if(getUpdatesCnt(getSysConfig("labor_code")) <= 0) return false;
+		
+		if(dToday.after(getNextDailyUpdateDateTime())) {
+			resetDailyUpdateCounts();
+			resetDailyUpdateNextDate();
+		}
+		
+		return (getIntSysConfig("daily_update_count")<getIntSysConfig("daily_update_min"));
+		
+	}
+
 /*	
 	public Cursor getCursor(String mSql,String[] mSelectArgs) {
 		Cursor mCur;
@@ -669,6 +738,9 @@ public class localDB{
 				put("network_key","df4cfcd9a06d46ce3f4d6ccb8e");
 				put("debug_mode","no");
 				put("outstanding_days","5");
+				put("daily_bypass","no");
+				put("daily_start_time","6:00");
+				put("daily_update_min","99");
 			}
 		};
 
