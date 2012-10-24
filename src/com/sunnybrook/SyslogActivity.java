@@ -1,7 +1,5 @@
 package com.sunnybrook;
 
-import java.util.List;
-
 import android.app.ListActivity;
 import android.content.Context;
 import android.os.Bundle;
@@ -29,14 +27,15 @@ public class SyslogActivity extends ListActivity  implements OnClickListener{
     	mBtn=(Button) findViewById(R.id.btnRefresh);
     	mBtn.setOnClickListener(this);
     }
-	
+
+/*
 	private void refreshList(List<loginfo> _Items) {
     	mAdapter.clear();
     	for(int i=0;i<_Items.size();i++)
     		mAdapter.add(_Items.get(i));
 		
 	}
-
+*/
 	public class SyslogAdapter extends ArrayAdapter<loginfo> {
 
 		public SyslogAdapter(Context context, int textViewResourceId) {

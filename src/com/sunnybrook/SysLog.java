@@ -44,6 +44,7 @@ public class SysLog {
 			FileWriter fw = new FileWriter(sysLogFile,true);
 			fw.append(msgString);
 			fw.flush();
+			fw.close();
 		} catch (IOException e) {
 			// 	TODO Auto-generated catch block
 				Log.e("SysLog",e.toString());

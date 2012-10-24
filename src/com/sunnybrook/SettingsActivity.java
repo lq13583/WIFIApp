@@ -172,11 +172,15 @@ public class SettingsActivity extends Activity implements OnClickListener{
     		File backupDB = new File(extPath,"maximo.sqlite");
     		
     		if (currentDB.exists()) {
-    			FileChannel src = new FileInputStream(currentDB).getChannel();
-    			FileChannel dst = new FileOutputStream(backupDB).getChannel();
+    			FileInputStream fsSrc = new FileInputStream(currentDB);
+    			FileOutputStream fsDst = new FileOutputStream(backupDB);
+    			FileChannel src = fsSrc.getChannel();
+    			FileChannel dst = fsDst.getChannel();
     			dst.transferFrom(src, 0, src.size());
     			src.close();
     			dst.close();
+    			fsSrc.close();
+    			fsDst.close();
     			showMessage("Finish Backup to:" + backupDB.getAbsolutePath());
     		}
     	}catch(Exception e) {
