@@ -7,6 +7,9 @@ import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -35,6 +38,7 @@ public class UpdateordersActivity extends ListActivity  implements  OnClickListe
 	private String mOrderId = "";
 	private ownorder mOrder = null;
 	private WIFIApp mParent;
+	private TextView mStatusBar;
 	public void onCreate(Bundle savedInstanceState) {
 
     	super.onCreate(savedInstanceState);
@@ -70,7 +74,9 @@ public class UpdateordersActivity extends ListActivity  implements  OnClickListe
     	mButton.setOnClickListener(this);
     	mButton = (Button) findViewById(R.id.btnOpen);
     	mButton.setOnClickListener(this);
-    	
+
+    	mStatusBar = (TextView) findViewById(R.id.txtStatus);
+
     	refreshOrderList(mLaborCode,mOrderby);
     }
 	
@@ -150,6 +156,12 @@ public class UpdateordersActivity extends ListActivity  implements  OnClickListe
     					TabWidget tabs = mParent.getTabWidget();
     					for(int i=0; i<tabs.getChildCount(); i++)
     						tabs.getChildAt(i).setEnabled(true);
+    					mStatusBar.setTextColor(Color.WHITE);
+        				mStatusBar.setText("Completed update workorders, other tabs are enabled.");
+    				}
+    				else {
+    					mStatusBar.setTextColor(Color.RED);
+    					mStatusBar.setText("Please complete workorder updates to enable other tabs!");
     				}
     		}
     	}
@@ -316,6 +328,7 @@ public class UpdateordersActivity extends ListActivity  implements  OnClickListe
 		}
 		return true;
 	}
+
 /*
 	private void showMessage(String txtMsg) {
     	AlertDialog.Builder builder = new AlertDialog.Builder(this);
