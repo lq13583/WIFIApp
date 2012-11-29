@@ -32,7 +32,7 @@ public class SysLog {
 		String msgString = (new MyDateFormat()).myFormat(new Date()) 
 				 + " " + _logAct
 				 + " [" + _logLevel + "]"
-				 + " " + _logMsg;
+				 + " " + _logMsg + "\n";
 		try {
 			File extPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
 			if(!extPath.exists()) extPath.mkdirs();
