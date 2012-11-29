@@ -29,9 +29,10 @@ public class WIFISyncService extends Service {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		SysLog.appendLog("INFO", TAG, "Service creating");
 		localdb = new localDB(this);
 		sysconfig myConfig = new sysconfig(localdb);
+        SysLog.setDebugMode(myConfig.isDebug_mode());
+		SysLog.appendLog("INFO", TAG, "Service creating");
 		WifiManager mWifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
 
 		syncDataTask = new SyncDataTask(mHandler,localdb,mWifi);
