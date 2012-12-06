@@ -37,10 +37,6 @@ public class SysLog {
 			File extPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
 			if(!extPath.exists()) extPath.mkdirs();
 			File sysLogFile = new File(extPath,"WiFiApp.log");
-/*
-			if(!sysLogFile.exists())
-					sysLogFile.createNewFile();
-*/
 			FileWriter fw = new FileWriter(sysLogFile,true);
 			fw.append(msgString);
 			fw.flush();

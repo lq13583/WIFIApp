@@ -5,6 +5,7 @@ import android.net.wifi.WifiManager;
 import android.os.Handler;
 
 public class SyncDataTask extends TimerTask {
+	private static final String TAG = SyncDataTask.class.getSimpleName();
 	public static boolean mEnabled = true; 
 	private sysconfig myConfig;
 	private Handler mHandler;
@@ -26,8 +27,14 @@ public class SyncDataTask extends TimerTask {
 
 	@Override
 	public void run() {
-		if(!mEnabled) return;	//SyncData task is disabled.
-		if(myConfig.getLabor_code().equals("")) return;	//Initial setup is not done.
+		if(!mEnabled) {
+			SysLog.appendLog("INFO",TAG,"SyncData task is disabled.");
+			return;	//SyncData task is disabled.
+		}
+		if(myConfig.getLabor_code().equals("")) {
+			SysLog.appendLog("INFO", TAG, "Labor code is not set.");
+			return;	//Initial setup is not done.
+		}
 		mDataSync = new datasync(mHandler,myLocalDB,mWifi);
 		if(!mDataSync.is_running()) mDataSync.start();
 	}

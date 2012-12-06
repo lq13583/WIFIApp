@@ -31,7 +31,8 @@ public class datasync extends Thread{
 		msg.arg1 = _arg1;
 		msg.arg2 = mNewOrders;
 		msg.obj = _msg;
-		mHandler.sendMessage(msg);		
+		mHandler.sendMessage(msg);
+		SysLog.appendLog("INFO",TAG,_msg);
 	}
 	
 	public datasync(Handler _handler, localDB _localdb, WifiManager _wifi) {
@@ -53,7 +54,7 @@ public class datasync extends Thread{
 			errMsg = "Data Sync is running!";
 		else {
 			is_running=true;	//Set the task running flag
-
+			SysLog.appendLog("INFO", TAG, "Data Sync Start.");
 			if(checkWifiStatus()) {
 				if(checkRemoteDB()) {
 					if(pushData(myLocalDB,myRemoteDB)){
@@ -66,6 +67,9 @@ public class datasync extends Thread{
 					if(myRemoteDB.isConnected()) myRemoteDB.close();
 				}
 			}
+			else
+				SysLog.appendLog("INFO", TAG, "No WIFI.");
+			SysLog.appendLog("INFO", TAG, "Data Sync End.");
 			is_running=false;
 		}
 		updateStatus(DATASYNC_FINISHED,errMsg);
@@ -83,8 +87,7 @@ public class datasync extends Thread{
 			errMsg = "WIFI Connection is enabled.";
 			return false;
 		}
-
-		if((mWifiInfo.getSSID() == null) || !mWifiInfo.getSSID().equals(myConfig.getSsid())) {
+		if((mWifiInfo.getSSID() == null) || !mWifiInfo.getSSID().replace("\"", "").equals(myConfig.getSsid())) {
 			List<WifiConfiguration> mWifiConfList = mWifi.getConfiguredNetworks();
 			WifiConfiguration mWifiConfig = null;
 			int mNetId = 0;
