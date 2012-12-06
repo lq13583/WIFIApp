@@ -31,12 +31,11 @@ public class WIFISyncService extends Service {
 		super.onCreate();
 		localdb = new localDB(this);
 		sysconfig myConfig = new sysconfig(localdb);
-        SysLog.setDebugMode(myConfig.isDebug_mode());
+		SysLog.setDebugMode(myConfig.isDebug_mode());
 		SysLog.appendLog("INFO", TAG, "Service creating");
 		WifiManager mWifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-
-		syncDataTask = new SyncDataTask(mHandler,localdb,mWifi);
 		
+		syncDataTask = new SyncDataTask(mHandler,localdb,mWifi);
 		timer = new Timer("DataSyncTimer");
 		timer.schedule(syncDataTask, 1000L, myConfig.getUpdate_int());
 	}
