@@ -30,6 +30,10 @@ public class sysconfig {
 	private int daily_update_min;	//Minimum number of outstanding work orders to be filled.
 	
 	public sysconfig(localDB localdb){
+		refresh(localdb);
+	}
+	
+	public void refresh(localDB localdb) {
 		String mRet;
     	labor_code = localdb.getSysConfig("labor_code");
     	labor_name = localdb.getSysConfig("labor_name");
