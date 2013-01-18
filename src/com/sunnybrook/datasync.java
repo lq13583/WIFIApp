@@ -9,8 +9,7 @@ import android.os.Handler;
 import android.os.Message;
 
 public class datasync extends Thread{
-	public static final int DATASYNC_RUNNING = 10;
-	public static final int DATASYNC_FINISHED = 11;
+
 	private sysconfig myConfig;
 	private Handler mHandler;
 	private WifiManager mWifi;
@@ -23,11 +22,11 @@ public class datasync extends Thread{
 	private String TAG = datasync.class.getSimpleName();
 	
 	private void updateStatus(String _msg) {
-		updateStatus(DATASYNC_RUNNING,_msg);
+		updateStatus(Consts.DATASYNC_RUNNING,_msg);
 	}
 	
 	private void updateStatus(int _arg1, String _msg) {
-		Message msg = mHandler.obtainMessage();
+		Message msg = mHandler.obtainMessage(Consts.MSG_DATASYNC_STATUS);
 		msg.arg1 = _arg1;
 		msg.arg2 = mNewOrders;
 		msg.obj = _msg;
@@ -48,6 +47,7 @@ public class datasync extends Thread{
 	}
 
 	public void run() {
+		myConfig.refresh(myLocalDB);
 		if(myConfig.getLabor_code().equals(""))
 			errMsg = "Labor code is not set!";
 		else if(is_running)	//Another datasync thread is still running.
@@ -72,7 +72,7 @@ public class datasync extends Thread{
 			SysLog.appendLog("INFO", TAG, "Data Sync End.");
 			is_running=false;
 		}
-		updateStatus(DATASYNC_FINISHED,errMsg);
+		updateStatus(Consts.DATASYNC_FINISHED,errMsg);
 	}
 	
 	private boolean checkWifiStatus() {
@@ -192,14 +192,14 @@ public class datasync extends Thread{
 	}
 	
 	private boolean cleanData(localDB _localdb,remoteDB _remotedb) {
-		updateStatus("Start cleaning up data ......");
+		updateStatus("Cleaning up data ......");
 		SysLog.appendLog("DEBUG", TAG + ":cleanData", "Start cleaning up data ......");
 		if(!_localdb.cleanData()) {
 			errMsg = "Failed to clean up data!";
 			return false;
 		}
-		SysLog.appendLog("DEBUG", TAG + ":cleanData", "End cleaning up data ......");
-		updateStatus("End cleaning up data ......");
+		SysLog.appendLog("DEBUG", TAG + ":cleanData", "End cleaning up data.");
+		updateStatus("Cleaning up data finished.");
 		return true;
 	}
 
@@ -209,6 +209,9 @@ public class datasync extends Thread{
 		SysLog.appendLog("DEBUG", TAG +":pullOwnOrder","Start writing local own workorders......");
 		mNewOrders = 0;
 		for(int i=0;i<mList.size();i++){
+			if( (i % 10) == 0) {
+				updateStatus(String.format("Pulling ownorders(%d/%d)......",i,mList.size()));
+			}
 			if(localdb.saveOwnOrder(mList.get(i),myConfig.getLabor_code()))
 				mNewOrders ++;
 		}

@@ -27,6 +27,7 @@ public class SyncDataTask extends TimerTask {
 
 	@Override
 	public void run() {
+		myConfig.refresh(myLocalDB);
 		if(!mEnabled) {
 			SysLog.appendLog("INFO",TAG,"SyncData task is disabled.");
 			return;	//SyncData task is disabled.
