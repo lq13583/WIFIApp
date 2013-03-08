@@ -1,6 +1,8 @@
 package com.sunnybrook;
 
 import java.util.TimerTask;
+
+import android.content.Context;
 import android.net.wifi.WifiManager;
 import android.os.Handler;
 
@@ -9,20 +11,24 @@ public class SyncDataTask extends TimerTask {
 	public static boolean mEnabled = true; 
 	private sysconfig myConfig;
 	private Handler mHandler;
-	private WifiManager mWifi;
 	private localDB myLocalDB;
 	private datasync mDataSync;
+	private Context mContext;
 	
-	public SyncDataTask(Handler _handler, localDB _localdb, WifiManager _wifi) {
+	public SyncDataTask(Handler _handler, Context _context) {
 		super();
 		mHandler = _handler;
-		mWifi = _wifi;
-		myLocalDB = _localdb;
+		mContext = _context;
+		myLocalDB = new localDB(mContext);
 		myConfig = new sysconfig(myLocalDB);
 	}
 	
+	public String getErrMsg() {
+		return mDataSync.getErrMsg();
+	}
+	
 	public boolean isRunning() {
-		return mDataSync.is_running();
+		return ((mDataSync != null) && mDataSync.is_running());
 	}
 
 	@Override
@@ -36,7 +42,13 @@ public class SyncDataTask extends TimerTask {
 			SysLog.appendLog("INFO", TAG, "Labor code is not set.");
 			return;	//Initial setup is not done.
 		}
-		mDataSync = new datasync(mHandler,myLocalDB,mWifi);
-		if(!mDataSync.is_running()) mDataSync.start();
+		if(mDataSync==null) mDataSync = new datasync(mHandler,mContext);
+		if(!mDataSync.is_running()) mDataSync.run();
+	}
+	
+	@Override
+	public boolean cancel() {
+		mDataSync.interrupt();
+		return super.cancel();
 	}
 }

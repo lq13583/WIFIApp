@@ -2,6 +2,7 @@ package com.sunnybrook;
 
 import java.util.List;
 
+import android.content.Context;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
@@ -11,6 +12,7 @@ import android.os.Message;
 public class datasync extends Thread{
 
 	private sysconfig myConfig;
+	private Context mContext;
 	private Handler mHandler;
 	private WifiManager mWifi;
 	private localDB myLocalDB;
@@ -22,6 +24,7 @@ public class datasync extends Thread{
 	private String TAG = datasync.class.getSimpleName();
 	
 	private void updateStatus(String _msg) {
+		errMsg = _msg;
 		updateStatus(Consts.DATASYNC_RUNNING,_msg);
 	}
 	
@@ -39,6 +42,15 @@ public class datasync extends Thread{
 		mHandler = _handler;
 		mWifi = _wifi;
 		myLocalDB = _localdb;
+		myConfig = new sysconfig(myLocalDB);
+	}
+	
+	public datasync(Handler _handler, Context _context) {
+		super();
+		mHandler = _handler;
+		mContext = _context;
+		myLocalDB = new localDB(_context);
+		mWifi = (WifiManager) mContext.getSystemService(Context.WIFI_SERVICE);
 		myConfig = new sysconfig(myLocalDB);
 	}
 	
@@ -242,4 +254,7 @@ public class datasync extends Thread{
 		return true;
 	}
 	
+	public String getErrMsg() {
+		return errMsg;
+	}
 }

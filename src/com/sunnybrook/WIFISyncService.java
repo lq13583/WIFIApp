@@ -31,6 +31,10 @@ public class WIFISyncService extends Service {
             switch (msg.what) {
             case Consts.MSG_REGISTER_CLIENT:
                 mClients.add(msg.replyTo);
+                if((syncDataTask != null) && syncDataTask.isRunning()) {
+                   	Message tmpMsg = Message.obtain(null,Consts.MSG_DATASYNC_STATUS,Consts.DATASYNC_RUNNING,0,syncDataTask.getErrMsg());
+                   	sendMessageToUI(tmpMsg);
+                }
                 break;
             case Consts.MSG_UNREGISTER_CLIENT:
                 mClients.remove(msg.replyTo);
@@ -58,17 +62,20 @@ public class WIFISyncService extends Service {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		android.os.Debug.waitForDebugger();
+
+/* To debug service code.
+		android.os.Debug.waitForDebugger();	*/
+
 		localdb = new localDB(this);
 		sysconfig myConfig = new sysconfig(localdb);
+
 		SysLog.setDebugMode(myConfig.isDebug_mode());
 		SysLog.appendLog("INFO", TAG, "Service creating");
-		WifiManager mWifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+
+		syncDataTask = new SyncDataTask(mHandler,this);
 		
-		syncDataTask = new SyncDataTask(mHandler,localdb,mWifi);
 		timer = new Timer("DataSyncTimer");
 		timer.schedule(syncDataTask, 1000L, myConfig.getUpdate_int());
-
 	}
 
 	@Override
@@ -76,11 +83,14 @@ public class WIFISyncService extends Service {
 		super.onDestroy();
 		SysLog.appendLog("INFO", TAG, "Service destroying");
 
-//		localdb.finalize();
-		localdb = null;
-		
+		syncDataTask.cancel();
+
 		timer.cancel();
 		timer = null;
+
+		localdb.finalize();
+		localdb = null;
+		
 	}
 
 	private static void sendMessageToUI(Message _msg) {
@@ -97,5 +107,4 @@ public class WIFISyncService extends Service {
             }
         }
     }
-	
 }
