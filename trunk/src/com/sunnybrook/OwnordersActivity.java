@@ -35,10 +35,13 @@ public class OwnordersActivity extends ListActivity  implements  OnClickListener
 	private String mOrderId = "";
 	private ownorder mOrder = null;
 	private WIFIApp mParent;
+	private String TAG = OwnordersActivity.class.getSimpleName();
 	
 	public void onCreate(Bundle savedInstanceState) {
 
     	super.onCreate(savedInstanceState);
+        SysLog.appendLog("INFO", TAG, "Application Launched.");
+
     	mParent = (WIFIApp) getParent();
     	mLaborCode = mParent.myConfig.getLabor_code();
     	mProgressDialog  = new ProgressDialog(this);

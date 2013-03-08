@@ -164,14 +164,11 @@ public class WIFIApp extends TabActivity implements OnTabChangeListener{
         	for(int i=0; i<mTabHost.getTabWidget().getChildCount() - 1; i++)
         		if(i!=curTab) mTabHost.getTabWidget().getChildAt(i).setEnabled(false);
         }
+ 
+        mIsBound = bindService(new Intent(this, WIFISyncService.class),mConnection,Context.BIND_AUTO_CREATE);
+        
 	}
 	
-	@Override
-	protected void onStart() {
-		super.onStart();
-		mIsBound = bindService(new Intent(this, WIFISyncService.class),mConnection,Context.BIND_AUTO_CREATE);
-	}
-
 	public void updateCountsUpdates() {
 		Long lCounts = localdb.getUpdatesCnt(myConfig.getLabor_code());
 		String strText = Long.toString(lCounts) + " " + getString(R.string.cnt_updates);
@@ -210,14 +207,7 @@ public class WIFIApp extends TabActivity implements OnTabChangeListener{
     
     @Override
     public void onDestroy() {
-    	SysLog.appendLog("INFO", TAG, "Application Closed.");
     	super.onDestroy();
-    }
-    
-    @Override
-    public void onStop() {
-    	SysLog.appendLog("INFO", TAG, "Application Stopped.");
-    	super.onStop();
     	if(mIsBound) {
             try {
             	Message msg = Message.obtain(null,Consts.MSG_UNREGISTER_CLIENT);
@@ -229,7 +219,8 @@ public class WIFIApp extends TabActivity implements OnTabChangeListener{
 			}    		
     		unbindService(mConnection);
     		mIsBound = false;
-    	}
+    	}    	
+    	SysLog.appendLog("INFO", TAG, "Application Closed.");
     }
 
 	@Override
