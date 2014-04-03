@@ -1,16 +1,17 @@
 package com.sunnybrook;
 
 import java.util.List;
-
 import android.app.ListActivity;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.Messenger;
-import android.os.RemoteException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -35,13 +36,9 @@ public class OwnordersActivity extends ListActivity  implements  OnClickListener
 	private String mOrderId = "";
 	private ownorder mOrder = null;
 	private WIFIApp mParent;
-	private String TAG = OwnordersActivity.class.getSimpleName();
-	
 	public void onCreate(Bundle savedInstanceState) {
 
     	super.onCreate(savedInstanceState);
-        SysLog.appendLog("INFO", TAG, "Application Launched.");
-
     	mParent = (WIFIApp) getParent();
     	mLaborCode = mParent.myConfig.getLabor_code();
     	mProgressDialog  = new ProgressDialog(this);
@@ -131,13 +128,9 @@ public class OwnordersActivity extends ListActivity  implements  OnClickListener
 
 	final Handler mHandler = new Handler() {
     	public void handleMessage(Message msg) {
-    		Bundle data;
     		String tmpMsg;
-    		switch(msg.what)
+    		switch(msg.arg1)
     		{
-    		case Consts.MSG_LOADDATA_STATUS:
-    			switch(msg.arg1)
-    			{
     			case 0:
     				mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
     				tmpMsg = (String) msg.obj;
@@ -151,6 +144,26 @@ public class OwnordersActivity extends ListActivity  implements  OnClickListener
     				if(!tmpOrder.getStatus().equals("COMP"))
     					mOrderAdapter.add(tmpOrder);
     	    		break;
+    			case datasync.DATASYNC_RUNNING:
+    				tmpMsg = (String) msg.obj;
+    				mProgressDialog.setMessage(tmpMsg);
+    				if(!mProgressDialog.isShowing()) {
+        				mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        				mProgressDialog.show();
+    				}
+    				break;
+    			case datasync.DATASYNC_FINISHED:
+    				if(mProgressDialog.isShowing())
+    					mProgressDialog.dismiss();
+    				if(msg.arg2> 0) {
+    					notifyNewOrders(Integer.toString(msg.arg2) + " new orders received!");
+    				}
+    				else {
+        				tmpMsg = (String) msg.obj;
+//        				showMessage(tmpMsg);
+    				}
+					refreshOrderList(mLaborCode,mOrderby);
+    				break;
     			default:
     				if(mProgressDialog.isShowing()){
     					mProgressDialog.dismiss();
@@ -158,45 +171,10 @@ public class OwnordersActivity extends ListActivity  implements  OnClickListener
     				}
     				mParent.updateCountsOutstanding();
     				mParent.updateCountsUpdates();
-    			}
-    			break;
-    		case Consts.MSG_DATASYNC_STATUS:
-    			switch(msg.arg1)
-    			{
-    			case Consts.DATASYNC_RUNNING:
-    				data = msg.getData();
-    				tmpMsg = data.getString(Consts.MSG_STRING);
-    				mProgressDialog.setMessage(tmpMsg);
-    				if(!mProgressDialog.isShowing()) {
-        				mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        				mProgressDialog.show();
-    				}
-    				break;
-    			case Consts.DATASYNC_FINISHED:
-    				data = msg.getData();
-    				tmpMsg = data.getString(Consts.MSG_STRING);
-					try {
-						Message mMsg = Message.obtain(null, Consts.MSG_UNREGISTER_CLIENT);
-						mMsg.replyTo = mMessenger;
-						mParent.mSyncService.send(mMsg);
-					} catch (RemoteException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}    				
-    				if(mProgressDialog.isShowing())
-    					mProgressDialog.dismiss();
-   					refreshOrderList(mLaborCode,mOrderby);
-    				break;
-    			default:
-    				break;
-    			}
-    		default:
-    			break;
     		}
     	}
     };
-    final Messenger mMessenger = new Messenger(mHandler);
-	
+
     private void locateOrder() {
     	if(mOrderId.length() == 0) return;
 		ListView lv = (ListView) findViewById(android.R.id.list);
@@ -223,7 +201,7 @@ public class OwnordersActivity extends ListActivity  implements  OnClickListener
 		}
 		
 		public void run() {
-			Message msg = mHandler.obtainMessage(Consts.MSG_LOADDATA_STATUS);
+			Message msg = mHandler.obtainMessage();
 			msg.arg1 = 0;
 			msg.obj = "Loading data ........";
 			mHandler.sendMessage(msg);
@@ -234,13 +212,13 @@ public class OwnordersActivity extends ListActivity  implements  OnClickListener
 	    	mHandler.sendMessage(msg);
 
 	    	for(int i=0;i<mItems.size();i++) {
-	    		msg = mHandler.obtainMessage(Consts.MSG_LOADDATA_STATUS);
+	    		msg = mHandler.obtainMessage();
 	    		msg.arg1 = 2;
 	    		msg.arg2 = i;
 	    		msg.obj = mItems.get(i);
 	    		mHandler.sendMessage(msg);
 	    	}
-	    	msg = mHandler.obtainMessage(Consts.MSG_LOADDATA_STATUS);	    	
+	    	msg = mHandler.obtainMessage();	    	
 	    	msg.arg1 = 3;
 	    	mHandler.sendMessage(msg);
 		}
@@ -318,19 +296,17 @@ public class OwnordersActivity extends ListActivity  implements  OnClickListener
 		    	refreshOrderList(mLaborCode,mOrderby);
 				break;
 			case R.id.btnSync:
-				try {
-		             Message msg = Message.obtain(null, Consts.MSG_REGISTER_CLIENT);
-		             msg.replyTo = mMessenger;
-					 mParent.mSyncService.send(msg);
-		             msg.what = Consts.MSG_DATASYNC_ACT;
-		             mParent.mSyncService.send(msg);
-				} catch (RemoteException e) {
-				// TODO Auto-generated catch block
-					e.printStackTrace();
-				}				
+				WifiManager mWifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+				new datasync(mHandler,mParent.localdb,mWifi).start();
 				break;
 			case R.id.btnOpen:
 				if(mOrder==null) return;
+/*
+				if(datasync.is_running) {
+					showMessage("Data Sync is currently running, please wait until it is finished!");
+					return;
+				}
+*/
     			Intent mIntent = new Intent(this,OwnOrderDetailActivity.class);
     			mIntent.putExtra("ownorder", mOrder);
     			this.startActivityForResult(mIntent, OWNORDER_ACTIVITY_ID);
@@ -358,4 +334,33 @@ public class OwnordersActivity extends ListActivity  implements  OnClickListener
 		}
 		return true;
 	}
+
+	private void notifyNewOrders(String _msg) {
+		NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+		Notification mNotification = new Notification();
+    	Context context = getApplicationContext();
+    	CharSequence contentTitle = "My notification";
+    	CharSequence contentText = _msg;
+    	Intent notificationIntent = new Intent(this, WIFIApp.class);
+    	PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+    	mNotification.defaults = Notification.DEFAULT_ALL;
+    	mNotification.setLatestEventInfo(context, contentTitle, contentText, contentIntent);
+    	mNotificationManager.notify(1,mNotification);
+    }
+
+/*	
+    private void showMessage(String txtMsg) {
+    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    	
+   		builder.setTitle(R.string.app_name)
+   			   .setCancelable(false)
+   			   .setMessage(txtMsg)
+   			   .setPositiveButton("Close", new DialogInterface.OnClickListener() {
+   				   public void onClick(DialogInterface dlg, int sumthin) {
+   					   dlg.cancel();
+   				   }
+   			   })
+			   .show();
+    }
+*/	
 }
