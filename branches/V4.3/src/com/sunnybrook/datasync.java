@@ -55,7 +55,7 @@ public class datasync extends Thread{
 		else {
 			is_running=true;	//Set the task running flag
 			SysLog.appendLog("INFO", TAG, "Data Sync Start.");
-			if(checkWifiStatus()) {
+/*			if(checkWifiStatus()) { 	--Skip the check wifi step */
 				if(checkRemoteDB()) {
 					if(pushData(myLocalDB,myRemoteDB)){
 						if(pullData(myLocalDB,myRemoteDB)) {
@@ -66,9 +66,10 @@ public class datasync extends Thread{
 					}
 					if(myRemoteDB.isConnected()) myRemoteDB.close();
 				}
-			}
+/*			}
 			else
 				SysLog.appendLog("INFO", TAG, "No WIFI.");
+*/
 			SysLog.appendLog("INFO", TAG, "Data Sync End.");
 			is_running=false;
 		}
@@ -79,9 +80,9 @@ public class datasync extends Thread{
 		boolean is_Emulator="generic".equals(android.os.Build.BRAND); 
 		updateStatus("Checking WIFI connection......");
 		WifiInfo mWifiInfo = mWifi.getConnectionInfo();
-
-		if(is_Emulator) return true;
 		
+		if(is_Emulator) return true;
+/* Do not need to update wifi settings any more 
 		if(!mWifi.isWifiEnabled()) {
 			mWifi.setWifiEnabled(true);
 			errMsg = "WIFI Connection is enabled.";
@@ -123,7 +124,7 @@ public class datasync extends Thread{
 				errMsg = "WIFI Configuration is enabled.";
 				return false;
 		}
-	
+*/	
 		if(mWifiInfo.getIpAddress()==0) {
 			errMsg = "Waiting for WIFI connection......";
 			return false;
