@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"               
+              android:orientation="vertical" >
+  	<ScrollView android:layout_width="fill_parent"
+  				android:layout_height="fill_parent" >
+    	<TableLayout android:layout_width="fill_parent"
+			     android:layout_height="wrap_content"
+			     android:stretchColumns="1">
+		<TableRow>
+			<TextView android:text="labor_code:"
+		          	  android:padding="3dip" />
+			<EditText android:layout_height="fill_parent" 
+					  android:gravity="left" 
+		 		  	  android:layout_width="fill_parent" 
+					  android:id="@+id/labor_code" 
+					  android:padding="3dip" 
+					  android:singleLine="true"
+					  android:text="laborcode">
+			</EditText>
+		</TableRow>
+		<TableRow>
+			<TextView android:text="labor_name:"
+			          android:padding="3dip" />
+			<EditText android:layout_height="fill_parent" 
+					  android:gravity="left" 
+					  android:layout_width="fill_parent" 
+					  android:id="@+id/labor_name" 
+					  android:padding="3dip" 
+					  android:singleLine="true"
+					  android:text="laborname">
+			</EditText>
+		</TableRow>
+		<TableRow>
+			<TextView android:text="crafts:"
+			          android:padding="3dip" />
+			<EditText android:layout_height="fill_parent" 
+					  android:gravity="left" 
+					  android:layout_width="fill_parent" 
+					  android:id="@+id/crafts" 
+					  android:padding="3dip" 
+					  android:singleLine="true"
+					  android:text="Craft List">
+			</EditText>
+		</TableRow>
+		<TableRow>
+			<LinearLayout android:layout_span="2"
+						  android:layout_height="fill_parent"
+						  android:layout_width="fill_parent"
+						  android:gravity="left" >
+				<CheckBox android:text="is_super" 
+					 	  android:id="@+id/is_super" 
+					  	  android:layout_width="wrap_content" 
+					 	  android:layout_height="fill_parent"
+					 	  android:gravity="center_vertical"/>
+				<CheckBox android:text="update_key" 
+				 	  	  android:id="@+id/update_key" 
+					 	  android:layout_width="wrap_content" 
+					 	  android:layout_height="fill_parent"
+					 	  android:gravity="center_vertical"/>
+			</LinearLayout>
+		</TableRow>
+		<TableRow>
+			<LinearLayout android:layout_span="2"
+						  android:layout_height="fill_parent"
+						  android:layout_width="fill_parent"
+						  android:gravity="left" >
+				<CheckBox android:text="daily_bypass" 
+					 	  android:id="@+id/daily_bypass" 
+					  	  android:layout_width="wrap_content" 
+					 	  android:layout_height="fill_parent"
+					 	  android:gravity="center_vertical"/>
+			    <CheckBox android:text="debug_mode" 
+				 	  	  android:id="@+id/debug_mode" 
+					 	  android:layout_width="wrap_content" 
+					 	  android:layout_height="fill_parent"
+					 	  android:gravity="center_vertical"/>
+			</LinearLayout>
+		</TableRow>
+		<TableRow>
+			<TextView android:text="update_int:"
+			          android:padding="3dip" />
+			<EditText android:layout_height="fill_parent" 
+					  android:gravity="left" 
+					  android:layout_width="fill_parent" 
+					  android:id="@+id/update_int" 
+					  android:padding="3dip" 
+					  android:singleLine="true"
+					  android:text="Update interval in milliseconds">
+			</EditText>
+		</TableRow>
+		<TableRow>
+			<TextView android:text="update_int_max:"
+			          android:padding="3dip" />
+			<EditText android:layout_height="fill_parent" 
+					  android:gravity="left" 
+					  android:layout_width="fill_parent" 
+					  android:id="@+id/update_int_max" 
+					  android:padding="3dip" 
+					  android:singleLine="true"
+					  android:text="Maximum update interval in milliseconds">
+			</EditText>
+		</TableRow>
+		<TableRow>
+			<TextView android:text="font_size:"
+			          android:padding="3dip" />
+			<EditText android:layout_height="fill_parent" 
+					  android:gravity="left" 
+					  android:layout_width="fill_parent" 
+					  android:id="@+id/font_size" 
+					  android:padding="3dip" 
+					  android:singleLine="true"
+					  android:text="Font Size">
+			</EditText>
+		</TableRow>
+		<TableRow>
+			<TextView android:text="desc_font_size:"
+			          android:padding="3dip" />
+			<EditText android:layout_height="fill_parent" 
+					  android:gravity="left" 
+					  android:layout_width="fill_parent" 
+					  android:id="@+id/desc_font_size" 
+					  android:padding="3dip" 
+					  android:singleLine="true"
+					  android:text="Description Font Size">
+			</EditText>
+		</TableRow>
+		<TableRow>
+			<TextView android:text="list_font_size:"
+			          android:padding="3dip" />
+			<EditText android:layout_height="fill_parent" 
+					  android:gravity="left" 
+					  android:layout_width="fill_parent" 
+					  android:id="@+id/list_font_size" 
+					  android:padding="3dip" 
+					  android:singleLine="true"
+					  android:text="Description Font Size">
+			</EditText>
+		</TableRow>
+		<TableRow>
+			<TextView android:text="outstanding_days:"
+			          android:padding="3dip" />
+			<EditText android:layout_height="fill_parent" 
+					  android:gravity="left" 
+					  android:layout_width="fill_parent" 
+					  android:id="@+id/outstanding_days"
+					  android:padding="3dip" 
+					  android:singleLine="true"
+					  android:text="Font Size">
+			</EditText>
+		</TableRow>
+		<TableRow>
+			<TextView android:text="daily_start_time:"
+			          android:padding="3dip" />
+			<EditText android:layout_height="fill_parent" 
+					  android:gravity="left" 
+					  android:layout_width="fill_parent" 
+					  android:id="@+id/daily_start_time" 
+					  android:padding="3dip" 
+					  android:singleLine="true"
+					  android:text="Daily start time.">
+			</EditText>
+		</TableRow>
+		<TableRow>
+			<TextView android:text="daily_update_min:"
+			          android:padding="3dip" />
+			<EditText android:layout_height="fill_parent" 
+					  android:gravity="left" 
+					  android:layout_width="fill_parent" 
+					  android:id="@+id/daily_update_min" 
+					  android:padding="3dip" 
+					  android:singleLine="true"
+					  android:text="Minimum daily outstanding workorder update number.">
+			</EditText>
+		</TableRow>
+		<TableRow>
+			<TextView android:text="jdbc_url:" 
+			 		  android:padding="3dip">
+			</TextView>
+		</TableRow>
+		<TableRow>
+			<EditText android:id="@+id/jdbc_url" 
+					  android:layout_height="wrap_content" 
+					  android:scrollbarSize="3dip" 
+					  android:layout_width="fill_parent" 
+					  android:text="jdbc_url" 
+					  android:padding="3dip" 
+					  android:maxLength="100" 
+					  android:scrollHorizontally="true" 
+					  android:scrollbars="horizontal" 
+					  android:gravity="left"
+					  android:singleLine="true"
+					  android:layout_span="2">
+			</EditText>
+		</TableRow>
+		<TableRow>
+			<TextView android:text="SSID:"
+			          android:padding="3dip" />
+			<EditText android:layout_height="fill_parent" 
+					  android:gravity="left" 
+					  android:layout_width="fill_parent" 
+					  android:id="@+id/ssid" 
+					  android:padding="3dip" 
+					  android:text="ssid"
+					  android:singleLine="true">
+			</EditText>
+		</TableRow>
+		<TableRow>
+			<TextView android:text="network_key:"
+			          android:padding="3dip" />
+			<EditText android:layout_height="fill_parent" 
+					  android:gravity="left" 
+					  android:layout_width="fill_parent" 
+					  android:id="@+id/net_key" 
+					  android:padding="3dip" 
+					  android:singleLine="true"
+					  android:text="network key">
+			</EditText>
+		</TableRow>
+		<TableRow>
+			<LinearLayout android:layout_span="2"
+						  android:layout_height="fill_parent"
+						  android:layout_width="fill_parent"
+						  android:gravity="center_horizontal" >
+				<Button android:id="@+id/btnReset"
+	  	    			android:layout_width="wrap_content"
+	        			android:layout_height="fill_parent"
+	       				android:text="Reset" />
+				<Button android:id="@+id/btnSave"
+	  	    			android:layout_width="wrap_content"
+	        			android:layout_height="fill_parent"
+	       				android:text="Save" />
+	       		<Button android:id="@+id/btnBackup"
+	       				android:layout_width="wrap_content"
+	       				android:layout_height="fill_parent"
+	       				android:text="Backup" />
+	       	</LinearLayout>
+		</TableRow>
+	</TableLayout>
+	</ScrollView>
+</LinearLayout>

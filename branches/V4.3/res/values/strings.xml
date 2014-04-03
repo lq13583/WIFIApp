@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<resources>
+    <string name="app_name">WIFIApp</string>
+    <string name="date_format">yyyy-MM-dd HH:mm:ss</string>
+    <string name="select_labor">Staff:</string>
+    <string name="select_craft">Craft:</string>
+    <string name="select_order">Sort by:</string>
+    <string name="select_order_status">Order Status:</string>
+    <string name="select_order_readstatus">Read Status:</string>
+    <string name="select_rfd">Reason For Delay:</string>
+    <string name="list_font_size">9</string>
+    <string name="cnt_updates">updates are required!</string>
+    <string name="cnt_outstanding">outstanding Workorders!</string>
+    <string-array name="super_order_array">
+    	<item>wonum</item>
+    	<item>reportdate</item>
+    	<item>wopriority</item>
+    	<item>status</item>
+    </string-array>    
+    <string-array name="own_order_array">
+    	<item>wonum</item>
+    	<item>reportdate</item>
+    	<item>location</item>
+    	<item>status</item>
+    	<item>readstatus</item>
+<!--    	<item>wopriority</item>		-->
+    </string-array>    
+    <string-array name="craft_order_array">
+    	<item>wonum</item>
+    	<item>reportdate</item>
+    	<item>wopriority</item>
+    	<item>status</item>
+    	<item>location</item>
+    	<item>laborcode</item>
+    	<item>laborname</item>
+    </string-array>
+    <string-array name="order_readstatus_array">
+<!--    	<item>UR</item>		-->		
+    	<item>RD</item>
+    	<item>WM</item>
+    </string-array>
+    <string-array name="order_status_array">
+    	<item>INPRG</item>
+    	<item>COMP</item>
+    </string-array>
+    <string-array name="delay_reason_array">
+    	<item>Other</item>
+    	<item>Waiting for Material</item>
+    	<item>Waiting to Schedule</item>
+    	<item>Contractor to complete work</item>
+    </string-array>
+</resources>
